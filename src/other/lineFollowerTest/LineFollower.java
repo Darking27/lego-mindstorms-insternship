@@ -38,7 +38,15 @@ public class LineFollower {
 
 		boolean onLine = false;
 
+		int timeOnLine = 0;
+
 		while (!escape.isDown()) {
+			System.out.print(timeOnLine + " ");
+			if (onLine) {
+				timeOnLine++;
+			} else {
+				timeOnLine = 0;
+			}
 			if (isOnLine() && !onLine) {
 				leftMotor.stop(true);
 				rightMotor.rotate(1000, true);
@@ -62,7 +70,6 @@ public class LineFollower {
 		float[] sample = new float[sampleSize];
 		reflectedLight.fetchSample(sample, 0);
 		boolean onLine = (sample[0] > 0.5);
-		System.out.println(onLine);
 		return onLine;
 	}
 

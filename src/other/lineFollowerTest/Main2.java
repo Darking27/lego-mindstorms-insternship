@@ -5,7 +5,7 @@ import lejos.hardware.BrickFinder;
 import lejos.hardware.Key;
 import lejos.utility.Delay;
 
-public class Main {
+public class Main2 {
     
     static String COLOR_SENSOR_PORT = "S1";
     static String LEFT_MOTOR_PORT = "A";
