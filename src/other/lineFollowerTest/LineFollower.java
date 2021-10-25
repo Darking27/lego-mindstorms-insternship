@@ -40,13 +40,13 @@ public class LineFollower {
 
 		while (!escape.isDown()) {
 			if (isOnLine() && !onLine) {
-				leftMotor.flt(true);
-				rightMotor.rotate(360, true);
+				leftMotor.stop(true);
+				rightMotor.rotate(1000, true);
 				onLine = true;
 			}
 			if (!isOnLine() && onLine) {
-				rightMotor.flt(true);
-				leftMotor.rotate(360, true);
+				rightMotor.stop(true);
+				leftMotor.rotate(1000, true);
 				onLine = false;
 			}
 		}
