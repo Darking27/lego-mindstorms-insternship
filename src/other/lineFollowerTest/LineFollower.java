@@ -57,7 +57,7 @@ public class LineFollower {
 	 * Checks whether the robot is on the line or not
 	 * @return
 	 */
-	private boolean isOnLine() {
+	public boolean isOnLine() {
 	    int sampleSize = reflectedLight.sampleSize();
 	    float[] sample = new float[sampleSize];
 	    reflectedLight.fetchSample(sample, 0);
