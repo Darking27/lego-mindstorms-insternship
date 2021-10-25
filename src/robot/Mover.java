@@ -1,11 +1,27 @@
 package robot;
 
+import lejos.hardware.Brick;
+import lejos.hardware.BrickFinder;
+import lejos.hardware.motor.EV3MediumRegulatedMotor;
+import lejos.robotics.RegulatedMotor;
+import lejos.utility.Delay;
+
 /**
  * Is responsible for all moving parts in the robot
  * @author felix
  *
  */
 public class Mover {
+	private RegulatedMotor tiltMotor;
+	
+	public static void main(String[] args) {
+		Mover m = new Mover(BrickFinder.getDefault(), "C");
+		m.tiltUltrasonicSensor(null);
+	}
+	
+	public Mover(Brick brick, String tiltMotorPort) {
+		tiltMotor = new EV3MediumRegulatedMotor(brick.getPort(tiltMotorPort));
+	}
 	
 	//TODO work with event queue??
 	
@@ -15,7 +31,13 @@ public class Mover {
 	 * @param direction Allowed direction: Up and Down
 	 */
 	public void tiltUltrasonicSensor(Direction direction) {
-		
+		tiltMotor.setSpeed(100);
+		tiltMotor.rotateTo(0);
+		Delay.msDelay(2000);
+		tiltMotor.rotateTo(70);
+		tiltMotor.stop();
+		Delay.msDelay(4000);
+		tiltMotor.rotateTo(0);
 	}
 	
 	/**
