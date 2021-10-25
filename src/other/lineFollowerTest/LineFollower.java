@@ -31,31 +31,32 @@ public class LineFollower {
 	}
 
 	public void followLineSimple() {
-		Key escape = brick.getKey("Escape");
+		Key escape = brick.getKey("Enter");
 
 		rightMotor.setSpeed(300);
 		leftMotor.setSpeed(300);
 
 		boolean onLine = false;
+		
+		int print_var = 0;
 
 		int timeOnLine = 0;
 
 		while (!escape.isDown()) {
-			System.out.print(timeOnLine + " ");
-			if (onLine) {
-				timeOnLine++;
-			} else {
-				timeOnLine = 0;
-			}
+			timeOnLine++;
 			if (isOnLine() && !onLine) {
 				leftMotor.stop(true);
 				rightMotor.rotate(1000, true);
 				onLine = true;
+				System.out.println(timeOnLine + " ");
+				timeOnLine = 0;
 			}
 			if (!isOnLine() && onLine) {
 				rightMotor.stop(true);
 				leftMotor.rotate(1000, true);
 				onLine = false;
+				System.out.println(timeOnLine + " ");
+				timeOnLine = 0;
 			}
 		}
 	}

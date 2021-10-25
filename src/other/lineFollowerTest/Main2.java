@@ -12,16 +12,17 @@ public class Main2 {
     static String RIGHT_MOTOR_PORT = "B";
 
     public static void main(String[] args) {
+    	System.out.println("Test Print");
         Brick brick = BrickFinder.getDefault();
         LineFollower lineFollower = new LineFollower(brick, COLOR_SENSOR_PORT, LEFT_MOTOR_PORT, RIGHT_MOTOR_PORT);
         
-        Key escape = brick.getKey("Escape");
+        Key escape = brick.getKey("Enter");
         
         while (!escape.isDown()) {
             lineFollower.isOnLine();
             Delay.msDelay(50);
         }
-        
+        Delay.msDelay(1000);
         lineFollower.followLineSimple();
 
     }
