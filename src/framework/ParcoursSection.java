@@ -11,10 +11,10 @@ package framework;
  *
  */
 public enum ParcoursSection {
-	LINE_FOLLOW (new TestWalker()),
-	BOX_MOVE (new TestWalker()),
-	COLOR_SEARCH  (new TestWalker()),
-	BRIDGE  (new TestWalker());
+	LINE_FOLLOW (new LineFollower()),
+	BOX_MOVE (new BoxMove()),
+	BRIDGE  (new BridgeFollower()),
+	COLOR_SEARCH  (new ColorSearch());
 	
 	private final ParcoursWalker walker;
 	
