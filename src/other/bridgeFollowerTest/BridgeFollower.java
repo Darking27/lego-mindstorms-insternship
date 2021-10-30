@@ -13,7 +13,27 @@ import lejos.utility.TimerListener;
 public class BridgeFollower {
 	
 	public enum State {
-		DRIVING_STRAIT, DRIVING_LEFT, DRIVING_RIGHT, TURN_LEFT
+		/*
+		 * We are driving up the ramp, a bit to the left to get to the left edge.
+		 */
+		DRIVING_STRAIT,
+		
+		/*
+		 * We are driving on a relatively big circle to the left. We are on the bridge / ramp.
+		 * If the sensor sees the ground then we drive right again.
+		 */
+		DRIVING_LEFT,
+		
+		/*
+		 * We are driving on a relatively big circle to the right.
+		 * We are on the left edge of the bridge / ramp.
+		 */
+		DRIVING_RIGHT,
+		
+		/*
+		 * We are driving on a smaller circle to the left until we meet the left edge again.
+		 */
+		TURN_LEFT
 	}
 
 	Brick brick;
@@ -43,7 +63,6 @@ public class BridgeFollower {
 		rightMotor.setSpeed(600);
 		leftMotor.setSpeed(600);
 
-		boolean onTrack = false;
 		state = State.DRIVING_STRAIT;
 		timeout = false;
 		timer = new Timer(200, new TimerListener() {
@@ -83,19 +102,7 @@ public class BridgeFollower {
 				}
 				break;
 			default:
-				break;
-			
-			}
-			
-			if (isOnLine() && !onTrack) {
-				leftMotor.stop(true);
-				rightMotor.rotate(1000, true);
-				onTrack = true;
-			}
-			if (!isOnLine() && onTrack) {
-				rightMotor.stop(true);
-				leftMotor.rotate(1000, true);
-				onTrack = false;
+				throw new IllegalArgumentException("state not valid");
 			}
 		}
 	}
@@ -120,7 +127,9 @@ public class BridgeFollower {
 			timer.start();
 			break;
 		case DRIVING_STRAIT:
-			// Drive a little bit to the left
+			/* Drive a little bit to the left.
+			 * This is needed to ensure that we do not fall off the right edge of the ramp.
+			 */
 			leftMotor.setSpeed(600);
 			rightMotor.setSpeed(520);
 			leftMotor.rotate(1000, true);
