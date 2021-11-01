@@ -38,6 +38,7 @@ public class BridgeFollower {
 
 	Brick brick;
 	SampleProvider distanceMode;
+	SampleProvider onTrackMode;
 	SampleProvider reflectedLight;
 	EV3UltrasonicSensor usSensor;
 
@@ -52,6 +53,7 @@ public class BridgeFollower {
 		Port sensorPort = brick.getPort(usSensorPort);
 		this.usSensor = new EV3UltrasonicSensor(sensorPort);
 		this.distanceMode = usSensor.getDistanceMode();
+		this.onTrackMode = new AutoAdjustUltrasonic(distanceMode);
 
 		this.rightMotor = new EV3LargeRegulatedMotor(brick.getPort(rightMotorPort));
 		this.leftMotor = new EV3LargeRegulatedMotor(brick.getPort(leftMotorPort));
@@ -165,14 +167,14 @@ public class BridgeFollower {
 	 * @return
 	 */
 	public boolean isOnLine() {
-		int sampleSize = distanceMode.sampleSize();
+		int sampleSize = 1;
 		float[] sample = new float[sampleSize];
-		distanceMode.fetchSample(sample, 0);
+		onTrackMode.fetchSample(sample, 0);
 		/* Display individual values in the sample. */
 		for (int i = 0; i < sampleSize; i++) {
 			System.out.print(sample[i] + " ");
 		}
-		boolean onLine = (sample[0] <= 0.26) || (sample[0] > 300);
+		boolean onLine = sample[0] < 0.5f;
 		System.out.println(onLine);
 		return onLine;
 	}
