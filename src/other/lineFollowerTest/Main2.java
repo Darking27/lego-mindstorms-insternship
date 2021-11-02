@@ -14,7 +14,7 @@ public class Main2 {
     public static void main(String[] args) {
     	System.out.println("Test Print");
         Brick brick = BrickFinder.getDefault();
-        LineFollower lineFollower = new LineFollower(brick, COLOR_SENSOR_PORT, LEFT_MOTOR_PORT, RIGHT_MOTOR_PORT);
+        LineFollowerOld lineFollower = new LineFollowerOld(brick, COLOR_SENSOR_PORT, LEFT_MOTOR_PORT, RIGHT_MOTOR_PORT);
         
         Key escape = brick.getKey("Enter");
         
