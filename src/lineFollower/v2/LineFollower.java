@@ -2,14 +2,20 @@ package lineFollower.v2;
 
 import lejos.hardware.Brick;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.robotics.RegulatedMotor;
+import lejos.robotics.SampleProvider;
 import lejos.utility.Delay;
 
 public class LineFollower {
 	
-	 int SAMPLE_SPEED = 50;            	// in ms
-	 int ON_LINE_TIMEOUT = 150;			// in ms
-	 int ON_BACKGROUND_TIMEOUT = 250;	// in ms
+	private enum SensorState {
+		BACKGROUND, LINE, OBSTACLE, FINISH_LINE, NONE
+	}
+	
+	int SAMPLE_SPEED = 5;            	// in ms
+	int ON_LINE_TIMEOUT = 100;			// in ms
+	int ON_BACKGROUND_TIMEOUT = 200;	// in ms
     
     ColorID LINE_COLOR = ColorID.WHITE;
     ColorID BACKGROUND_COLOR = ColorID.BLACK;
@@ -17,19 +23,24 @@ public class LineFollower {
     
     Brick brick;
     ColorSensor colorSensor;
+    SampleProvider touchSensorLeft;
+    SampleProvider touchSensorRight;
 
     RegulatedMotor leftMotor;
     RegulatedMotor rightMotor;
     
     LineFollowerState state;
     
-    public LineFollower(Brick brick, String colorSensorPort, String leftMotorPort, String rightMotorPort) {
+    public LineFollower(Brick brick, String colorSensorPort, String leftMotorPort, String rightMotorPort, String touchSensorRightPort, String touchSensorLeftPort) {
         this.brick = brick;
 
         this.colorSensor = new ColorSensor(brick, colorSensorPort);
         
         this.rightMotor = new EV3LargeRegulatedMotor(brick.getPort(rightMotorPort));
         this.leftMotor = new EV3LargeRegulatedMotor(brick.getPort(leftMotorPort));
+        
+        this.touchSensorLeft = new EV3TouchSensor(brick.getPort(touchSensorLeftPort));
+        this.touchSensorRight = new EV3TouchSensor(brick.getPort(touchSensorRightPort));
         
         this.state = LineFollowerState.DRIVE_FORWARD_GAP;
     }
@@ -66,9 +77,46 @@ public class LineFollower {
 	        		break;
 	        	case DONE:
 	        		logCurrentState();
-	        		break;
+	        		Delay.msDelay(5000);
+	        		return;
+	        	case ERROR:
+	        		logCurrentState();
+	        		Delay.msDelay(5000);
+	        		return;
         	}
         }
+    }
+    
+    private SensorState robotDelay(int duration, ColorID toCheck) {
+    	int count = duration / SAMPLE_SPEED;
+    	
+    	for (int i = 0; i < count; i++) {
+    		if (touchSensorPressed(this.touchSensorLeft) || touchSensorPressed(this.touchSensorRight)) {
+    			this.state = LineFollowerState.DRIVE_AROUND_OBSTACLE;
+    			return SensorState.OBSTACLE;
+    		}
+    		if (this.colorSensor.getColorId().equals(FINISH_COLOR)) {
+    			this.state = LineFollowerState.DONE;
+    			return SensorState.FINISH_LINE;
+    		}
+    		if (this.colorSensor.getColorId().equals(toCheck)) {
+    			if (toCheck.equals(BACKGROUND_COLOR)) {
+    				return SensorState.BACKGROUND;
+    			} else if (toCheck.equals(LINE_COLOR)) {
+    				return SensorState.LINE;
+    			}
+    		}
+    		Delay.msDelay(SAMPLE_SPEED);
+    	}
+    	return SensorState.NONE;
+    }
+    
+    private boolean touchSensorPressed(SampleProvider sampleProvider) {
+    	float[] sample = new float[sampleProvider.sampleSize()];
+    	
+    	sampleProvider.fetchSample(sample, 0);
+    	
+    	return sample[0] == 1;
     }
     
     private void logCurrentState() {
@@ -76,104 +124,95 @@ public class LineFollower {
     }
     
     private void handleDriveForwardGap() {
-    	if (driveForward(this.colorSensor, 10)) {
-    		this.state = LineFollowerState.DRIVE_FORWARD_LEFT_SLOW;
-    	} else {
+    	if (!driveForward(10)) {
     		this.state = LineFollowerState.SEARCH_LINE_RIGHT;
     	}
     }
     
     private void handleSearchLineRight() {
-    	if (checkForLine(colorSensor, true)) {
-    		this.state = LineFollowerState.DRIVE_FORWARD_LEFT_SLOW;
-    	} else {
+    	if (!checkForLine(true)) {
     		this.state = LineFollowerState.SEARCH_LINE_LEFT;
     	}
     }
     
     private void handleSearchLineLeft() {
-    	if (checkForLine(colorSensor, false)) {
-    		this.state = LineFollowerState.DRIVE_FORWARD_LEFT_SLOW;
+    	if (checkForLine(false)) {
+    		return;
     	}
-    	if (checkForLine(colorSensor, false)) {
-    		this.state = LineFollowerState.DRIVE_FORWARD_LEFT_SLOW;
-    	} else {
+    	if (!checkForLine(false)) {
     		this.state = LineFollowerState.DRIVE_FORWARD_GAP;
-    		checkForLine(colorSensor, true);
+    		checkForLine(true);
     	}
     }
     
     private void handleSearchBackgroundLeft() {
-    	ColorID color = this.colorSensor.getColorId();
-    	
     	this.leftMotor.setSpeed(300);
     	this.rightMotor.setSpeed(300);
     	
     	this.rightMotor.forward();
     	this.leftMotor.backward();
     	
-    	while (!color.equals(BACKGROUND_COLOR)) {
-            Delay.msDelay(SAMPLE_SPEED);
-            color = colorSensor.getColorId();
+    	SensorState sensorState = robotDelay(10000, BACKGROUND_COLOR);
+    	
+    	stopMotor();
+    	
+    	switch (sensorState) {
+	    	case OBSTACLE:
+	    		break;
+	    	case FINISH_LINE:
+	    		break;
+	    	case BACKGROUND:
+	    		this.state = LineFollowerState.DRIVE_FORWARD_RIGHT_SLOW;
+	    		break;
+    		default:
+    			this.state = LineFollowerState.ERROR;
+    			break;
     	}
-    	
-    	this.rightMotor.stop();
-    	this.leftMotor.stop();
-    	
-    	this.state = LineFollowerState.DRIVE_FORWARD_RIGHT_SLOW;
     }
     
     private void handleDriveForwardLeftSlow() {
-    	ColorID color;
-    	boolean backgoundFound = false;
-    	
     	this.rightMotor.setSpeed(300);
     	this.rightMotor.forward();
     	this.leftMotor.stop();
     	
-    	int count = ON_LINE_TIMEOUT / SAMPLE_SPEED;
+    	SensorState sensorState = robotDelay(ON_LINE_TIMEOUT, BACKGROUND_COLOR);
     	
-    	for (int i = 0; i < count; i++) {
-    		color = this.colorSensor.getColorId();
-    		if (color.equals(BACKGROUND_COLOR)) {
-    			backgoundFound = true;
+    	stopMotor();
+    	
+    	switch (sensorState) {
+	    	case OBSTACLE:
+	    		break;
+	    	case FINISH_LINE:
+	    		break;
+	    	case BACKGROUND:
+	    		this.state = LineFollowerState.DRIVE_FORWARD_RIGHT_SLOW;
+	    		break;
+    		default:
+    			this.state = LineFollowerState.SEARCH_BACKGROUND_LEFT;
     			break;
-    		}
-    	}
-    	
-    	this.rightMotor.stop();
-    	
-    	if (backgoundFound) {
-    		this.state = LineFollowerState.DRIVE_FORWARD_RIGHT_SLOW;
-    	} else {
-    		this.state = LineFollowerState.SEARCH_BACKGROUND_LEFT;
     	}
     }
     
     private void handleDriveForwardRightSlow() {
-    	ColorID color;
-    	boolean lineFound = false;
-    	
     	this.leftMotor.setSpeed(300);
     	this.leftMotor.forward();
     	this.rightMotor.stop();
     	
-    	int count = ON_BACKGROUND_TIMEOUT / SAMPLE_SPEED;
+    	SensorState sensorState = robotDelay(ON_BACKGROUND_TIMEOUT, LINE_COLOR);
     	
-    	for (int i = 0; i < count; i++) {
-    		color = this.colorSensor.getColorId();
-    		if (color.equals(LINE_COLOR)) {
-    			lineFound = true;
+    	stopMotor();
+    	
+    	switch (sensorState) {
+	    	case OBSTACLE:
+	    		break;
+	    	case FINISH_LINE:
+	    		break;
+	    	case LINE:
+	    		this.state = LineFollowerState.DRIVE_FORWARD_LEFT_SLOW;
+	    		break;
+    		default:
+    			this.state = LineFollowerState.SEARCH_LINE_RIGHT;
     			break;
-    		}
-    	}
-    	
-    	this.leftMotor.stop();
-    	
-    	if (lineFound) {
-    		this.state = LineFollowerState.DRIVE_FORWARD_LEFT_SLOW;
-    	} else {
-    		this.state = LineFollowerState.SEARCH_LINE_RIGHT;
     	}
     }
     
@@ -181,11 +220,10 @@ public class LineFollower {
     //Motor functions
     
     //TODO meassure
-    int ROTATE_100_DEG_TIME = 2000;        // time it takes the robot to turn 100 degrees (in ms)
-    int DRIVE_1CM_TIME = 500;		// time it takes the robot to drive 1 cm (in ms)
+    int ROTATE_100_DEG_TIME = 2000;        	// time it takes the robot to turn 100 degrees (in ms)
+    int DRIVE_1CM_TIME = 500;				// time it takes the robot to drive 1 cm (in ms)
     
-    public boolean checkForLine(ColorSensor colorSensor, boolean right) {
-        int count = ROTATE_100_DEG_TIME / SAMPLE_SPEED;
+    public boolean checkForLine(boolean right) {
         
         RegulatedMotor m1;
         RegulatedMotor m2;
@@ -204,43 +242,49 @@ public class LineFollower {
         m1.backward();
         m2.forward();
         
-        for (int i = 0; i < count; i++) {
-            ColorID color = colorSensor.getColorId();
-            if (color.equals(LINE_COLOR)) {
-                m1.stop();
-                m2.stop();
-                return true;
-            }
-            Delay.msDelay(SAMPLE_SPEED);
-        }
-        m1.stop();
-        m2.stop();
-        
-        return false;
+        SensorState sensorState = robotDelay(ROTATE_100_DEG_TIME, LINE_COLOR);
+    	
+    	stopMotor();
+    	
+    	switch (sensorState) {
+	    	case OBSTACLE:
+	    		return true;
+	    	case FINISH_LINE:
+	    		return true;
+	    	case LINE:
+	    		this.state = LineFollowerState.DRIVE_FORWARD_LEFT_SLOW;
+	    		return true;
+    		default:
+    			return false;
+    	}
     }
     
-    public boolean driveForward(ColorSensor colorSensor, int distance) {
-    	int count = DRIVE_1CM_TIME / SAMPLE_SPEED;
-    	
+    public boolean driveForward(int distance) {
     	this.leftMotor.setSpeed(300);
     	this.rightMotor.setSpeed(300);
     	
     	this.rightMotor.forward();
     	this.leftMotor.forward();
     	
-    	for (int i = 0; i < count; i++) {
-            ColorID color = colorSensor.getColorId();
-            if (color.equals(LINE_COLOR)) {
-                this.leftMotor.stop();
-                this.rightMotor.stop();
-                return true;
-            }
-            Delay.msDelay(SAMPLE_SPEED);
-        }
+        SensorState sensorState = robotDelay(DRIVE_1CM_TIME * distance, LINE_COLOR);
     	
+    	stopMotor();
+    	
+    	switch (sensorState) {
+	    	case OBSTACLE:
+	    		return true;
+	    	case FINISH_LINE:
+	    		return true;
+	    	case LINE:
+	    		this.state = LineFollowerState.DRIVE_FORWARD_LEFT_SLOW;
+	    		return true;
+    		default:
+    			return false;
+    	}
+    }
+    
+    public void stopMotor() {
+    	this.rightMotor.stop();
     	this.leftMotor.stop();
-        this.rightMotor.stop();
-    	
-    	return false;
     }
 }

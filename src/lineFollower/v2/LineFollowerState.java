@@ -62,6 +62,8 @@ public enum LineFollowerState {
     /**
      * When the robot detects the blue line, the line following part is done
      */
-    DONE
+    DONE,
+    
+    ERROR
     
 }
