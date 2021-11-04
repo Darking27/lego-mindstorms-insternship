@@ -5,6 +5,7 @@ import lejos.hardware.Brick;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3TouchSensor;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.RegulatedMotor;
 
 public class WallFollower implements ParcoursWalkable {
@@ -13,14 +14,21 @@ public class WallFollower implements ParcoursWalkable {
 	RegulatedMotor leftMotor;
 	RegulatedMotor rightMotor;
 	EV3TouchSensor touchSensor;
+	EV3UltrasonicSensor ultrasonicSensor;
 
-	public WallFollower(Brick brick, String leftTouchSensorPort, String leftMotorPort, String rightMotorPort) {
+	public WallFollower(Brick brick, String leftTouchSensorPortName, String ultrasonicSensorPortName, String leftMotorPort, String rightMotorPort) {
 		this.brick = brick;
+		
 		this.rightMotor = new EV3LargeRegulatedMotor(brick.getPort(rightMotorPort));
 		this.leftMotor = new EV3LargeRegulatedMotor(brick.getPort(leftMotorPort));
-		Port sensorPort = brick.getPort(leftTouchSensorPort);
-		this.touchSensor = new EV3TouchSensor(sensorPort);
+		
+		Port touchSensorPort = brick.getPort(leftTouchSensorPortName);
+		this.touchSensor = new EV3TouchSensor(touchSensorPort);
 		this.touchSensor.setCurrentMode("Touch");
+		
+		Port ultrasonicSensorPort = brick.getPort(ultrasonicSensorPortName);
+		this.ultrasonicSensor = new EV3UltrasonicSensor(ultrasonicSensorPort);
+		this.ultrasonicSensor.setCurrentMode("Distance");
 	}
 
 	/**
@@ -32,20 +40,22 @@ public class WallFollower implements ParcoursWalkable {
 	public void start_walking() {
 		
 		float[] touchSample = new float[touchSensor.sampleSize()];
+		float[] ultrasonicSample = new float[ultrasonicSensor.sampleSize()];
 		
-		// TODO: Detect wall distance to stop the start_walking method
-		while(true) {
+		while(!closeToBackWall(ultrasonicSample)) {
 			touchSensor.fetchSample(touchSample, 0);
 			if(touchSample[0]>0.5) { // sensor is pressed
-				rightMotor.flt(true);
 				// turn right
-				leftMotor.rotate(300, false);
+				rightMotor.flt(true);
+				leftMotor.rotate(200, false);
 				
 				// drive away from the wall
 				rightMotor.setSpeed(300);
 				leftMotor.setSpeed(300);
-				rightMotor.rotate(1000, true);
-				leftMotor.rotate(1000, false);
+				rightMotor.rotate(500, true);
+				leftMotor.rotate(500, false);
+				
+				// go back to the else part and slowly drive towards the wall
 				
 			} else { // sensor is not pressed
 				
@@ -57,6 +67,10 @@ public class WallFollower implements ParcoursWalkable {
 				leftMotor.rotate(1000, true);
 			}
 		}
+	}	
+	
+	private boolean closeToBackWall(float[] ultrasonicSample) {
+		touchSensor.fetchSample(ultrasonicSample, 0);
+		return ultrasonicSample[0] > 0.80;
 	}
-
 }

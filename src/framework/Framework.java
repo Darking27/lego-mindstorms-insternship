@@ -41,7 +41,7 @@ public class Framework {
 			start_section.start_walking();
 		}
 
-		// TODO: STOP KEY DETECTION DOESNT WORK YET BECAUSE WHILE DOESNT LOOP
+		// TODO: MENU KEY DETECTION DOESNT WORK YET BECAUSE WHILE DOESNT LOOP -- MULTITHREADING
 		while (!stop_programm_key.isDown()) {
 			// starts with the starting index and then follow the order defined in parcours
 			// order
