@@ -10,6 +10,6 @@ package framework;
  * @author Samuel Born
  *
  */
-public interface ParcoursWalker {
+public interface ParcoursWalkable {
 	public void start_walking();
 }

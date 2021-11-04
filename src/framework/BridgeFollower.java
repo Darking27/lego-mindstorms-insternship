@@ -1,6 +1,6 @@
 package framework;
 
-public class BridgeFollower implements ParcoursWalker {
+public class BridgeFollower implements ParcoursWalkable {
 
 	@Override
 	public void start_walking() {

@@ -1,6 +1,6 @@
 package framework;
 
-public class BoxMove implements ParcoursWalker {
+public class BoxMove implements ParcoursWalkable {
 
 	@Override
 	public void start_walking() {

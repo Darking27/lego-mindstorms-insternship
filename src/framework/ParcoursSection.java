@@ -16,9 +16,9 @@ public enum ParcoursSection {
 	BRIDGE  (new BridgeFollower()),
 	COLOR_SEARCH  (new ColorSearch());
 	
-	private final ParcoursWalker walker;
+	private final ParcoursWalkable walker;
 	
-	private ParcoursSection(ParcoursWalker walker) {
+	private ParcoursSection(ParcoursWalkable walker) {
 		this.walker = walker;
 	}
 	

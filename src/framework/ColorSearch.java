@@ -1,6 +1,6 @@
 package framework;
 
-public class ColorSearch implements ParcoursWalker {
+public class ColorSearch implements ParcoursWalkable {
 
 	@Override
 	public void start_walking() {
