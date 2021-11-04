@@ -1,4 +1,4 @@
-package other.lineFollowerTest;
+package lineFollower.v2;
 
 public enum ColorID {
     BLACK, RED, WHITE, BLUE;
