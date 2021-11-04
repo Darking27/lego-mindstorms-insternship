@@ -23,6 +23,11 @@ public class WallFollower implements ParcoursWalkable {
 		this.touchSensor.setCurrentMode("Touch");
 	}
 
+	/**
+	 * follows the left side of a wall -> bumps into the wall, turns right and leaves the wall, drive slowly towards the left wall again, bump into it...
+	 * uses the left touch sensor
+	 * stops when a wall is less then _x_ Centimeters away
+	 */
 	@Override
 	public void start_walking() {
 		
