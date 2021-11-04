@@ -69,8 +69,22 @@ public class WallFollower implements ParcoursWalkable {
 		}
 	}	
 	
+	/**
+	 * Checks if the Sensor is close to the back wall
+	 *                          
+	 *                          |
+	 * ROBO->                   |    FALSE
+	 *                          |
+	 *                          
+	 *              |
+	 * ROBO->       |    TRUE
+	 *              |
+	 * 
+	 * @param ultrasonicSample the array in which to save the measured values from the ultrasonic sensor
+	 */
 	private boolean closeToBackWall(float[] ultrasonicSample) {
+		double closeToWallInMeter = 0.80;
 		touchSensor.fetchSample(ultrasonicSample, 0);
-		return ultrasonicSample[0] > 0.80;
+		return ultrasonicSample[0] > closeToWallInMeter;
 	}
 }
