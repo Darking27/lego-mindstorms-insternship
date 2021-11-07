@@ -23,10 +23,10 @@ public class DriveTest {
 	public static void main(String[] args) {
 		DriveTest test = new DriveTest();
 
-		test.runTest();
+		test.runDriveTest();
 	}
 	
-	public void runTest() {
+	public void runDriveTest() {
 		System.out.println("Drive 10s forward");
 		
 		this.leftMotor.setSpeed(300);
@@ -36,6 +36,21 @@ public class DriveTest {
     	this.leftMotor.forward();
     	
     	Delay.msDelay(10000);
+    	
+    	this.leftMotor.stop();
+    	this.rightMotor.stop();
+	}
+	
+	public void runTurnTest() {
+		System.out.println("Turn 100 degree to the right");
+		
+		this.leftMotor.setSpeed(300);
+    	this.rightMotor.setSpeed(300);
+    	
+    	this.rightMotor.backward();
+    	this.leftMotor.forward();
+    	
+    	Delay.msDelay(2);
     	
     	this.leftMotor.stop();
     	this.rightMotor.stop();
