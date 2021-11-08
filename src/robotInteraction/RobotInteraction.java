@@ -5,7 +5,9 @@ import java.util.List;
 import framework.Ports;
 import lejos.robotics.Color;
 import lejos.robotics.RegulatedMotor;
+import lejos.robotics.SampleProvider;
 import lejos.utility.Delay;
+import lineFollower.v2.LineFollowerState;
 
 public class RobotInteraction {
 
@@ -56,7 +58,9 @@ public class RobotInteraction {
 	}
 	
 	// TODO Maybe add listen to multiple Enput events
-		public static InputEvents encoderDelayTurn(int encoderValue, boolean rightTurn) {
+		public static InputEvents encoderDelayTurn(int encoderValue, boolean rightTurn, SampleProvider colorSensorFilter) {
+			float[] sample = new float[colorSensorFilter.sampleSize()];
+			
 			Ports.LEFT_MOTOR.resetTachoCount();
 			Ports.RIGHT_MOTOR.resetTachoCount();
 			
@@ -90,8 +94,11 @@ public class RobotInteraction {
 				if (Ports.ENTER.isDown()) {
 					return InputEvents.ENTER;
 				}
+				
 				m1TachoCount = Math.abs(m1.getTachoCount());
 				m2TachoCount = Math.abs(m2.getTachoCount());
+				
+				colorSensorFilter.fetchSample(sample, 0);
 			}
 			
 			m1.stop(true);
