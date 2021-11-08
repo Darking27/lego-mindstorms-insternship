@@ -99,7 +99,7 @@ public class LineFollower implements ParcoursWalkable {
 		
 		double targetValue = 0.4;
 		double defaultSpeed = 300;
-		int speedCap = 500;
+		int speedCap = 400;
 		
 		float[] sample = new float[autoAdjustRGBFilter.sampleSize()];
 		autoAdjustRGBFilter.fetchSample(sample, 0);
@@ -119,6 +119,11 @@ public class LineFollower implements ParcoursWalkable {
 				state = State.OBSTACLE;
 				return InputEvents.NONE;
 			}
+			if (isFinishLine(sample)) {
+				state = State.DONE;
+				return InputEvents.NONE;
+			}
+			
 			currentValue = AutoAdjustFilter.getGrayValue(sample);
 			
 			//TODO realistic value??
@@ -154,9 +159,14 @@ public class LineFollower implements ParcoursWalkable {
             } else {
             	Ports.RIGHT_MOTOR.backward();
             }
+            autoAdjustRGBFilter.fetchSample(sample, 0);
 		}
 		
 		return InputEvents.ENTER;
+	}
+	
+	public boolean isFinishLine(float[] sample) {
+		return (sample[0] * 3 < sample [2]) && (sample[1] * 4 < sample[2]);
 	}
 	
 	private int limitSpeed(int targetSpeed, int speedCap) {
