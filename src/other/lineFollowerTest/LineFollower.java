@@ -40,23 +40,23 @@ public class LineFollower {
 		
 		int print_var = 0;
 
-		int timeOnLine = 0;
+		int timeSinceLastTurn = 0; // normal ~200-4000, sharp edge ~ 14000
 
 		while (!escape.isDown()) {
-			timeOnLine++;
+			timeSinceLastTurn++;
 			if (isOnLine() && !onLine) {
 				leftMotor.stop(true);
 				rightMotor.rotate(1000, true);
 				onLine = true;
-				System.out.println(timeOnLine + " ");
-				timeOnLine = 0;
+				System.out.println(timeSinceLastTurn + " ");
+				timeSinceLastTurn = 0;
 			}
 			if (!isOnLine() && onLine) {
 				rightMotor.stop(true);
 				leftMotor.rotate(1000, true);
 				onLine = false;
-				System.out.println(timeOnLine + " ");
-				timeOnLine = 0;
+				System.out.println(timeSinceLastTurn + " ");
+				timeSinceLastTurn = 0;
 			}
 		}
 	}
