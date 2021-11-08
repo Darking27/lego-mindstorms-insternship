@@ -23,7 +23,7 @@ public class DriveTest {
 	public static void main(String[] args) {
 		DriveTest test = new DriveTest();
 
-		test.runDriveTest();
+		test.turn100Encoder();
 	}
 	
 	public void runDriveTest() {
@@ -35,9 +35,9 @@ public class DriveTest {
     	this.rightMotor.forward();
     	this.leftMotor.forward();
     	
-    	Delay.msDelay(10000);
+    	Delay.msDelay(2500);
     	
-    	this.leftMotor.stop();
+    	this.leftMotor.stop(true);
     	this.rightMotor.stop();
 	}
 	
@@ -50,10 +50,53 @@ public class DriveTest {
     	this.rightMotor.backward();
     	this.leftMotor.forward();
     	
-    	Delay.msDelay(2);
+    	Delay.msDelay(2000);
     	
-    	this.leftMotor.stop();
+    	this.leftMotor.stop(true);
     	this.rightMotor.stop();
 	}
+	
+	//600 tacho count
+	public void turn100Encoder() {
+	    this.leftMotor.resetTachoCount();
+	    this.rightMotor.resetTachoCount();
+	    
+	    this.leftMotor.setSpeed(300);
+        this.rightMotor.setSpeed(300);
+        
+        this.rightMotor.backward();
+        this.leftMotor.forward();
+        
+        Delay.msDelay(2000);
+        
+        this.leftMotor.stop(true);
+        this.rightMotor.stop(true);
+        
+        System.out.println("Right motor tacho count:" + this.rightMotor.getTachoCount());
+        System.out.println("Left motor tacho count:" + this.leftMotor.getTachoCount());
+        
+        Delay.msDelay(2000);
+	}
+	
+	public void driveForwardEncoder() {
+        this.leftMotor.resetTachoCount();
+        this.rightMotor.resetTachoCount();
+        
+        this.leftMotor.setSpeed(300);
+        this.rightMotor.setSpeed(300);
+        
+        this.rightMotor.forward();
+        this.leftMotor.forward();
+        
+        Delay.msDelay(2000);
+        
+        this.leftMotor.stop(true);
+        this.rightMotor.stop(true);
+        
+        System.out.println("Right motor tacho count:" + this.rightMotor.getTachoCount());
+        System.out.println("Left motor tacho count:" + this.leftMotor.getTachoCount());
+        
+        Delay.msDelay(2000);
+    }
 
 }
