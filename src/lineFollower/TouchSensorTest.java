@@ -9,8 +9,8 @@ import lejos.utility.Delay;
 
 public class TouchSensorTest {
 	
-	static String TOUCH_SENSOR_LEFT_PORT = "S2";
-	static String TOUCH_SENSOR_RIGHT_PORT = "S3";
+	static String TOUCH_SENSOR_LEFT_PORT = "S4";
+	static String TOUCH_SENSOR_RIGHT_PORT = "S2";
 	static Brick brick;
 
     public static void main(String[] args) {
