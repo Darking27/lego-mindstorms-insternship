@@ -1,5 +1,9 @@
 package framework;
 
+import boxMover.TestWalker;
+import boxMover.WallFollower;
+import lejos.hardware.BrickFinder;
+
 /**
  * Defines the different parcours Section
  * Each section calls its own Walker on Creation
@@ -11,10 +15,10 @@ package framework;
  *
  */
 public enum ParcoursSection {
-	LINE_FOLLOW (new LineFollower()),
-	BOX_MOVE (new BoxMove()),
-	BRIDGE  (new BridgeFollower()),
-	COLOR_SEARCH  (new ColorSearch());
+	LINE_FOLLOW (new TestWalker()),
+	BOX_MOVE (new TestWalker()),
+	BRIDGE  (new TestWalker()),
+	COLOR_SEARCH  (new TestWalker());
 	
 	private final ParcoursWalkable walker;
 	
@@ -22,7 +26,7 @@ public enum ParcoursSection {
 		this.walker = walker;
 	}
 	
-	public void start_walking() {
-		this.walker.start_walking();
+	public WalkableStatus start_walking() {
+		return this.walker.start_walking();
 	}
 }

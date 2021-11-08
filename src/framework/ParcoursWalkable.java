@@ -11,5 +11,5 @@ package framework;
  *
  */
 public interface ParcoursWalkable {
-	public void start_walking();
+	public WalkableStatus start_walking();
 }

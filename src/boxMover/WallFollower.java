@@ -1,6 +1,7 @@
 package boxMover;
 
 import framework.ParcoursWalkable;
+import framework.WalkableStatus;
 import lejos.hardware.Brick;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
@@ -37,12 +38,21 @@ public class WallFollower implements ParcoursWalkable {
 	 * stops when a wall is less then _x_ Centimeters away
 	 */
 	@Override
-	public void start_walking() {
+	public WalkableStatus start_walking() {
 		
 		float[] touchSample = new float[touchSensor.sampleSize()];
 		float[] ultrasonicSample = new float[ultrasonicSensor.sampleSize()];
 		
 		while(!closeToBackWall(ultrasonicSample)) {
+			
+			if(brick.getKey("Enter").isDown()) {
+				return WalkableStatus.MENU;
+			}
+			
+			if(brick.getKey("Escape").isDown()) {
+				return WalkableStatus.STOP;
+			}
+			
 			touchSensor.fetchSample(touchSample, 0);
 			if(touchSample[0]>0.5) { // sensor is pressed
 				// turn right
@@ -67,6 +77,7 @@ public class WallFollower implements ParcoursWalkable {
 				leftMotor.rotate(1000, true);
 			}
 		}
+		return WalkableStatus.FINISHED;
 	}	
 	
 	/**

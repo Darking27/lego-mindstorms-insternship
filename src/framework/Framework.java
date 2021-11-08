@@ -1,11 +1,14 @@
 package framework;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import lejos.hardware.Brick;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Key;
+import lejos.hardware.lcd.GraphicsLCD;
+import lejos.utility.Delay;
 import lejos.utility.TextMenu;
 
 /**
@@ -21,20 +24,27 @@ public class Framework {
 	 */
 	private static List<ParcoursSection> parcours_section_order = Arrays.asList(ParcoursSection.LINE_FOLLOW,
 			ParcoursSection.BOX_MOVE, ParcoursSection.BRIDGE, ParcoursSection.COLOR_SEARCH);
+	private static Brick brick = BrickFinder.getDefault();
 
 	public static void main(String[] args) {
-		Brick brick = BrickFinder.getDefault();
-		Key stop_programm_key = brick.getKey("Enter");
-		Key menu_key = brick.getKey("Escape");
-		
-		WalkerThread walkerThread = new WalkerThread(chooseParcoursSection());
-		walkerThread.start();
+		WalkableStatus returnStatus = WalkableStatus.STARTING;
 
-		while (!stop_programm_key.isDown()) {
-			if (menu_key.isDown()) {
-				walkerThread.stop();
-				walkerThread = new WalkerThread(chooseParcoursSection());
-				walkerThread.start();
+		while (returnStatus != WalkableStatus.STOP) {
+			int start_index = chooseParcoursSection();
+			if (start_index == -1)
+				return;
+
+			sectionsIterate: for (int i = start_index; i < parcours_section_order.size(); i++) {
+				returnStatus = parcours_section_order.get(i).start_walking();
+
+				switch (returnStatus) {
+				case MENU:
+					break sectionsIterate;
+				case STOP:
+					return; // stop entire programm
+				default:
+					break; // do nothing for finished and jump to next for loop iteration
+				}
 			}
 		}
 	}
@@ -42,39 +52,36 @@ public class Framework {
 	/**
 	 * @return the index of the choosen Parcours Section
 	 * 
-	 * so if the parcours is LINE -> BOX -> BRIDGE
-	 * and the user chooses BOX
-	 * this method returns 1
+	 *         so if the parcours is LINE -> BOX -> BRIDGE and the user chooses BOX
+	 *         this method returns 1
 	 */
 	private static int chooseParcoursSection() {
 		// displays the menu with all entries from parcours Section
-		// when the given element is part of the parcours the correct start 
+		// when the given element is part of the parcours the correct start
 		// index is returned
+
+		GraphicsLCD display = brick.getGraphicsLCD();
+		display.clear();
+		for (int i = 0; i < 20; i++) {
+			System.out.println(); // clear screen
+		}
+
 		String[] menuItems = new String[ParcoursSection.values().length];
 		for (int i = 0; i < ParcoursSection.values().length; i++) {
 			menuItems[i] = ParcoursSection.values()[i].name();
 		}
+
 		TextMenu textMenu = new TextMenu(menuItems);
 		int pressed_index = textMenu.select();
+
+		if (pressed_index == -1)
+			return -1;
+
 		ParcoursSection start_section = ParcoursSection.valueOf(menuItems[pressed_index]);
+
+		display.clear();
+
 		return parcours_section_order.indexOf(start_section);
-		
-	}
 
-	public static class WalkerThread extends Thread {
-		int parcours_section_index;
-
-		public WalkerThread(int parcours_section_index) {
-			this.parcours_section_index = parcours_section_index;
-		}
-
-		@Override
-		public void run() {
-			for (int i = parcours_section_index; i < parcours_section_order.size(); i++) {
-				parcours_section_order.get(i).start_walking();
-				// once the start walking method returns (i.e. the robot has seen a blue stripe
-				// go to the next parcours section)
-			}
-		}
 	}
 }
