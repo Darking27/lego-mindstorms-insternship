@@ -15,7 +15,7 @@ public class ColorSensor extends Thread {
         Port sensorPort = brick.getPort(colorSensorPort);
         this.colorSensor = new EV3ColorSensor(sensorPort);
         this.sampleProvider = colorSensor.getColorIDMode();
-        this.colorId = null;
+        this.colorId = ColorID.UNDEFINED;
     }
     
     public void run() {
@@ -28,6 +28,9 @@ public class ColorSensor extends Thread {
     }
     
     public ColorID getColorId( ) {
+        if (this.colorId.equals(ColorID.UNDEFINED)) {
+            System.out.println("Color undefined");
+        }
         return this.colorId;
     }
     

@@ -1,6 +1,7 @@
 package lineFollower.v2;
 
 import lejos.hardware.Brick;
+import lejos.hardware.Key;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.robotics.RegulatedMotor;
@@ -13,8 +14,8 @@ public class LineFollower {
 		BACKGROUND, LINE, OBSTACLE, FINISH_LINE, NONE
 	}
 	
-	int SAMPLE_SPEED = 5;            	// in ms
-	int ON_LINE_TIMEOUT = 100;			// in ms
+	int SAMPLE_SPEED = 2;            	// in ms
+	int ON_LINE_TIMEOUT = 75;			// in ms
 	int ON_BACKGROUND_TIMEOUT = 200;	// in ms
     
     ColorID LINE_COLOR = ColorID.WHITE;
@@ -31,16 +32,21 @@ public class LineFollower {
     
     LineFollowerState state;
     
+    Key escape;
+    
     public LineFollower(Brick brick, String colorSensorPort, String leftMotorPort, String rightMotorPort, String touchSensorRightPort, String touchSensorLeftPort) {
         this.brick = brick;
 
         this.colorSensor = new ColorSensor(brick, colorSensorPort);
+        this.colorSensor.start();
         
         this.rightMotor = new EV3LargeRegulatedMotor(brick.getPort(rightMotorPort));
         this.leftMotor = new EV3LargeRegulatedMotor(brick.getPort(leftMotorPort));
         
         this.touchSensorLeft = new EV3TouchSensor(brick.getPort(touchSensorLeftPort));
         this.touchSensorRight = new EV3TouchSensor(brick.getPort(touchSensorRightPort));
+        
+        this.escape = brick.getKey("Escape");
         
         this.state = LineFollowerState.DRIVE_FORWARD_GAP;
     }
@@ -74,6 +80,7 @@ public class LineFollower {
 	        		break;
 	        	case DRIVE_AROUND_OBSTACLE:
 	        		logCurrentState();
+	        		robotDelay(1000, LINE_COLOR);
 	        		break;
 	        	case DONE:
 	        		logCurrentState();
@@ -105,6 +112,9 @@ public class LineFollower {
     			} else if (toCheck.equals(LINE_COLOR)) {
     				return SensorState.LINE;
     			}
+    		}
+    		if (escape.isDown()) {
+    		    System.exit(0);
     		}
     		Delay.msDelay(SAMPLE_SPEED);
     	}
@@ -146,8 +156,8 @@ public class LineFollower {
     }
     
     private void handleSearchBackgroundLeft() {
-    	this.leftMotor.setSpeed(300);
-    	this.rightMotor.setSpeed(300);
+    	this.leftMotor.setSpeed(150);
+    	this.rightMotor.setSpeed(150);
     	
     	this.rightMotor.forward();
     	this.leftMotor.backward();
@@ -220,8 +230,8 @@ public class LineFollower {
     //Motor functions
     
     //TODO meassure
-    int ROTATE_100_DEG_TIME = 2000;        	// time it takes the robot to turn 100 degrees (in ms)
-    int DRIVE_1CM_TIME = 500;				// time it takes the robot to drive 1 cm (in ms)
+    int ROTATE_100_DEG_TIME = 1500;        	// time it takes the robot to turn 100 degrees (in ms)
+    int DRIVE_1CM_TIME = 2500;				// time it takes the robot to drive 1 cm (in ms)
     
     public boolean checkForLine(boolean right) {
         
@@ -236,8 +246,8 @@ public class LineFollower {
             m2 = this.rightMotor;
         }
         
-        m1.setSpeed(300);
-        m2.setSpeed(300);
+        m1.setSpeed(120);
+        m2.setSpeed(120);
         
         m1.backward();
         m2.forward();
@@ -252,7 +262,7 @@ public class LineFollower {
 	    	case FINISH_LINE:
 	    		return true;
 	    	case LINE:
-	    		this.state = LineFollowerState.DRIVE_FORWARD_LEFT_SLOW;
+	    		this.state = LineFollowerState.SEARCH_BACKGROUND_LEFT;
 	    		return true;
     		default:
     			return false;
@@ -266,7 +276,7 @@ public class LineFollower {
     	this.rightMotor.forward();
     	this.leftMotor.forward();
     	
-        SensorState sensorState = robotDelay(DRIVE_1CM_TIME * distance, LINE_COLOR);
+        SensorState sensorState = robotDelay(DRIVE_1CM_TIME, LINE_COLOR);
     	
     	stopMotor();
     	
@@ -284,7 +294,7 @@ public class LineFollower {
     }
     
     public void stopMotor() {
-    	this.rightMotor.stop();
-    	this.leftMotor.stop();
+    	this.rightMotor.stop(true);
+    	this.leftMotor.stop(true);
     }
 }
