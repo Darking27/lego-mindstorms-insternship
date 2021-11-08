@@ -1,4 +1,4 @@
-package lineFollower;
+package lineFollower.tests;
 
 
 import lejos.hardware.Brick;

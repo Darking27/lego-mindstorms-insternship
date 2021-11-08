@@ -1,4 +1,4 @@
-package lineFollower;
+package lineFollower.tests;
 
 import lejos.robotics.SampleProvider;
 import lejos.robotics.filter.AbstractFilter;
