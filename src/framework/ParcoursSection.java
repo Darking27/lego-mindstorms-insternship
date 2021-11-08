@@ -16,7 +16,7 @@ import lejos.hardware.BrickFinder;
  */
 public enum ParcoursSection {
 	LINE_FOLLOW (new TestWalker()),
-	BOX_MOVE (new TestWalker()),
+	BOX_MOVE (new WallFollower()),
 	BRIDGE  (new TestWalker()),
 	COLOR_SEARCH  (new TestWalker());
 	
