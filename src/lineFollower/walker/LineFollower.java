@@ -165,6 +165,84 @@ public class LineFollower implements ParcoursWalkable {
 		return InputEvents.ENTER;
 	}
 	
+	/*
+	// Maybe better Regulator Version??
+	private InputEvents handleFollowLine() {
+        double Kp = 1500;
+        //0.3 * Kp = 450
+        
+        double targetValue = 0.5;
+        double defaultSpeed = 300;
+        
+        float[] sample = new float[autoAdjustRGBFilter.sampleSize()];
+        autoAdjustRGBFilter.fetchSample(sample, 0);
+        
+        double currentValue;
+        int leftSpeed;
+        int rightSpeed;
+        
+        Ports.LEFT_MOTOR.setSpeed((int) defaultSpeed);
+        Ports.RIGHT_MOTOR.setSpeed((int) defaultSpeed);
+        
+        Ports.LEFT_MOTOR.forward();
+        Ports.RIGHT_MOTOR.forward();
+        
+        while (!Ports.ENTER.isDown()) {
+            if (buttonPressed()) {
+                state = State.OBSTACLE;
+                return InputEvents.NONE;
+            }
+            if (isFinishLine(sample)) {
+                state = State.DONE;
+                return InputEvents.NONE;
+            }
+            
+            currentValue = AutoAdjustFilter.getGrayValue(sample);
+            
+            //TODO realistic value??
+            if (currentValue < 0.1) {
+                //turn specific value back to the left after regulater overregulated to the right (maybe even backward)
+                Ports.RIGHT_MOTOR.rotate(50);
+                state = State.SEARCH_LINE;
+                return InputEvents.NONE;
+            }
+            
+            double diff = currentValue - targetValue;
+            if (diff >= 0) {
+                leftSpeed = (int) (defaultSpeed - Math.abs(diff * Kp));
+                rightSpeed = (int) (defaultSpeed);
+            } else {
+                leftSpeed = (int) (defaultSpeed);
+                rightSpeed = (int) (defaultSpeed - Math.abs(diff * Kp));
+            }
+            
+            if (leftSpeed < 0) {
+                rightSpeed = rightSpeed / 2;
+            }
+            if (rightSpeed < 0) {
+                leftSpeed = leftSpeed / 2;
+            }
+            
+            Ports.LEFT_MOTOR.setSpeed(Math.abs(leftSpeed));
+            Ports.RIGHT_MOTOR.setSpeed(Math.abs(rightSpeed));
+            
+            if (leftSpeed >= 0) {
+                Ports.LEFT_MOTOR.forward();
+            } else {
+                Ports.LEFT_MOTOR.backward();
+            }
+            if (rightSpeed >= 0) {
+                Ports.RIGHT_MOTOR.forward();
+            } else {
+                Ports.RIGHT_MOTOR.backward();
+            }
+            autoAdjustRGBFilter.fetchSample(sample, 0);
+        }
+        
+        return InputEvents.ENTER;
+    }
+	 */
+	
 	public boolean isFinishLine(float[] sample) {
 		return (sample[0] * 3 < sample [2]) && (sample[1] * 4 < sample[2]);
 	}
