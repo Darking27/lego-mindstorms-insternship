@@ -1,9 +1,12 @@
-package lineFollower.walker.stateMachine;
+package lineFollower.walker.stateMachine.states;
 
 import framework.Ports;
 import lejos.robotics.RegulatedMotor;
+import lineFollower.walker.stateMachine.ProcessInteruptedEnterException;
+import lineFollower.walker.stateMachine.RobotCollisionException;
+import lineFollower.walker.stateMachine.StateName;
 
-public class Start extends State {
+public class Start extends BaseState {
     
     Start() {
         super();

@@ -1,10 +1,13 @@
-package lineFollower.walker.stateMachine;
+package lineFollower.walker.stateMachine.states;
 
 import framework.Ports;
 import lejos.robotics.RegulatedMotor;
 import lineFollower.walker.colorSensor.AutoAdjustFilter;
+import lineFollower.walker.stateMachine.ProcessInteruptedEnterException;
+import lineFollower.walker.stateMachine.RobotCollisionException;
+import lineFollower.walker.stateMachine.StateName;
 
-public class SearchLine extends State {
+public class SearchLine extends BaseState {
 
     public SearchLine() {
         super();

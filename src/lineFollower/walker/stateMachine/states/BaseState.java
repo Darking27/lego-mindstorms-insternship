@@ -1,10 +1,13 @@
-package lineFollower.walker.stateMachine;
+package lineFollower.walker.stateMachine.states;
 
 import framework.Ports;
 import lejos.robotics.SampleProvider;
 import lineFollower.walker.colorSensor.AutoAdjustFilter;
+import lineFollower.walker.stateMachine.ProcessInteruptedEnterException;
+import lineFollower.walker.stateMachine.RobotCollisionException;
+import lineFollower.walker.stateMachine.StateName;
 
-public abstract class State {
+public abstract class BaseState {
     
     protected int DEFAULT_SPEED = 300;
     
@@ -16,7 +19,7 @@ public abstract class State {
     
     protected StateName stateName;
     
-    public State() {
+    public BaseState() {
         SampleProvider rgbMode = Ports.COLOR_SENSOR.getRGBMode();
         autoAdjustRGBFilter = new AutoAdjustFilter(rgbMode);
     }
