@@ -28,7 +28,7 @@ public abstract class BaseState {
     }
     
     abstract public StateName handleState()
-    		throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException;
+    		throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException, RobotCollisionException;
     
     
     // TODO: Graphics Display logging
