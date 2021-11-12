@@ -1,6 +1,7 @@
 package lineFollower.walker.stateMachine.states;
 
 import framework.Ports;
+import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
 import lineFollower.walker.colorSensor.AutoAdjustFilter;
 import lineFollower.walker.stateMachine.FinishLineException;
@@ -26,7 +27,8 @@ public abstract class BaseState {
         autoAdjustRGBFilter = new AutoAdjustFilter(rgbMode);
     }
     
-    abstract public StateName handleState() throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException;
+    abstract public StateName handleState()
+    		throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException;
     
     
     // TODO: Graphics Display logging
@@ -38,7 +40,21 @@ public abstract class BaseState {
         }
     }
     
-    protected boolean driveForwardStraight(int encoderValue, boolean searchLine) throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
+    protected boolean driveForwardStraight(int encoderValue, boolean searchLine)
+    		throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
+    	
+    	return driveStraight(encoderValue, searchLine, true);
+    }
+    
+    protected boolean driveBackwardStraight(int encoderValue, boolean searchLine)
+    		throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
+    	
+    	return driveStraight(encoderValue, searchLine, false);
+    }
+    
+    private boolean driveStraight(int encoderValue, boolean searchLine, boolean forward)
+    		throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
+    	
     	float[] sample = new float[autoAdjustRGBFilter.sampleSize()];
     	
     	Ports.LEFT_MOTOR.resetTachoCount();
@@ -50,16 +66,21 @@ public abstract class BaseState {
         Ports.LEFT_MOTOR.setSpeed(DEFAULT_SPEED);
         Ports.RIGHT_MOTOR.setSpeed(DEFAULT_SPEED);
         
-        Ports.LEFT_MOTOR.forward();
-        Ports.RIGHT_MOTOR.forward();
+        if (forward) {
+	        Ports.LEFT_MOTOR.forward();
+	        Ports.RIGHT_MOTOR.forward();
+        } else {
+        	Ports.LEFT_MOTOR.backward();
+	        Ports.RIGHT_MOTOR.backward();
+        }
         
-        while (leftTachoCount <= encoderValue || rightTachoCount <= encoderValue) {
+        while (Math.abs(rightTachoCount) <= encoderValue || Math.abs(rightTachoCount) <= encoderValue) {
         	autoAdjustRGBFilter.fetchSample(sample, 0);
         	
-            if (rightTachoCount >= encoderValue) {
+            if (Math.abs(rightTachoCount) >= encoderValue) {
                 Ports.RIGHT_MOTOR.stop(true);
             }
-            if (leftTachoCount >= encoderValue) {
+            if (Math.abs(leftTachoCount) >= encoderValue) {
                 Ports.LEFT_MOTOR.stop(true);
             }
             checkRobotInputs(sample);
@@ -78,7 +99,75 @@ public abstract class BaseState {
         return false;
     }
     
-    protected void checkRobotInputs(float[] sample) throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
+    protected boolean turnRight(int encoderValue, boolean searchLine)
+    		throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
+    	
+    	return turn(encoderValue, searchLine, true);
+    }
+    
+    protected boolean turnLeft(int encoderValue, boolean searchLine)
+    		throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
+    	
+    	return turn(encoderValue, searchLine, false);
+    }
+    
+    private boolean turn(int encoderValue, boolean searchLine, boolean right)
+    		throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
+    	
+    	float[] sample = new float[autoAdjustRGBFilter.sampleSize()];
+        
+        Ports.LEFT_MOTOR.resetTachoCount();
+        Ports.RIGHT_MOTOR.resetTachoCount();
+        
+        RegulatedMotor m1;
+        RegulatedMotor m2;
+        
+        if (right) {
+            m1 = Ports.LEFT_MOTOR;
+            m2 = Ports.RIGHT_MOTOR;
+        } else {
+            m1 = Ports.RIGHT_MOTOR;
+            m2 = Ports.LEFT_MOTOR;
+        }
+        
+        int m1TachoCount = 0;
+        int m2TachoCount = 0;
+        
+        Ports.LEFT_MOTOR.setSpeed(DEFAULT_SPEED);
+        Ports.RIGHT_MOTOR.setSpeed(DEFAULT_SPEED);
+        
+        m1.forward();
+        m2.backward();
+        
+        while (m1TachoCount <= encoderValue || m2TachoCount <= encoderValue) {
+        	autoAdjustRGBFilter.fetchSample(sample, 0);
+        	
+        	if (m1TachoCount >= encoderValue) {
+                m1.stop(true);
+            }
+            if (m2TachoCount >= encoderValue) {
+                m2.stop(true);
+            }
+            
+            checkRobotInputs(sample);
+            
+            double gray = AutoAdjustFilter.getGrayValue(sample);
+            if (searchLine && lineFound(gray)) {
+                return true;
+            }
+            m1TachoCount = Math.abs(m1.getTachoCount());
+            m2TachoCount = Math.abs(m2.getTachoCount());
+        }
+        
+        m1.stop(true);
+        m2.stop(true);
+        
+    	return false;
+    }
+    
+    protected void checkRobotInputs(float[] sample)
+    		throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
+    	
     	if (buttonPressed()) {
             throw new RobotCollisionException(TextRescources.COLLOSION_EXCEPTION_TEXT.getText());
         }
