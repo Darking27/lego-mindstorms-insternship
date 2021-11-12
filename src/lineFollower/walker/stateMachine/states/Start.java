@@ -61,7 +61,7 @@ public class Start extends BaseState {
             if (m2TachoCount >= encoderValue) {
                 m2.stop(true);
             }
-            if (Ports.ENTER.isDown()) {
+            if (enterPressed()) {
                 throw new ProcessInteruptedEnterException(TextRescources.ENTER_EXCEPTION.getText());
             }
             m1TachoCount = Math.abs(m1.getTachoCount());

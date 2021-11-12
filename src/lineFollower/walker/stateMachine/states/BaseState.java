@@ -3,6 +3,7 @@ package lineFollower.walker.stateMachine.states;
 import framework.Ports;
 import lejos.robotics.SampleProvider;
 import lineFollower.walker.colorSensor.AutoAdjustFilter;
+import lineFollower.walker.stateMachine.FinishLineException;
 import lineFollower.walker.stateMachine.ProcessInteruptedEnterException;
 import lineFollower.walker.stateMachine.RobotCollisionException;
 import lineFollower.walker.stateMachine.StateName;
@@ -24,7 +25,7 @@ public abstract class BaseState {
         autoAdjustRGBFilter = new AutoAdjustFilter(rgbMode);
     }
     
-    abstract public StateName handleState() throws ProcessInteruptedEnterException, RobotCollisionException;
+    abstract public StateName handleState() throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException;
     
     
     // TODO: Graphics Display logging
@@ -56,7 +57,7 @@ public abstract class BaseState {
             if (leftTachoCount >= encoderValue) {
                 Ports.LEFT_MOTOR.stop(true);
             }
-            if (Ports.ENTER.isDown()) {
+            if (enterPressed()) {
                 throw new ProcessInteruptedEnterException("Enter pressed: Walker terminated");
             }
             if (buttonPressed()) {
@@ -78,5 +79,13 @@ public abstract class BaseState {
         Ports.RIGHT_TOUCH_SENSOR.fetchSample(touchRight, 0);
         
         return touchLeft[0] == 1 || touchRight[0] == 1;
+    }
+    
+    protected boolean isFinishLine(float[] sample) {
+		return (sample[0] * 3 < sample [2]) && (sample[1] * 4 < sample[2]);
+	}
+    
+    protected boolean enterPressed() {
+    	return Ports.ENTER.isDown();
     }
 }
