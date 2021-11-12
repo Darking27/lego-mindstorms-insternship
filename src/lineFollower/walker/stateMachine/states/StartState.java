@@ -5,9 +5,9 @@ import lineFollower.walker.stateMachine.exceptions.FinishLineException;
 import lineFollower.walker.stateMachine.exceptions.ProcessInteruptedEnterException;
 import lineFollower.walker.stateMachine.exceptions.RobotCollisionException;
 
-public class Start extends BaseState {
+public class StartState extends BaseState {
     
-    Start() {
+    StartState() {
         super();
         this.stateName = StateName.START;
     }

@@ -6,9 +6,9 @@ import lineFollower.walker.stateMachine.exceptions.ProcessInteruptedEnterExcepti
 import lineFollower.walker.stateMachine.exceptions.RobotCollisionException;
 import lineFollower.walker.stateMachine.exceptions.RobotErrorException;
 
-public class Obstacle extends BaseState {
+public class ObstacleState extends BaseState {
 	
-	public Obstacle() {
+	public ObstacleState() {
 		super();
 		this.stateName = StateName.OBSTACLE;
 	}

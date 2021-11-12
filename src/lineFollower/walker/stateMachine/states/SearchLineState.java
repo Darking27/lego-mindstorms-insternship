@@ -8,9 +8,9 @@ import lineFollower.walker.stateMachine.exceptions.FinishLineException;
 import lineFollower.walker.stateMachine.exceptions.ProcessInteruptedEnterException;
 import lineFollower.walker.stateMachine.exceptions.RobotCollisionException;
 
-public class SearchLine extends BaseState {
+public class SearchLineState extends BaseState {
 
-    public SearchLine() {
+    public SearchLineState() {
         super();
         this.stateName = StateName.SEARCH_LINE;
     }

@@ -5,9 +5,9 @@ import lineFollower.walker.stateMachine.exceptions.FinishLineException;
 import lineFollower.walker.stateMachine.exceptions.ProcessInteruptedEnterException;
 import lineFollower.walker.stateMachine.exceptions.RobotCollisionException;
 
-public class Gap extends BaseState {
+public class GapState extends BaseState {
 	
-	public Gap() {
+	public GapState() {
 		super();
 		this.stateName = StateName.GAP;
 	}

@@ -7,9 +7,9 @@ import lineFollower.walker.stateMachine.exceptions.FinishLineException;
 import lineFollower.walker.stateMachine.exceptions.ProcessInteruptedEnterException;
 import lineFollower.walker.stateMachine.exceptions.RobotCollisionException;
 
-public class FollowLine extends BaseState {
+public class FollowLineState extends BaseState {
 	
-	public FollowLine() {
+	public FollowLineState() {
 		super();
 		this.stateName = StateName.FOLLOW_LINE;
 	}
