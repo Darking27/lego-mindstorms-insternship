@@ -7,7 +7,7 @@ import lineFollower.walker.stateMachine.exceptions.RobotCollisionException;
 
 public class StartState extends BaseState {
     
-    StartState() {
+    public StartState() {
         super();
         this.stateName = StateName.START;
     }
