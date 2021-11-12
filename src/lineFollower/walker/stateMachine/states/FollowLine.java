@@ -15,7 +15,9 @@ public class FollowLine extends BaseState {
 	}
 	
 	@Override
-	public StateName handleState() throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
+	public StateName handleState()
+			throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
+		
 		slowDownRegulator();
 		return StateName.SEARCH_LINE;
 	}
@@ -26,7 +28,9 @@ public class FollowLine extends BaseState {
 	 * @throws RobotCollisionException
 	 * @throws FinishLineException
 	 */
-	private void slowDownRegulator() throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
+	private void slowDownRegulator()
+			throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
+		
 		double Kp = 1500;
 		
 		double targetValue = 0.5;
@@ -87,7 +91,9 @@ public class FollowLine extends BaseState {
 	}
 	
 	@SuppressWarnings("unused")
-	private void normalRegulator() throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
+	private void normalRegulator()
+			throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
+		
 		double KpLeft = 600;			//To turn away from the line (should be greater than KpRight)
 		double KpRight = 400;
 		
