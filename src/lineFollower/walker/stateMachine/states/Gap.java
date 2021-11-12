@@ -13,7 +13,9 @@ public class Gap extends BaseState {
 	}
 	
 	@Override
-	public StateName handleState() throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
+	public StateName handleState()
+			throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
+		
 		if (driveForwardStraight(ENCODER_GAP_DISTANCE, true)) {
 			// Line found
 			return StateName.FOLLOW_LINE;
