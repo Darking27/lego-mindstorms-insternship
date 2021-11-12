@@ -4,12 +4,12 @@ import framework.Ports;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
 import lineFollower.walker.colorSensor.AutoAdjustFilter;
-import lineFollower.walker.stateMachine.FinishLineException;
-import lineFollower.walker.stateMachine.ProcessInteruptedEnterException;
-import lineFollower.walker.stateMachine.RobotCollisionException;
-import lineFollower.walker.stateMachine.RobotErrorException;
 import lineFollower.walker.stateMachine.StateName;
 import lineFollower.walker.stateMachine.TextRescources;
+import lineFollower.walker.stateMachine.exceptions.FinishLineException;
+import lineFollower.walker.stateMachine.exceptions.ProcessInteruptedEnterException;
+import lineFollower.walker.stateMachine.exceptions.RobotCollisionException;
+import lineFollower.walker.stateMachine.exceptions.RobotErrorException;
 
 public abstract class BaseState {
     

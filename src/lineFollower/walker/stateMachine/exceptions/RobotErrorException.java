@@ -1,4 +1,4 @@
-package lineFollower.walker.stateMachine;
+package lineFollower.walker.stateMachine.exceptions;
 
 public class RobotErrorException extends Exception {
 	

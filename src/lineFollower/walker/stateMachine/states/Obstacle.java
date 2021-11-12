@@ -1,10 +1,10 @@
 package lineFollower.walker.stateMachine.states;
 
-import lineFollower.walker.stateMachine.FinishLineException;
-import lineFollower.walker.stateMachine.ProcessInteruptedEnterException;
-import lineFollower.walker.stateMachine.RobotCollisionException;
-import lineFollower.walker.stateMachine.RobotErrorException;
 import lineFollower.walker.stateMachine.StateName;
+import lineFollower.walker.stateMachine.exceptions.FinishLineException;
+import lineFollower.walker.stateMachine.exceptions.ProcessInteruptedEnterException;
+import lineFollower.walker.stateMachine.exceptions.RobotCollisionException;
+import lineFollower.walker.stateMachine.exceptions.RobotErrorException;
 
 public class Obstacle extends BaseState {
 	
