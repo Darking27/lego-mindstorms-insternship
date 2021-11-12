@@ -26,6 +26,8 @@ public abstract class BaseState {
     
     abstract public StateName handleState() throws ProcessInteruptedEnterException, RobotCollisionException;
     
+    
+    // TODO: Graphics Display logging
     protected void logCurrentState() {
         if (stateName != null) {
         System.out.println(this.stateName.toString());

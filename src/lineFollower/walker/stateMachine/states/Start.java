@@ -5,6 +5,7 @@ import lejos.robotics.RegulatedMotor;
 import lineFollower.walker.stateMachine.ProcessInteruptedEnterException;
 import lineFollower.walker.stateMachine.RobotCollisionException;
 import lineFollower.walker.stateMachine.StateName;
+import lineFollower.walker.stateMachine.TextRescources;
 
 public class Start extends BaseState {
     
@@ -61,7 +62,7 @@ public class Start extends BaseState {
                 m2.stop(true);
             }
             if (Ports.ENTER.isDown()) {
-                throw new ProcessInteruptedEnterException("Enter pressed: Walker terminated");
+                throw new ProcessInteruptedEnterException(TextRescources.ENTER_EXCEPTION.getText());
             }
             m1TachoCount = Math.abs(m1.getTachoCount());
             m2TachoCount = Math.abs(m2.getTachoCount());
