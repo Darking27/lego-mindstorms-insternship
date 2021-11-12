@@ -38,7 +38,7 @@ public abstract class BaseState {
         }
     }
     
-    protected void driveForwardStraight(int encoderValue) throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
+    protected boolean driveForwardStraight(int encoderValue, boolean searchLine) throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
     	float[] sample = new float[autoAdjustRGBFilter.sampleSize()];
     	
     	Ports.LEFT_MOTOR.resetTachoCount();
@@ -64,12 +64,18 @@ public abstract class BaseState {
             }
             checkRobotInputs(sample);
             
+            if (searchLine && lineFound(AutoAdjustFilter.getGrayValue(sample))) {
+            	return true;
+            }
+            
             leftTachoCount = Ports.LEFT_MOTOR.getTachoCount();
             rightTachoCount = Ports.RIGHT_MOTOR.getTachoCount();
         }
         
         Ports.LEFT_MOTOR.stop(true);
         Ports.RIGHT_MOTOR.stop(true);
+        
+        return false;
     }
     
     protected void checkRobotInputs(float[] sample) throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {

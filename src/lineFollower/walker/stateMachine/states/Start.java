@@ -19,7 +19,7 @@ public class Start extends BaseState {
         
         logCurrentState();
         
-        driveForwardStraight(ENCODER_GAP_DISTANCE);
+        driveForwardStraight(ENCODER_GAP_DISTANCE, false);
         
         calibrateFilter(ENCODER_TURN_45, true);
         calibrateFilter(2 * ENCODER_TURN_45, false);
