@@ -69,7 +69,7 @@ public class SearchLine extends BaseState {
             checkRobotInputs(sample);
             
             double gray = AutoAdjustFilter.getGrayValue(sample);
-            if (gray >= 0.7) {
+            if (lineFound(gray)) {
                 return true;
             }
             m1TachoCount = Math.abs(m1.getTachoCount());

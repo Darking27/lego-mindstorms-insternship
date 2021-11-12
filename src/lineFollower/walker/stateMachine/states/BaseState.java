@@ -100,6 +100,10 @@ public abstract class BaseState {
 		return (sample[0] * 3 < sample [2]) && (sample[1] * 4 < sample[2]);
 	}
     
+    protected boolean lineFound(double grayValue) {
+    	return grayValue > 0.7;
+    }
+    
     protected boolean enterPressed() {
     	return Ports.ENTER.isDown();
     }
