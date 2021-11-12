@@ -67,6 +67,7 @@ public class LineFollower implements ParcoursWalkable {
 					if (this.driveForwardStraight(ENCODER_GAP_DISTANCE).equals(InputEvents.ENTER)) {
 						return WalkableStatus.MENU;
 					}
+					state = State.SEARCH_LINE;
 					break;
 					
 				case OBSTACLE:
