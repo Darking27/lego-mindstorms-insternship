@@ -7,6 +7,7 @@ import lineFollower.walker.stateMachine.FinishLineException;
 import lineFollower.walker.stateMachine.ProcessInteruptedEnterException;
 import lineFollower.walker.stateMachine.RobotCollisionException;
 import lineFollower.walker.stateMachine.StateName;
+import lineFollower.walker.stateMachine.TextRescources;
 
 public abstract class BaseState {
     
@@ -37,8 +38,10 @@ public abstract class BaseState {
         }
     }
     
-    protected void driveForwardStraight(int encoderValue) throws RobotCollisionException, ProcessInteruptedEnterException {
-        Ports.LEFT_MOTOR.resetTachoCount();
+    protected void driveForwardStraight(int encoderValue) throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
+    	float[] sample = new float[autoAdjustRGBFilter.sampleSize()];
+    	
+    	Ports.LEFT_MOTOR.resetTachoCount();
         Ports.RIGHT_MOTOR.resetTachoCount();
         
         int leftTachoCount = 0;
@@ -51,24 +54,36 @@ public abstract class BaseState {
         Ports.RIGHT_MOTOR.forward();
         
         while (leftTachoCount <= encoderValue || rightTachoCount <= encoderValue) {
+        	autoAdjustRGBFilter.fetchSample(sample, 0);
+        	
             if (rightTachoCount >= encoderValue) {
                 Ports.RIGHT_MOTOR.stop(true);
             }
             if (leftTachoCount >= encoderValue) {
                 Ports.LEFT_MOTOR.stop(true);
             }
-            if (enterPressed()) {
-                throw new ProcessInteruptedEnterException("Enter pressed: Walker terminated");
-            }
-            if (buttonPressed()) {
-                throw new RobotCollisionException("Robot detected collision with fron button press");
-            }
+            checkRobotInputs(sample);
+            
             leftTachoCount = Ports.LEFT_MOTOR.getTachoCount();
             rightTachoCount = Ports.RIGHT_MOTOR.getTachoCount();
         }
         
         Ports.LEFT_MOTOR.stop(true);
         Ports.RIGHT_MOTOR.stop(true);
+    }
+    
+    protected void checkRobotInputs(float[] sample) throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
+    	if (buttonPressed()) {
+            throw new RobotCollisionException(TextRescources.COLLOSION_EXCEPTION_TEXT.getText());
+        }
+    	if (sample != null) {
+	        if (isFinishLine(sample)) {
+	            throw new FinishLineException(TextRescources.FINISH_LINE_EXCEPTION.getText());
+	        }
+    	}
+        if (enterPressed()) {
+        	throw new ProcessInteruptedEnterException(TextRescources.ENTER_EXCEPTION.getText());
+        }
     }
     
     protected boolean buttonPressed() {

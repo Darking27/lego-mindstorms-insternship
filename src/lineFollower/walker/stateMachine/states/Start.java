@@ -2,10 +2,10 @@ package lineFollower.walker.stateMachine.states;
 
 import framework.Ports;
 import lejos.robotics.RegulatedMotor;
+import lineFollower.walker.stateMachine.FinishLineException;
 import lineFollower.walker.stateMachine.ProcessInteruptedEnterException;
 import lineFollower.walker.stateMachine.RobotCollisionException;
 import lineFollower.walker.stateMachine.StateName;
-import lineFollower.walker.stateMachine.TextRescources;
 
 public class Start extends BaseState {
     
@@ -15,7 +15,7 @@ public class Start extends BaseState {
     }
 
     @Override
-    public StateName handleState() throws ProcessInteruptedEnterException, RobotCollisionException {
+    public StateName handleState() throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
         
         logCurrentState();
         
@@ -28,7 +28,7 @@ public class Start extends BaseState {
         return StateName.SEARCH_LINE;
     }
     
-    private void calibrateFilter(int encoderValue, boolean rightTurn) throws ProcessInteruptedEnterException {
+    private void calibrateFilter(int encoderValue, boolean rightTurn) throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
         float[] sample = new float[autoAdjustRGBFilter.sampleSize()];
         
         Ports.LEFT_MOTOR.resetTachoCount();
@@ -55,19 +55,17 @@ public class Start extends BaseState {
         m2.backward();
         
         while (m1TachoCount <= encoderValue || m2TachoCount <= encoderValue) {
-            if (m1TachoCount >= encoderValue) {
+        	autoAdjustRGBFilter.fetchSample(sample, 0);
+        	
+        	if (m1TachoCount >= encoderValue) {
                 m1.stop(true);
             }
             if (m2TachoCount >= encoderValue) {
                 m2.stop(true);
             }
-            if (enterPressed()) {
-                throw new ProcessInteruptedEnterException(TextRescources.ENTER_EXCEPTION.getText());
-            }
+            checkRobotInputs(sample);
             m1TachoCount = Math.abs(m1.getTachoCount());
             m2TachoCount = Math.abs(m2.getTachoCount());
-            
-            autoAdjustRGBFilter.fetchSample(sample, 0);
         }
         
         m1.stop(true);

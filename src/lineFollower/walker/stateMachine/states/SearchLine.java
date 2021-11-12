@@ -3,10 +3,10 @@ package lineFollower.walker.stateMachine.states;
 import framework.Ports;
 import lejos.robotics.RegulatedMotor;
 import lineFollower.walker.colorSensor.AutoAdjustFilter;
+import lineFollower.walker.stateMachine.FinishLineException;
 import lineFollower.walker.stateMachine.ProcessInteruptedEnterException;
 import lineFollower.walker.stateMachine.RobotCollisionException;
 import lineFollower.walker.stateMachine.StateName;
-import lineFollower.walker.stateMachine.TextRescources;
 
 public class SearchLine extends BaseState {
 
@@ -16,7 +16,7 @@ public class SearchLine extends BaseState {
     }
     
     @Override
-    public StateName handleState() throws ProcessInteruptedEnterException, RobotCollisionException {
+    public StateName handleState() throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
         if (searchLine(ENCODER_TURN_100, true)) {
             return StateName.FOLLOW_LINE;
         }
@@ -30,7 +30,7 @@ public class SearchLine extends BaseState {
         return StateName.GAP;
     }
     
-    private boolean searchLine(int encoderValue, boolean rightTurn) throws RobotCollisionException, ProcessInteruptedEnterException {
+    private boolean searchLine(int encoderValue, boolean rightTurn) throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
         float[] sample = new float[autoAdjustRGBFilter.sampleSize()];
         
         Ports.LEFT_MOTOR.resetTachoCount();
@@ -57,27 +57,23 @@ public class SearchLine extends BaseState {
         m2.backward();
         
         while (m1TachoCount <= encoderValue || m2TachoCount <= encoderValue) {
-            if (m1TachoCount >= encoderValue) {
+        	autoAdjustRGBFilter.fetchSample(sample, 0);
+        	
+        	if (m1TachoCount >= encoderValue) {
                 m1.stop(true);
             }
             if (m2TachoCount >= encoderValue) {
                 m2.stop(true);
             }
-            if (enterPressed()) {
-                throw new ProcessInteruptedEnterException(TextRescources.ENTER_EXCEPTION.getText());
-            }
+            
+            checkRobotInputs(sample);
             
             double gray = AutoAdjustFilter.getGrayValue(sample);
             if (gray >= 0.7) {
                 return true;
             }
-            if (buttonPressed()) {
-                throw new RobotCollisionException(TextRescources.COLLOSION_EXCEPTION_TEXT.getText());
-            }
             m1TachoCount = Math.abs(m1.getTachoCount());
             m2TachoCount = Math.abs(m2.getTachoCount());
-            
-            autoAdjustRGBFilter.fetchSample(sample, 0);
         }
         
         m1.stop(true);
