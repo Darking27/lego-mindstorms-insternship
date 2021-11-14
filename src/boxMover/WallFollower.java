@@ -36,7 +36,8 @@ public class WallFollower implements ParcoursWalkable {
 		float[] touchSample = new float[touchSensor.sampleSize()];
 		float[] ultrasonicSample = new float[ultrasonicSensor.sampleSize()];
 
-		while (!closeToBackWall(ultrasonicSample)) {
+		//while (!closeToBackWall(ultrasonicSample)) {
+		while (true) {
 
 			if (brick.getKey("Enter").isDown()) {
 				return WalkableStatus.MENU;
@@ -47,30 +48,24 @@ public class WallFollower implements ParcoursWalkable {
 			}
 
 			touchSensor.fetchSample(touchSample, 0);
-			if (touchSample[0] > 0.5) { // sensor is pressed
+			if (touchSample[0] > 0.3) { // sensor is pressed
 				// turn right
 				rightMotor.flt(true);
 				leftMotor.rotate(200, false);
-
-				// drive away from the wall
-				rightMotor.setSpeed(300);
-				leftMotor.setSpeed(300);
-				rightMotor.rotate(500, true);
-				leftMotor.rotate(500, false);
 
 				// go back to the else part and slowly drive towards the wall
 
 			} else { // sensor is not pressed
 
 				// makes a left turn
-				rightMotor.setSpeed(400);
-				leftMotor.setSpeed(300);
+				rightMotor.setSpeed(500);
+				leftMotor.setSpeed(400);
 
 				rightMotor.rotate(1000, true);
 				leftMotor.rotate(1000, true);
 			}
 		}
-		return WalkableStatus.FINISHED;
+		//return WalkableStatus.FINISHED;
 	}
 
 	/**

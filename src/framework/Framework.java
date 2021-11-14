@@ -35,6 +35,7 @@ public class Framework {
 				return;
 
 			sectionsIterate: for (int i = start_index; i < parcours_section_order.size(); i++) {
+				Delay.msDelay(200); // delay to stop programm from directly stopping
 				returnStatus = parcours_section_order.get(i).start_walking();
 
 				switch (returnStatus) {
