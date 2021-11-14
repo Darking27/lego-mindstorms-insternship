@@ -2,6 +2,7 @@ package framework;
 
 import lejos.hardware.Brick;
 import lejos.hardware.BrickFinder;
+import lejos.hardware.Key;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3TouchSensor;
@@ -16,4 +17,6 @@ public class Ports {
 	public static final EV3TouchSensor RIGHT_TOUCH_SENSOR = new EV3TouchSensor(BRICK.getPort("S2"));
 	public static final EV3UltrasonicSensor ULTRASONIC_SENSOR = new EV3UltrasonicSensor(BRICK.getPort("S3"));
 	public static final EV3ColorSensor COLOR_SENSOR = new EV3ColorSensor(BRICK.getPort("S1"));
+	public static final Key EnterKey = BRICK.getKey("Enter");
+	public static final Key EscapeKey = BRICK.getKey("Escape");	
 }

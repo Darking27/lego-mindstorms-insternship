@@ -12,13 +12,13 @@ import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.RegulatedMotor;
 
 public class WallFollower implements ParcoursWalkable {
-	
+
 	private Brick brick = Ports.BRICK;
 	private RegulatedMotor rightMotor = Ports.RIGHT_MOTOR;
 	private RegulatedMotor leftMotor = Ports.LEFT_MOTOR;
 	private EV3TouchSensor touchSensor = Ports.LEFT_TOUCH_SENSOR;
 	private EV3UltrasonicSensor ultrasonicSensor = Ports.ULTRASONIC_SENSOR;
-	
+
 	public WallFollower() {
 		Ports.LEFT_TOUCH_SENSOR.setCurrentMode("Touch");
 		Ports.ULTRASONIC_SENSOR.setCurrentMode("Distance");
@@ -36,8 +36,8 @@ public class WallFollower implements ParcoursWalkable {
 		float[] touchSample = new float[touchSensor.sampleSize()];
 		float[] ultrasonicSample = new float[ultrasonicSensor.sampleSize()];
 
-		//while (!closeToBackWall(ultrasonicSample)) {
-		while (true) {
+		while (!closeToBackWall(ultrasonicSample)) {
+			// while (true) {
 
 			if (brick.getKey("Enter").isDown()) {
 				return WalkableStatus.MENU;
@@ -59,13 +59,13 @@ public class WallFollower implements ParcoursWalkable {
 
 				// makes a left turn
 				rightMotor.setSpeed(500);
-				leftMotor.setSpeed(400);
+				leftMotor.setSpeed(450);
 
 				rightMotor.rotate(1000, true);
 				leftMotor.rotate(1000, true);
 			}
 		}
-		//return WalkableStatus.FINISHED;
+		return WalkableStatus.FINISHED;
 	}
 
 	/**
