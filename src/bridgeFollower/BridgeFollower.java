@@ -36,7 +36,7 @@ public class BridgeFollower implements ParcoursWalkable {
 		Port sensorPort = brick.getPort(usSensorPort);
 		this.usSensor = new EV3UltrasonicSensor(sensorPort);
 		this.distanceMode = usSensor.getDistanceMode();
-		this.onTrackMode = new AutoAdjustUltrasonic(distanceMode);
+		this.onTrackMode = new SimpleUltrasonic(distanceMode);
 
 		this.rightMotor = new EV3LargeRegulatedMotor(brick.getPort(rightMotorPort));
 		this.leftMotor = new EV3LargeRegulatedMotor(brick.getPort(leftMotorPort));
@@ -118,7 +118,6 @@ public class BridgeFollower implements ParcoursWalkable {
 	
 	private void setState(State state) {
 		this.state = state;
-		isOnLine(true);
 		switch (state) {
 		case DRIVING_LEFT:
 			leftMotor.setSpeed(300);
@@ -168,26 +167,17 @@ public class BridgeFollower implements ParcoursWalkable {
 	 * First turn to the left:
 	 * Do not make a sharp turn, instead also turn the left motor (but slower than the right one).
 	 */
-
-	public boolean isOnLine() {
-		return isOnLine(false);
-	}
 	
 	/**
 	 * Checks whether the robot is on the line or not
 	 * 
 	 * @return
 	 */
-	public boolean isOnLine(boolean printInfo) {
+	public boolean isOnLine() {
 		int sampleSize = 5;
 		float[] sample = new float[sampleSize];
 		onTrackMode.fetchSample(sample, 0);
 		boolean onLine = sample[0] < 0.5f;
-		
-		if (printInfo) {
-			System.out.println("Line: " + sample[0] + " [" + sample[1] + ":" + sample[2] + ":" + sample[3] + "]");
-			System.out.println("Conf: " + sample[4]);
-		}
 		
 		// System.out.println(onLine);
 		return onLine;
