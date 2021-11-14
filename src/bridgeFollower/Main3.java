@@ -15,14 +15,8 @@ public class Main3 {
         Brick brick = BrickFinder.getDefault();
         BridgeFollower lineFollower = new BridgeFollower(brick, US_SENSOR_PORT, LEFT_MOTOR_PORT, RIGHT_MOTOR_PORT);
         
-		/*
-		 * Key enter = brick.getKey("Enter");
-		 * 
-		 * while (!enter.isDown()) { lineFollower.isOnLine(); Delay.msDelay(50); }
-		 */
-        
         System.out.println("Following Line");
-        lineFollower.followLineSimple();
+        lineFollower.start_walking();
 
     }
 

@@ -11,8 +11,11 @@ import lejos.robotics.filter.AbstractFilter;
  * 1: certainly seeing ground
  * 0: certainly seeing bridge
  * 
+ * Deprecated, because it does not perform as expected and probably has to be replaced.
+ * 
  * @author Niklas Arlt
  */
+@Deprecated()
 public class AutoAdjustUltrasonic extends AbstractFilter {
 	/*
 	 * Bridge average

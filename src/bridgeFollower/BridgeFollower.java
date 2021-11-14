@@ -1,5 +1,7 @@
 package bridgeFollower;
 
+import framework.ParcoursWalkable;
+import framework.WalkableStatus;
 import lejos.hardware.Brick;
 import lejos.hardware.Key;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
@@ -10,32 +12,13 @@ import lejos.robotics.SampleProvider;
 import lejos.utility.Timer;
 import lejos.utility.TimerListener;
 
-public class BridgeFollower {
-	
-	public enum State {
-		/*
-		 * We are driving up the ramp, a bit to the left to get to the left edge.
-		 */
-		DRIVING_STRAIT,
-		
-		/*
-		 * We are driving on a relatively big circle to the left. We are on the bridge / ramp.
-		 * If the sensor sees the ground then we drive right again.
-		 */
-		DRIVING_LEFT,
-		
-		/*
-		 * We are driving on a relatively big circle to the right.
-		 * We are on the left edge of the bridge / ramp.
-		 */
-		DRIVING_RIGHT,
-		
-		/*
-		 * We are driving on a smaller circle to the left until we meet the left edge again.
-		 */
-		TURN_LEFT
-	}
-
+/**
+ * ParcoursWalkable for the bridge
+ * 
+ * @author Niklas Arlt
+ *
+ */
+public class BridgeFollower implements ParcoursWalkable {
 	Brick brick;
 	SampleProvider distanceMode;
 	SampleProvider onTrackMode;
@@ -58,9 +41,11 @@ public class BridgeFollower {
 		this.rightMotor = new EV3LargeRegulatedMotor(brick.getPort(rightMotorPort));
 		this.leftMotor = new EV3LargeRegulatedMotor(brick.getPort(leftMotorPort));
 	}
-
-	public void followLineSimple() {
+	
+	@Override
+	public WalkableStatus start_walking() {
 		Key escape = brick.getKey("Escape");
+		Key enter = brick.getKey("Enter");
 
 		rightMotor.setSpeed(600);
 		leftMotor.setSpeed(600);
@@ -74,7 +59,16 @@ public class BridgeFollower {
 			}
 		});
 
-		while (!escape.isDown()) {
+		while (true) {
+			// Handle keys
+			if (escape.isDown()) {
+				return WalkableStatus.STOP;
+			}
+			if (enter.isDown()) {
+				return WalkableStatus.MENU;
+			}
+			
+			// Switch states if necessary
 			switch(state) {
 			case DRIVING_LEFT:
 				if (!isOnLine()) {
@@ -112,6 +106,9 @@ public class BridgeFollower {
 				throw new IllegalArgumentException("state not valid");
 			}
 		}
+		
+		// End - currently not implemented
+		// return WalkableStatus.FINISHED;
 	}
 	
 	private void setState(State state) {
@@ -180,12 +177,7 @@ public class BridgeFollower {
 		int sampleSize = 5;
 		float[] sample = new float[sampleSize];
 		onTrackMode.fetchSample(sample, 0);
-		/* Display individual values in the sample. */
-		/*
-		 * for (int i = 0; i < sampleSize; i++) { System.out.print(sample[i] + " "); }
-		 */
 		boolean onLine = sample[0] < 0.5f;
-		
 		
 		if (printInfo) {
 			System.out.println("Line: " + sample[0] + " [" + sample[1] + ":" + sample[2] + ":" + sample[3] + "]");
