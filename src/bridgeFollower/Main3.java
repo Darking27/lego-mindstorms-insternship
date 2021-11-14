@@ -1,4 +1,4 @@
-package other.bridgeFollowerTest;
+package bridgeFollower;
 
 import lejos.hardware.Brick;
 import lejos.hardware.BrickFinder;

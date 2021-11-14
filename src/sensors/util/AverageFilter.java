@@ -1,6 +1,5 @@
-package other.bridgeFollowerTest;
+package sensors.util;
 
-import java.util.Collections;
 import java.util.LinkedList;
 
 import lejos.robotics.SampleProvider;
@@ -16,12 +15,12 @@ import lejos.robotics.filter.AbstractFilter;
  * 
  * @author Niklas Arlt
  */
-public class MedianFilter extends AbstractFilter {
+public class AverageFilter extends AbstractFilter {
 	
 	private final int size;
 	private LinkedList<Float> values;
 
-	public MedianFilter(SampleProvider source, int size) {
+	public AverageFilter(SampleProvider source, int size) {
 		super(source);
 		this.size = size;
 		reset();
@@ -44,9 +43,12 @@ public class MedianFilter extends AbstractFilter {
 			values.removeFirst();
 		}
 		
-		LinkedList<Float> tmp = new LinkedList<>();
-		tmp.addAll(values);
-		Collections.sort(tmp);
-		sample[0] = tmp.get(size / 2);
+		float sum = 0f;
+		for (Float e : values) {
+			sum += e;
+		}
+		float avg = sum / size;
+				
+		sample[0] = avg;
 	}
 }

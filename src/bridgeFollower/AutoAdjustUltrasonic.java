@@ -1,4 +1,4 @@
-package other.bridgeFollowerTest;
+package bridgeFollower;
 
 import lejos.robotics.SampleProvider;
 import lejos.robotics.filter.AbstractFilter;
