@@ -39,7 +39,7 @@ public class AutoAdjustUltrasonic extends AbstractFilter {
 	 * @return the input value that separates ground from bridge
 	 */
 	private float separator() {
-		return minimum + 0.7f * (maximum - minimum);
+		return minimum + 0.5f * (maximum - minimum);
 	}
 
 	/*
@@ -52,21 +52,28 @@ public class AutoAdjustUltrasonic extends AbstractFilter {
 		float confidentiality = 0f;
 		
 		// Sensor outputs invalid values - this usually happens on the bridge
-		if (sample[offset + 1] == Float.POSITIVE_INFINITY) {
-			sample[offset + 1] = -1;
+		if (sample[offset] == Float.POSITIVE_INFINITY) {
+			sample[offset] = -1;
 		}
 		// Normal cases
-		else if (sample[offset + 1] > separator() && sample[offset + 1] < 1.3f * maximum) {
-			confidentiality = (sample[offset + 1] - separator()) / maximum;
-			sample[offset + 1] = 0.5f * (1f + confidentiality);
+		else if (sample[offset] > separator() && sample[offset] < 1.3f * maximum) {
+			confidentiality = Math.abs((sample[offset] - separator()) / (maximum - separator()));
+			 
+			sample[offset] = 0.5f * (1f + confidentiality);
 			
 			// Adjust maximum if not too far off
-			if (confidentiality > 0.5f) {
-				maximum = 0.5f * (maximum + sample[offset + 1]);
+			if (confidentiality > 0.7f) {
+				maximum = 0.9f * maximum + 0.1f * sample[offset];
 			}
-		} else if (sample[offset + 1] > minimum) {
-			confidentiality = 1 - (sample[offset + 1] - minimum) / (separator() - minimum);
-			sample[offset + 1] = 0.5f * (1f - confidentiality);
+		} else if (sample[offset] > minimum) {
+			confidentiality = 1 - (sample[offset] - minimum) / (separator() - minimum);
+			sample[offset] = 0.5f * (1f - confidentiality);
 		}
+		
+		// Debug values
+		sample[offset + 1] = minimum;
+		sample[offset + 2] = separator();
+		sample[offset + 3] = maximum;
+		sample[offset + 4] = confidentiality;
 	}
 }
