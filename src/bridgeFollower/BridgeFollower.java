@@ -73,7 +73,7 @@ public class BridgeFollower implements ParcoursWalkable {
 			case DRIVING_LEFT:
 				if (!isOnLine()) {
 					System.out.println("Seeing edge -> right");
-					setState(State.DRIVING_RIGHT);
+					setState(State.ROTATE_RIGHT);
 				}
 				if (timeout) {
 					System.out.println("Timeout -> turn");
@@ -82,24 +82,29 @@ public class BridgeFollower implements ParcoursWalkable {
 					timer.stop();
 				}
 				break;
-			case DRIVING_RIGHT:
-				if (timeout) {
+			case ROTATE_RIGHT:
+				// Disable the timeout and test with bridge detection only
+				/*if (timeout) {
 					System.out.println("Timeout -> left");
 					state = State.DRIVING_LEFT;
 					timeout = false;
 					timer.stop();
+				}*/
+				if (isOnLine()) {
+					System.out.println("Seeing edge -> left");
+					setState(State.DRIVING_LEFT);
 				}
 				break;
 			case DRIVING_STRAIT:
 				if (!isOnLine()) {
 					System.out.println("Seeing edge -> right");
-					setState(State.DRIVING_RIGHT);
+					setState(State.ROTATE_RIGHT);
 				}
 				break;
 			case TURN_LEFT:
 				if (!isOnLine()) {
 					System.out.println("Seing edge -> right");
-					setState(State.DRIVING_RIGHT);
+					setState(State.ROTATE_RIGHT);
 				}
 				break;
 			default:
@@ -123,13 +128,13 @@ public class BridgeFollower implements ParcoursWalkable {
 			timer.setDelay(400);
 			timer.start();
 			break;
-		case DRIVING_RIGHT:
-			leftMotor.setSpeed(150);
+		case ROTATE_RIGHT:
+			leftMotor.setSpeed(0);
 			rightMotor.setSpeed(300);
 			leftMotor.rotate(1000, true);
 			rightMotor.rotate(1000, true);
-			timer.setDelay(150);
-			timer.start();
+			//timer.setDelay(150);
+			//timer.start();
 			break;
 		case DRIVING_STRAIT:
 			/* Drive a little bit to the left.

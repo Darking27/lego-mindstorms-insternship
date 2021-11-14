@@ -19,10 +19,10 @@ public enum State {
 	DRIVING_LEFT,
 	
 	/*
-	 * We are driving on a relatively big circle to the right.
+	 * We are turning right without moving forward.
 	 * We are on the left edge of the bridge / ramp.
 	 */
-	DRIVING_RIGHT,
+	ROTATE_RIGHT,
 	
 	/*
 	 * We are driving on a smaller circle to the left until we meet the left edge again.
