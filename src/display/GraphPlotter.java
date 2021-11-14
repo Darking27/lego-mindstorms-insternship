@@ -32,7 +32,8 @@ public class GraphPlotter {
 	 * @param lowerBound	Lower end of y-axis
 	 * @param upperBound	Upper end of y-axis
 	 */
-	void plotValues(List<List<Float>> valueLists, int lowerBound, int upperBound) {
+	public void plotValues(List<List<Float>> valueLists, int lowerBound, int upperBound) {
+		Logger.INSTANCE.disable();
 		g.clear();
 		g.drawLine(15, 0, 15, SH);
 		g.setFont(Font.getSmallFont());
@@ -45,5 +46,9 @@ public class GraphPlotter {
 			}
 		}
 		g.refresh();
+	}
+	
+	public void stop() {
+		Logger.INSTANCE.enable();
 	}
 }

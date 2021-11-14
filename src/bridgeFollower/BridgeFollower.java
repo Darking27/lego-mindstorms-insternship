@@ -1,5 +1,6 @@
 package bridgeFollower;
 
+import display.Logger;
 import framework.ParcoursWalkable;
 import framework.WalkableStatus;
 import lejos.hardware.Brick;
@@ -72,11 +73,11 @@ public class BridgeFollower implements ParcoursWalkable {
 			switch(state) {
 			case DRIVING_LEFT:
 				if (!isOnLine()) {
-					System.out.println("Seeing edge -> right");
+					Logger.INSTANCE.log("Seeing edge -> right");
 					setState(State.ROTATE_RIGHT);
 				}
 				if (timeout) {
-					System.out.println("Timeout -> turn");
+					Logger.INSTANCE.log("Timeout -> turn");
 					setState(State.TURN_LEFT);
 					timeout = false;
 					timer.stop();
@@ -85,25 +86,25 @@ public class BridgeFollower implements ParcoursWalkable {
 			case ROTATE_RIGHT:
 				// Disable the timeout and test with bridge detection only
 				/*if (timeout) {
-					System.out.println("Timeout -> left");
+					Logger.INSTANCE.log("Timeout -> left");
 					state = State.DRIVING_LEFT;
 					timeout = false;
 					timer.stop();
 				}*/
 				if (isOnLine()) {
-					System.out.println("Seeing edge -> left");
+					Logger.INSTANCE.log("Seeing edge -> left");
 					setState(State.DRIVING_LEFT);
 				}
 				break;
 			case DRIVING_STRAIT:
 				if (!isOnLine()) {
-					System.out.println("Seeing edge -> right");
+					Logger.INSTANCE.log("Seeing edge -> right");
 					setState(State.ROTATE_RIGHT);
 				}
 				break;
 			case TURN_LEFT:
 				if (!isOnLine()) {
-					System.out.println("Seing edge -> right");
+					Logger.INSTANCE.log("Seing edge -> right");
 					setState(State.ROTATE_RIGHT);
 				}
 				break;
@@ -179,7 +180,7 @@ public class BridgeFollower implements ParcoursWalkable {
 		onTrackMode.fetchSample(sample, 0);
 		boolean onLine = sample[0] < 0.5f;
 		
-		// System.out.println(onLine);
+		// Logger.INSTANCE.log(onLine);
 		return onLine;
 	}
 }
