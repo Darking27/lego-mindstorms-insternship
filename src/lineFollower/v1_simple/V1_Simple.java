@@ -1,11 +1,11 @@
-package other.lineFollowerTest;
+package lineFollower.v1_simple;
 
 import lejos.hardware.Brick;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Key;
 import lejos.utility.Delay;
 
-public class Main2 {
+public class V1_Simple {
     
     static String COLOR_SENSOR_PORT = "S1";
     static String LEFT_MOTOR_PORT = "A";
@@ -14,7 +14,7 @@ public class Main2 {
     public static void main(String[] args) {
     	System.out.println("Test Print");
         Brick brick = BrickFinder.getDefault();
-        LineFollower lineFollower = new LineFollower(brick, COLOR_SENSOR_PORT, LEFT_MOTOR_PORT, RIGHT_MOTOR_PORT);
+        LineFollowerV1 lineFollower = new LineFollowerV1(brick, COLOR_SENSOR_PORT, LEFT_MOTOR_PORT, RIGHT_MOTOR_PORT);
         
         Key escape = brick.getKey("Enter");
         
