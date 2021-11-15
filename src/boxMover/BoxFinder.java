@@ -9,6 +9,8 @@ import java.util.LinkedList;
 import framework.ParcoursWalkable;
 import framework.Ports;
 import framework.WalkableStatus;
+import lejos.robotics.SampleProvider;
+import lejos.robotics.filter.MedianFilter;
 import lejos.utility.Delay;
 
 public class BoxFinder implements ParcoursWalkable {
@@ -17,40 +19,13 @@ public class BoxFinder implements ParcoursWalkable {
 		Ports.LEFT_TOUCH_SENSOR.setCurrentMode("Touch");
 		Ports.RIGHT_TOUCH_SENSOR.setCurrentMode("Touch");
 		Ports.ULTRASONIC_SENSOR.setCurrentMode("Distance");
+		Ports.LEFT_MOTOR.setSpeed(300);
+		Ports.RIGHT_MOTOR.setSpeed(300);
 	}
 
 	@Override
 	public WalkableStatus start_walking() {
-		while (!Ports.ESCAPE_KEY.isDown()) {
-			float[] ultrasonicSample = new float[Ports.ULTRASONIC_SENSOR.sampleSize()];
-			Ports.ULTRASONIC_SENSOR.fetchSample(ultrasonicSample, 0);
-			System.out.println(ultrasonicSample[0]);
-			return WalkableStatus.STOP;
-		}
-		
-		lookInBoxDirection();
-		Delay.msDelay(1000);
-		return WalkableStatus.FINISHED;
-	}
-
-	/**
-	 * drives Forward until it hits the box
-	 */
-	private WalkableStatus driveForwad() {
-		float[] leftTouchSample = new float[Ports.LEFT_TOUCH_SENSOR.sampleSize()];
-		float[] rightTouchSample = new float[Ports.RIGHT_TOUCH_SENSOR.sampleSize()];
-
-		do {
-			if (Ports.ENTER_KEY.isDown()) {
-				return WalkableStatus.MENU;
-			}
-			if (Ports.ESCAPE_KEY.isDown()) {
-				return WalkableStatus.STOP;
-			}
-			Ports.LEFT_TOUCH_SENSOR.fetchSample(leftTouchSample, 0);
-			Ports.RIGHT_TOUCH_SENSOR.fetchSample(rightTouchSample, 0);
-		} while (median(leftTouchSample) < 0.5 && median(rightTouchSample) < 0.5);
-
+		findBox();
 		return WalkableStatus.FINISHED;
 	}
 
@@ -61,62 +36,86 @@ public class BoxFinder implements ParcoursWalkable {
 	 * this is done by measuring the distance while turning and going back to the
 	 * direction where the distance was minimal
 	 */
-	private void lookInBoxDirection() {
+	private void findBox() {
+
 		Ports.LEFT_MOTOR.resetTachoCount();
-		Collection<DistanceTachoTuple> distances = new LinkedList<DistanceTachoTuple>();
-		float[] ultrasonicSample = new float[Ports.ULTRASONIC_SENSOR.sampleSize()];
-		int search_radius = 700;
 
-		Ports.LEFT_MOTOR.setSpeed(300);
-		Ports.LEFT_MOTOR.rotate(search_radius, true);
-
-		// tilt the robot to the left, while moving measure distances
-		while (Ports.LEFT_MOTOR.isMoving()) {
-			Ports.ULTRASONIC_SENSOR.fetchSample(ultrasonicSample, 0);
-			double distance_median = ultrasonicSample[0];
-			
-			int tacho_count = Ports.LEFT_MOTOR.getTachoCount();
-			
-			distances.add(new DistanceTachoTuple(distance_median, tacho_count));
-		}
+		DistanceTachoTuple distanceTuple;
 		
-		System.out.println("it: " + distances.size());
-		System.out.println("max: " + new DecimalFormat("##.##").format(Collections.max(distances).dist));
-		System.out.println("min: " + new DecimalFormat("##.##").format(Collections.min(distances).dist));
+		double boxDistanceThreshold = 30;
+
+		do {
+			if (Ports.ESCAPE_KEY.isDown()) {
+				return;
+			}
+
+			Ports.LEFT_MOTOR.rotate(600, true);
+			Ports.RIGHT_MOTOR.rotate(600, false);
+
+			distanceTuple = searchBox(); //rotates right
+
+			System.out.println(distanceTuple.dist);
+
+			rotateBack(); //rotates left to inital position
+		} while (distanceTuple.dist > boxDistanceThreshold);
+		Ports.LEFT_MOTOR.stop(true);
+		Ports.RIGHT_MOTOR.stop(true);
 		
-		// get the lowest distances measured in the loop before
-		int rotateBack = Collections.min(distances).tacho;
+		System.out.println("BOX FOUND");
+		Delay.msDelay(4000);
+		
 
-		// rotates to the lowest distance measured
-		while (Ports.LEFT_MOTOR.getTachoCount() >= rotateBack) {
-			Ports.LEFT_MOTOR.rotate(-100);
-		}
-		Ports.LEFT_MOTOR.stop();
-
-		System.out.println(Ports.LEFT_MOTOR.getTachoCount() + " " + search_radius);
 	}
 
-	float median(float[] arr) {
-		Arrays.sort(arr);
-		return arr[arr.length / 2];
+	/**
+	 * rotates the robot to the right and returns a tuple of the closest distance and the according TachoCount
+	 */
+	private DistanceTachoTuple searchBox() {
+		SampleProvider s = new MedianFilter(Ports.ULTRASONIC_SENSOR.getDistanceMode(), 5);
+		float[] sample = new float[1];
+
+		Collection<DistanceTachoTuple> distances = new LinkedList<DistanceTachoTuple>();
+
+		int search_radius = 600;
+
+		Ports.LEFT_MOTOR.resetTachoCount();
+
+		Ports.LEFT_MOTOR.rotate(search_radius, true);
+
+		while (Ports.LEFT_MOTOR.isMoving()) {
+			s.fetchSample(sample, 0);
+			float x = sample[0];
+			if (x < 0.01)
+				x = 1000;
+			distances.add(new DistanceTachoTuple(x, Ports.LEFT_MOTOR.getTachoCount()));
+		}
+
+		return Collections.min(distances);
+	}
+
+	private void rotateBack() {
+		while (Ports.LEFT_MOTOR.getTachoCount() > 0) {
+			if (Ports.ESCAPE_KEY.isDown()) {
+				return;
+			}
+			Ports.LEFT_MOTOR.rotate(-100, true);
+		}
+		Ports.LEFT_MOTOR.stop();
 	}
 
 	private class DistanceTachoTuple implements Comparable<DistanceTachoTuple> {
-
-		public final double dist;
+		public final float dist;
 		public final int tacho;
 
-		public DistanceTachoTuple(double dist, int tacho) {
+		public DistanceTachoTuple(float dist, int tacho) {
 			this.dist = dist;
 			this.tacho = tacho;
 		}
 
-		/**
-		 * compare by distance only
-		 */
 		@Override
 		public int compareTo(DistanceTachoTuple o) {
-			return (int) (1000*(this.dist - o.dist));
+			return (int) (1000 * (this.dist - o.dist));
 		}
 	}
+
 }
