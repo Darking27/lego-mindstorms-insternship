@@ -4,6 +4,7 @@ import framework.Ports;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
 import lineFollower.walker.colorSensor.AutoAdjustFilter;
+import lineFollower.walker.colorSensor.RGBColorSensor;
 import lineFollower.walker.stateMachine.StateName;
 import lineFollower.walker.stateMachine.TextRescources;
 import lineFollower.walker.stateMachine.exceptions.FinishLineException;
@@ -20,12 +21,14 @@ public abstract class BaseState {
     protected int ENCODER_TURN_45 = 200;
     
     protected SampleProvider autoAdjustRGBFilter;
+    protected RGBColorSensor rgbColorSensor;
     
     protected String stateName;
     
     public BaseState() {
         SampleProvider rgbMode = Ports.COLOR_SENSOR.getRGBMode();
         autoAdjustRGBFilter = AutoAdjustFilter.getInstance(rgbMode);
+        rgbColorSensor = RGBColorSensor.getInstance();
         this.stateName = "Initialized";
     }
     
@@ -204,13 +207,7 @@ public abstract class BaseState {
     }
     
     protected boolean isFinishLine(float[] sample) {
-		boolean finish = ((sample[0] + 1) * 4 < sample [2]);
-        if (finish) {
-            System.out.println("RED:  " + sample[0]);
-            System.out.println("BLUE: " + sample[2]);
-        }
-		
-        return finish;
+		return rgbColorSensor.isFinishLine();
 	}
     
     protected boolean lineFound(double grayValue) {

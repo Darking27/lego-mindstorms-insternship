@@ -64,9 +64,9 @@ public class AutoAdjustFilter extends AbstractFilter {
       float[] sample = new float[this.sampleSize]; 
       while (!Ports.ENTER.isDown()) {
           fetchSample(sample, 0);
-          System.out.println("RED  : " + (int) (1000 * sample[0]));
-          System.out.println("GREEN: " + (int) (1000 * sample[1]));
-          System.out.println("BLUE : " + (int) (1000 * sample[2]));
+          System.out.println("RED  : " + (int) (sample[0]));
+          System.out.println("GREEN: " + (int) (sample[1]));
+          System.out.println("BLUE : " + (int) (sample[2]));
           Delay.msDelay(1000);
       }
   }
