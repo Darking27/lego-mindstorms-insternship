@@ -9,20 +9,18 @@ public class StartState extends BaseState {
     
     public StartState() {
         super();
-        this.stateName = StateName.START;
+        this.stateName = "Start";
     }
 
     @Override
     public StateName handleState()
     		throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
         
-        logCurrentState();
+        driveForwardStraight(ENCODER_GAP_DISTANCE, false, false);
         
-        driveForwardStraight(ENCODER_GAP_DISTANCE, false);
-        
-        turnRight(ENCODER_TURN_45, false);
-        turnRight(2 * ENCODER_TURN_45, false);
-        turnRight(ENCODER_TURN_45, false);
+        turnRight(ENCODER_TURN_45, false, false);
+        turnLeft(2 * ENCODER_TURN_45, false, false);
+        turnRight(ENCODER_TURN_45, false, false);
         
         return StateName.SEARCH_LINE;
     }

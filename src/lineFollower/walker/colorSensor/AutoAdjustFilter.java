@@ -16,11 +16,14 @@ import lejos.robotics.filter.AbstractFilter;
  * 
  */
 public class AutoAdjustFilter extends AbstractFilter {
+    
+    private static AutoAdjustFilter INSTANCE;
+    
   /* These arrays hold the smallest and biggest values that have been "seen: */
   private float[] minimum;
   private float[] maximum;
 
-  public AutoAdjustFilter(SampleProvider source) {
+  private AutoAdjustFilter(SampleProvider source) {
     super(source);
     /* Now the source and sampleSize are known. The arrays can be initialized */
     minimum = new float[sampleSize];
@@ -56,4 +59,11 @@ public class AutoAdjustFilter extends AbstractFilter {
       return 0.33 * sample[0] + 0.33 * sample[1] + 0.33 * sample[2];
   }
   
+  public static AutoAdjustFilter getInstance(SampleProvider sampleProvider) {
+      if(INSTANCE == null) {
+          INSTANCE = new AutoAdjustFilter(sampleProvider);
+      }
+      
+      return INSTANCE;
+  }
 }

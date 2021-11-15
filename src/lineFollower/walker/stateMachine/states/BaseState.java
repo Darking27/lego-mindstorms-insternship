@@ -16,16 +16,17 @@ public abstract class BaseState {
     protected int DEFAULT_SPEED = 300;
     
     protected int ENCODER_GAP_DISTANCE = 600;
-    protected int ENCODER_TURN_100 = 600;
-    protected int ENCODER_TURN_45 = 280;
+    protected int ENCODER_TURN_100 = 400;
+    protected int ENCODER_TURN_45 = 200;
     
     protected SampleProvider autoAdjustRGBFilter;
     
-    protected StateName stateName;
+    protected String stateName;
     
     public BaseState() {
         SampleProvider rgbMode = Ports.COLOR_SENSOR.getRGBMode();
-        autoAdjustRGBFilter = new AutoAdjustFilter(rgbMode);
+        autoAdjustRGBFilter = AutoAdjustFilter.getInstance(rgbMode);
+        this.stateName = "Initialized";
     }
     
     abstract public StateName handleState()
@@ -33,27 +34,27 @@ public abstract class BaseState {
     
     
     // TODO: Graphics Display logging
-    protected void logCurrentState() {
+    public void logCurrentState() {
         if (stateName != null) {
-        System.out.println(this.stateName.toString());
+        System.out.println(this.stateName);
         } else {
             System.out.println("State not defined");
         }
     }
     
-    protected boolean driveForwardStraight(int encoderValue, boolean searchLine)
+    protected boolean driveForwardStraight(int encoderValue, boolean searchLine, boolean checkFinishLine)
     		throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
     	
-    	return driveStraight(encoderValue, searchLine, true);
+    	return driveStraight(encoderValue, searchLine,checkFinishLine, true);
     }
     
-    protected boolean driveBackwardStraight(int encoderValue, boolean searchLine)
+    protected boolean driveBackwardStraight(int encoderValue, boolean searchLine, boolean checkFinishLine)
     		throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
     	
-    	return driveStraight(encoderValue, searchLine, false);
+    	return driveStraight(encoderValue, searchLine,checkFinishLine, false);
     }
     
-    private boolean driveStraight(int encoderValue, boolean searchLine, boolean forward)
+    private boolean driveStraight(int encoderValue, boolean searchLine, boolean checkFinishLine, boolean forward)
     		throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
     	
     	float[] sample = new float[autoAdjustRGBFilter.sampleSize()];
@@ -84,9 +85,12 @@ public abstract class BaseState {
             if (Math.abs(leftTachoCount) >= encoderValue) {
                 Ports.LEFT_MOTOR.stop(true);
             }
-            checkRobotInputs(sample);
+            checkRobotInputs(sample, checkFinishLine);
             
-            if (searchLine && lineFound(AutoAdjustFilter.getGrayValue(sample))) {
+            double gray = AutoAdjustFilter.getGrayValue(sample);
+            if (searchLine && lineFound(gray)) {
+
+                System.out.println(gray);
             	return true;
             }
             
@@ -100,19 +104,19 @@ public abstract class BaseState {
         return false;
     }
     
-    protected boolean turnRight(int encoderValue, boolean searchLine)
+    protected boolean turnRight(int encoderValue, boolean searchLine, boolean checkFinishLine)
     		throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
     	
-    	return turn(encoderValue, searchLine, true);
+    	return turn(encoderValue, searchLine,checkFinishLine, true);
     }
     
-    protected boolean turnLeft(int encoderValue, boolean searchLine)
+    protected boolean turnLeft(int encoderValue, boolean searchLine, boolean checkFinishLine)
     		throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
     	
-    	return turn(encoderValue, searchLine, false);
+    	return turn(encoderValue, searchLine, checkFinishLine, false);
     }
     
-    private boolean turn(int encoderValue, boolean searchLine, boolean right)
+    private boolean turn(int encoderValue, boolean searchLine, boolean checkFinishLine, boolean right)
     		throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
     	
     	float[] sample = new float[autoAdjustRGBFilter.sampleSize()];
@@ -150,7 +154,7 @@ public abstract class BaseState {
                 m2.stop(true);
             }
             
-            checkRobotInputs(sample);
+            checkRobotInputs(sample, checkFinishLine);
             
             double gray = AutoAdjustFilter.getGrayValue(sample);
             if (searchLine && lineFound(gray)) {
@@ -166,18 +170,25 @@ public abstract class BaseState {
     	return false;
     }
     
-    protected void checkRobotInputs(float[] sample)
+    protected void checkRobotInputs(float[] sample, boolean checkFinishLine)
     		throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
     	
     	if (buttonPressed()) {
+    	    Ports.LEFT_MOTOR.stop(true);
+            Ports.RIGHT_MOTOR.stop(true);
             throw new RobotCollisionException(TextRescources.COLLOSION_EXCEPTION_TEXT.getText());
         }
     	if (sample != null) {
-	        if (isFinishLine(sample)) {
+	        if (checkFinishLine && isFinishLine(sample)) {
+	            Ports.LEFT_MOTOR.stop(true);
+	            Ports.RIGHT_MOTOR.stop(true);
+	            System.out.println("Found line");
 	            throw new FinishLineException(TextRescources.FINISH_LINE_EXCEPTION.getText());
 	        }
     	}
         if (enterPressed()) {
+            Ports.LEFT_MOTOR.stop(true);
+            Ports.RIGHT_MOTOR.stop(true);
         	throw new ProcessInteruptedEnterException(TextRescources.ENTER_EXCEPTION.getText());
         }
     }
@@ -193,7 +204,13 @@ public abstract class BaseState {
     }
     
     protected boolean isFinishLine(float[] sample) {
-		return (sample[0] * 3 < sample [2]) && (sample[1] * 4 < sample[2]);
+		boolean finish = ((sample[0] + 1) * 4 < sample [2]);
+        if (finish) {
+            System.out.println("RED:  " + sample[0]);
+            System.out.println("BLUE: " + sample[2]);
+        }
+		
+        return finish;
 	}
     
     protected boolean lineFound(double grayValue) {

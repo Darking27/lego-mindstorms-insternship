@@ -22,7 +22,7 @@ public class LineFollower implements ParcoursWalkable {
 	
 	public LineFollower() {
 		SampleProvider rgbMode = Ports.COLOR_SENSOR.getRGBMode();
-		autoAdjustRGBFilter = new AutoAdjustFilter(rgbMode);
+		autoAdjustRGBFilter = AutoAdjustFilter.getInstance(rgbMode);
 	}
 	
 	private void logCurrentState() {

@@ -11,7 +11,7 @@ public class FollowLineState extends BaseState {
 	
 	public FollowLineState() {
 		super();
-		this.stateName = StateName.FOLLOW_LINE;
+		this.stateName = "Follow line";
 	}
 	
 	@Override
@@ -31,10 +31,11 @@ public class FollowLineState extends BaseState {
 	private void slowDownRegulator()
 			throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
 		
-		double Kp = 1500;
+		double Kp = 900;
+		double Kd = 500;
 		
 		double targetValue = 0.5;
-        double defaultSpeed = 300;
+        double defaultSpeed = 400;
         
         float[] sample = new float[autoAdjustRGBFilter.sampleSize()];
         autoAdjustRGBFilter.fetchSample(sample, 0);
@@ -51,23 +52,24 @@ public class FollowLineState extends BaseState {
         
         
         while (!lineLost(currentValue)) {
-        	checkRobotInputs(sample);
+        	checkRobotInputs(sample, true);
         	
         	double diff = currentValue - targetValue;
+        	double speed = defaultSpeed - Math.abs(diff * Kd);
             if (diff >= 0) {
-                leftSpeed = (int) (defaultSpeed - Math.abs(diff * Kp));
-                rightSpeed = (int) (defaultSpeed);
+                leftSpeed = (int) (speed - Math.abs(diff * Kp));
+                rightSpeed = (int) (speed);
             } else {
-                leftSpeed = (int) (defaultSpeed);
-                rightSpeed = (int) (defaultSpeed - Math.abs(diff * Kp));
+                leftSpeed = (int) (speed);
+                rightSpeed = (int) (speed - Math.abs(diff * Kp));
             }
             
-            if (leftSpeed < 0) {
-                rightSpeed = rightSpeed / 2;
-            }
-            if (rightSpeed < 0) {
-                leftSpeed = leftSpeed / 2;
-            }
+//            if (leftSpeed < 0) {
+//                rightSpeed = rightSpeed / 2;
+//            }
+//            if (rightSpeed < 0) {
+//                leftSpeed = leftSpeed / 2;
+//            }
             
             Ports.LEFT_MOTOR.setSpeed(Math.abs(leftSpeed));
             Ports.RIGHT_MOTOR.setSpeed(Math.abs(rightSpeed));
@@ -86,8 +88,6 @@ public class FollowLineState extends BaseState {
         	autoAdjustRGBFilter.fetchSample(sample, 0);
         	currentValue = AutoAdjustFilter.getGrayValue(sample);
         }
-        
-        Ports.RIGHT_MOTOR.rotate(50);
 	}
 	
 	@SuppressWarnings("unused")
@@ -115,7 +115,7 @@ public class FollowLineState extends BaseState {
 		Ports.RIGHT_MOTOR.forward();
 		
 		while (!lineLost(currentValue)) {
-        	checkRobotInputs(sample);
+        	checkRobotInputs(sample, true);
         	
         	double diff = currentValue - targetValue;
             if (diff >= 0) {
@@ -168,6 +168,6 @@ public class FollowLineState extends BaseState {
 	 * @return
 	 */
 	private boolean lineLost(double grayValue) {
-		return grayValue < 0.1;
+		return grayValue < 0.15;
 	}
 }

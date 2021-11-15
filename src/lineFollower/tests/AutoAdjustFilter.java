@@ -1,7 +1,9 @@
 package lineFollower.tests;
 
+import framework.Ports;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.filter.AbstractFilter;
+import lejos.utility.Delay;
 
 /**
  * This filter dynamicaly adjust the samples value to a range of 0-1. The
@@ -52,4 +54,20 @@ public class AutoAdjustFilter extends AbstractFilter {
     }
   }
 
+  
+  public static void main(String[] args) {
+      AutoAdjustFilter filter = new AutoAdjustFilter(Ports.COLOR_SENSOR.getRGBMode());
+      filter.print();
+  }
+  
+  private void print() {
+      float[] sample = new float[this.sampleSize]; 
+      while (!Ports.ENTER.isDown()) {
+          fetchSample(sample, 0);
+          System.out.println("RED  : " + (int) (1000 * sample[0]));
+          System.out.println("GREEN: " + (int) (1000 * sample[1]));
+          System.out.println("BLUE : " + (int) (1000 * sample[2]));
+          Delay.msDelay(1000);
+      }
+  }
 }

@@ -10,20 +10,20 @@ public class ObstacleState extends BaseState {
 	
 	public ObstacleState() {
 		super();
-		this.stateName = StateName.OBSTACLE;
+		this.stateName = "Obstacle";
 	}
 	
 	@Override
 	public StateName handleState()
 			throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException, RobotErrorException {
 		
-		driveBackwardStraight(300, false);
-		turnLeft(150, false);
-		driveForwardStraight(600, false);
-		turnRight(150, false);
-		driveForwardStraight(800, false);
-		turnRight(150, false);
-		if (driveForwardStraight(1000, true)) {
+		driveBackwardStraight(400, false, true);
+		turnLeft(200, false, true);
+		driveForwardStraight(800, false, true);
+		turnRight(200, false, true);
+		driveForwardStraight(900, false, true);
+		turnRight(200, false, true);
+		if (driveForwardStraight(1000, true, true)) {
 			return StateName.FOLLOW_LINE;
 		} else {
 			throw new RobotErrorException("Robot can not find line after obstacle");

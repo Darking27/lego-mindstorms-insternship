@@ -12,17 +12,20 @@ public class SearchLineState extends BaseState {
 
     public SearchLineState() {
         super();
-        this.stateName = StateName.SEARCH_LINE;
+        this.stateName = "Search line";
     }
     
     @Override
     public StateName handleState() throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
+        if (driveForwardStraight(50, false, true)) {
+            return StateName.FOLLOW_LINE;
+        }
         if (searchLine(ENCODER_TURN_100, true)) {
             return StateName.FOLLOW_LINE;
         }
         // Maybe needs to search background first before follow line state
         if (searchLine(2 * ENCODER_TURN_100, false)) {
-            return StateName.FOLLOW_LINE;
+            return StateName.SEARCH_BACKGROUND_LEFT;
         }
         if (searchLine(ENCODER_TURN_100, true)) {
             return StateName.FOLLOW_LINE;
@@ -66,7 +69,7 @@ public class SearchLineState extends BaseState {
                 m2.stop(true);
             }
             
-            checkRobotInputs(sample);
+            checkRobotInputs(sample, true);
             
             double gray = AutoAdjustFilter.getGrayValue(sample);
             if (lineFound(gray)) {
