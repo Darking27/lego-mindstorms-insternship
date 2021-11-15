@@ -26,7 +26,7 @@ public class GraphPlotter {
 	}
 	
 	/**
-	 * Plot the first (SW-15) values of all lists contained in valueLists
+	 * Plot the first (SW-31) values of all lists contained in valueLists
 	 * 
 	 * @param valueLists
 	 * @param lowerBound	Lower end of y-axis
@@ -35,14 +35,15 @@ public class GraphPlotter {
 	public void plotValues(List<List<Float>> valueLists, int lowerBound, int upperBound) {
 		Logger.INSTANCE.disable();
 		g.clear();
-		g.drawLine(15, 0, 15, SH);
+		g.drawLine(30, 0, 30, SH);
 		g.setFont(Font.getSmallFont());
-		g.drawString(String.valueOf(lowerBound), 14, 1, GraphicsLCD.BOTTOM | GraphicsLCD.RIGHT);
-		g.drawString(String.valueOf(upperBound), 14, SH -1, GraphicsLCD.TOP | GraphicsLCD.RIGHT);
+		g.drawString(String.valueOf(lowerBound), 29, 1, GraphicsLCD.TOP | GraphicsLCD.RIGHT);
+		g.drawString(String.valueOf(upperBound), 29, SH -1, GraphicsLCD.BOTTOM | GraphicsLCD.RIGHT);
 		for (List<Float> list : valueLists) {
-			for (int i = 16; i < SW; i++) {
-				Float f = list.get(i-16);
-				g.setPixel(i, (int) ((f-lowerBound) * SH / upperBound), 1);
+			for (int i = 31; i < SW; i++) {
+				Float f = list.get(i-31);
+				int y = Math.max(0, Math.min(SW, (int) ((f-lowerBound) * SH / upperBound)));
+				g.setPixel(i, y, 1);
 			}
 		}
 		g.refresh();
