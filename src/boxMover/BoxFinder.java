@@ -45,7 +45,7 @@ public class BoxFinder implements ParcoursWalkable {
 		double boxDistanceThreshold = 30;
 
 		do {
-			if (Ports.ESCAPE_KEY.isDown()) {
+			if (Ports.ESCAPE.isDown()) {
 				return;
 			}
 
@@ -95,7 +95,7 @@ public class BoxFinder implements ParcoursWalkable {
 
 	private void rotateBack() {
 		while (Ports.LEFT_MOTOR.getTachoCount() > 0) {
-			if (Ports.ESCAPE_KEY.isDown()) {
+			if (Ports.ESCAPE.isDown()) {
 				return;
 			}
 			Ports.LEFT_MOTOR.rotate(-100, true);
