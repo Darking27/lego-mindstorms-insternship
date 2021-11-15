@@ -1,8 +1,8 @@
 package framework;
 
+import boxMover.BoxFinder;
 import boxMover.TestWalker;
 import boxMover.WallFollower;
-import lejos.hardware.BrickFinder;
 
 /**
  * Defines the different parcours Section
@@ -15,10 +15,11 @@ import lejos.hardware.BrickFinder;
  *
  */
 public enum ParcoursSection {
-	LINE_FOLLOW (new TestWalker()),
+	LINE_FOLLOW (new BoxFinder()),
 	BOX_MOVE (new WallFollower()),
 	BRIDGE  (new TestWalker()),
-	COLOR_SEARCH  (new TestWalker());
+	COLOR_SEARCH  (new TestWalker()),
+	BOX_FINDER (new BoxFinder());
 	
 	private final ParcoursWalkable walker;
 	

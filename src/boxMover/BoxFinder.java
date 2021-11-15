@@ -1,5 +1,6 @@
 package boxMover;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -8,6 +9,7 @@ import java.util.LinkedList;
 import framework.ParcoursWalkable;
 import framework.Ports;
 import framework.WalkableStatus;
+import lejos.utility.Delay;
 
 public class BoxFinder implements ParcoursWalkable {
 
@@ -19,16 +21,16 @@ public class BoxFinder implements ParcoursWalkable {
 
 	@Override
 	public WalkableStatus start_walking() {
-		lookInBoxDirection();
-		while (true) {
-			if (Ports.EnterKey.isDown()) {
-				return WalkableStatus.MENU;
-			}
-
-			if (Ports.EscapeKey.isDown()) {
-				return WalkableStatus.STOP;
-			}
+		while (!Ports.ESCAPE_KEY.isDown()) {
+			float[] ultrasonicSample = new float[Ports.ULTRASONIC_SENSOR.sampleSize()];
+			Ports.ULTRASONIC_SENSOR.fetchSample(ultrasonicSample, 0);
+			System.out.println(ultrasonicSample[0]);
+			return WalkableStatus.STOP;
 		}
+		
+		lookInBoxDirection();
+		Delay.msDelay(1000);
+		return WalkableStatus.FINISHED;
 	}
 
 	/**
@@ -39,10 +41,10 @@ public class BoxFinder implements ParcoursWalkable {
 		float[] rightTouchSample = new float[Ports.RIGHT_TOUCH_SENSOR.sampleSize()];
 
 		do {
-			if (Ports.EnterKey.isDown()) {
+			if (Ports.ENTER_KEY.isDown()) {
 				return WalkableStatus.MENU;
 			}
-			if (Ports.EscapeKey.isDown()) {
+			if (Ports.ESCAPE_KEY.isDown()) {
 				return WalkableStatus.STOP;
 			}
 			Ports.LEFT_TOUCH_SENSOR.fetchSample(leftTouchSample, 0);
@@ -63,27 +65,35 @@ public class BoxFinder implements ParcoursWalkable {
 		Ports.LEFT_MOTOR.resetTachoCount();
 		Collection<DistanceTachoTuple> distances = new LinkedList<DistanceTachoTuple>();
 		float[] ultrasonicSample = new float[Ports.ULTRASONIC_SENSOR.sampleSize()];
-		int search_radius = 1000;
+		int search_radius = 700;
 
-		Ports.LEFT_MOTOR.setSpeed(100);
-		Ports.LEFT_MOTOR.rotate(search_radius);
+		Ports.LEFT_MOTOR.setSpeed(300);
+		Ports.LEFT_MOTOR.rotate(search_radius, true);
 
+		// tilt the robot to the left, while moving measure distances
 		while (Ports.LEFT_MOTOR.isMoving()) {
 			Ports.ULTRASONIC_SENSOR.fetchSample(ultrasonicSample, 0);
-			Arrays.sort(ultrasonicSample);
-			double distance_median = ultrasonicSample[ultrasonicSample.length / 2];
+			double distance_median = ultrasonicSample[0];
+			
 			int tacho_count = Ports.LEFT_MOTOR.getTachoCount();
+			
 			distances.add(new DistanceTachoTuple(distance_median, tacho_count));
 		}
-
+		
+		System.out.println("it: " + distances.size());
+		System.out.println("max: " + new DecimalFormat("##.##").format(Collections.max(distances).dist));
+		System.out.println("min: " + new DecimalFormat("##.##").format(Collections.min(distances).dist));
+		
+		// get the lowest distances measured in the loop before
 		int rotateBack = Collections.min(distances).tacho;
 
+		// rotates to the lowest distance measured
 		while (Ports.LEFT_MOTOR.getTachoCount() >= rotateBack) {
 			Ports.LEFT_MOTOR.rotate(-100);
 		}
 		Ports.LEFT_MOTOR.stop();
 
-		System.out.println(Ports.LEFT_MOTOR.getTachoCount() + " --should be " + search_radius);
+		System.out.println(Ports.LEFT_MOTOR.getTachoCount() + " " + search_radius);
 	}
 
 	float median(float[] arr) {
@@ -101,9 +111,12 @@ public class BoxFinder implements ParcoursWalkable {
 			this.tacho = tacho;
 		}
 
+		/**
+		 * compare by distance only
+		 */
 		@Override
 		public int compareTo(DistanceTachoTuple o) {
-			return (int) (this.dist - o.dist);
+			return (int) (1000*(this.dist - o.dist));
 		}
 	}
 }
