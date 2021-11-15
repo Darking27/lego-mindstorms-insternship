@@ -3,6 +3,7 @@ package framework;
 import boxMover.BoxFinder;
 import boxMover.TestWalker;
 import boxMover.WallFollower;
+import bridgeFollower.BridgeFollower;
 import lineFollower.walker.stateMachine.LineFollowerController;
 
 /**
@@ -18,7 +19,7 @@ import lineFollower.walker.stateMachine.LineFollowerController;
 public enum ParcoursSection {
 	LINE_FOLLOW (new LineFollowerController()),
 	BOX_MOVE (new WallFollower()),
-	BRIDGE  (new TestWalker()),
+	BRIDGE  (new BridgeFollower()),
 	COLOR_SEARCH  (new TestWalker()),
 	BOX_FINDER (new BoxFinder());
 	
