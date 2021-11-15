@@ -1,4 +1,4 @@
-package other.lineFollowerTest;
+package lineFollower.v1_simple;
 
 import lejos.hardware.Brick;
 import lejos.hardware.Key;
@@ -9,7 +9,7 @@ import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.filter.AbstractFilter;
 
-public class LineFollower {
+public class LineFollowerV1 {
 
 	Brick brick;
 	SampleProvider redMode;
@@ -19,7 +19,7 @@ public class LineFollower {
 	RegulatedMotor leftMotor;
 	RegulatedMotor rightMotor;
 
-	public LineFollower(Brick brick, String colorSensorPort, String leftMotorPort, String rightMotorPort) {
+	public LineFollowerV1(Brick brick, String colorSensorPort, String leftMotorPort, String rightMotorPort) {
 		this.brick = brick;
 		Port sensorPort = brick.getPort(colorSensorPort);
 		this.colorSensor = new EV3ColorSensor(sensorPort);
