@@ -83,8 +83,13 @@ public class BridgeFollower implements ParcoursWalkable {
 					timer.stop();
 				}*/
 				if (leftMotor.getTachoCount() > 700) {
-					Logger.INSTANCE.log("left tacho -> turn");
-					setState(State.TURN_LEFT);
+					if (seeingEndRamp()) {
+						Logger.INSTANCE.log("left tacho, ramp -> short turn");
+						setState(State.TURN_LEFT_SHORT);
+					} else {
+						Logger.INSTANCE.log("left tacho -> long turn");
+						setState(State.TURN_LEFT);
+					}	
 				}
 				break;
 			case ROTATE_RIGHT:
@@ -109,6 +114,17 @@ public class BridgeFollower implements ParcoursWalkable {
 					setState(State.DRIVING_STRAIT);
 				}
 				break;
+			case TURN_LEFT_SHORT:
+				if (!isOnLine()) {
+					Logger.INSTANCE.log("Seing edge -> right");
+					setState(State.ROTATE_RIGHT);
+				}
+				if (leftMotor.getTachoCount() > 450) {
+					Logger.INSTANCE.log("left tacho -> straight");
+					setState(State.DRIVING_STRAIT);
+				}
+				break;
+				
 			default:
 				throw new IllegalArgumentException("state not valid");
 			}
@@ -126,7 +142,7 @@ public class BridgeFollower implements ParcoursWalkable {
 		switch (state) {
 		case DRIVING_LEFT:
 			leftMotor.setSpeed(300);
-			rightMotor.setSpeed(200);
+			rightMotor.setSpeed(150);
 			leftMotor.rotate(1000, true);
 			rightMotor.rotate(1000, true);
 			//timer.setDelay(2000);
@@ -147,6 +163,7 @@ public class BridgeFollower implements ParcoursWalkable {
 			leftMotor.rotate(3000, true);
 			rightMotor.rotate(3000, true);
 			break;
+		case TURN_LEFT_SHORT:
 		case TURN_LEFT:
 			leftMotor.setSpeed(500);
 			rightMotor.setSpeed(100);
@@ -154,7 +171,7 @@ public class BridgeFollower implements ParcoursWalkable {
 			rightMotor.rotate(4000, true);
 			//timer.setDelay(6000);
 			//timer.start();
-			break;
+			break;			
 		default:
 			throw new IllegalArgumentException("state not valid");
 		}
@@ -179,12 +196,22 @@ public class BridgeFollower implements ParcoursWalkable {
 	 * @return
 	 */
 	public boolean isOnLine() {
-		int sampleSize = 5;
+		int sampleSize = 1;
 		float[] sample = new float[sampleSize];
 		onTrackMode.fetchSample(sample, 0);
 		boolean onLine = sample[0] < 0.5f;
 		
 		// Logger.INSTANCE.log(onLine);
 		return onLine;
+	}
+	
+	public boolean seeingEndRamp() {
+		int sampleSize = 1;
+		float[] sample = new float[sampleSize];
+		onTrackMode.fetchSample(sample, 0);
+		boolean endRamp = sample[0] < -0.5f;
+		
+		// Logger.INSTANCE.log(onLine);
+		return endRamp;
 	}
 }
