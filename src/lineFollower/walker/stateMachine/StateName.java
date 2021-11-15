@@ -11,6 +11,7 @@ public enum StateName {
     OBSTACLE(new ObstacleState()),
     SEARCH_LINE(new SearchLineState()),
     FOLLOW_LINE(new FollowLineState()),
+    SEARCH_BACKGROUND_LEFT(new SearchBackgroundLeftState()),
     GAP(new GapState());
 	
 	private final BaseState state;
@@ -21,6 +22,7 @@ public enum StateName {
 	
 	public StateName handleState()
     		throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException, RobotErrorException {
+	    this.state.logCurrentState();
 		return this.state.handleState();
 	}
 }
