@@ -10,7 +10,7 @@ public class RGBColorSensor {
     private SampleProvider rgbMode;
     
     private RGBColorSensor() {
-        rgbMode = Ports.COLOR_SENSOR.getRGBMode();
+        rgbMode = Ports.COLOR_SENSOR.getColorIDMode();
     }
     
     public static RGBColorSensor getInstance() {
@@ -26,11 +26,13 @@ public class RGBColorSensor {
         
         rgbMode.fetchSample(sample, 0);
         
+        // System.out.println(sample[0]);
+        
 //        System.out.println("RED:   " + (int) (1000 * sample[0]));
 //        System.out.println("GREEN: " + (int) (1000 * sample[1]));
 //        System.out.println("BLUE:  " + (int) (1000 * sample[2]));
         
-        return (sample[0] * 2 < sample[2]);
+        return sample[0] == 1;
     }
     
     public static void main(String[] args) {
