@@ -76,12 +76,6 @@ public class BridgeFollower implements ParcoursWalkable {
 					Logger.INSTANCE.log("Seeing edge -> right");
 					setState(State.ROTATE_RIGHT);
 				}
-				/*if (timeout) {
-					Logger.INSTANCE.log("Timeout -> turn");
-					setState(State.TURN_LEFT);
-					timeout = false;
-					timer.stop();
-				}*/
 				if (leftMotor.getTachoCount() > 700) {
 					if (seeingEndRamp()) {
 						Logger.INSTANCE.log("left tacho, ramp -> short turn");
@@ -169,8 +163,6 @@ public class BridgeFollower implements ParcoursWalkable {
 			rightMotor.setSpeed(100);
 			leftMotor.rotate(4000, true);
 			rightMotor.rotate(4000, true);
-			//timer.setDelay(6000);
-			//timer.start();
 			break;			
 		default:
 			throw new IllegalArgumentException("state not valid");
@@ -200,8 +192,6 @@ public class BridgeFollower implements ParcoursWalkable {
 		float[] sample = new float[sampleSize];
 		onTrackMode.fetchSample(sample, 0);
 		boolean onLine = sample[0] < 0.5f;
-		
-		// Logger.INSTANCE.log(onLine);
 		return onLine;
 	}
 	
@@ -210,8 +200,6 @@ public class BridgeFollower implements ParcoursWalkable {
 		float[] sample = new float[sampleSize];
 		onTrackMode.fetchSample(sample, 0);
 		boolean endRamp = sample[0] < -0.5f;
-		
-		// Logger.INSTANCE.log(onLine);
 		return endRamp;
 	}
 }
