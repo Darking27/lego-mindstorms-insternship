@@ -2,6 +2,7 @@ package framework;
 
 import boxMover.TestWalker;
 import boxMover.WallFollower;
+import bridgeFollower.BridgeFollower;
 import lejos.hardware.BrickFinder;
 
 /**
@@ -17,7 +18,7 @@ import lejos.hardware.BrickFinder;
 public enum ParcoursSection {
 	LINE_FOLLOW (new TestWalker()),
 	BOX_MOVE (new TestWalker()),
-	BRIDGE  (new TestWalker()),
+	BRIDGE  (new BridgeFollower()),
 	COLOR_SEARCH  (new TestWalker());
 	
 	private final ParcoursWalkable walker;

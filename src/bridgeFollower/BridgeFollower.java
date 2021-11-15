@@ -4,13 +4,9 @@ import display.Logger;
 import framework.ParcoursWalkable;
 import framework.Ports;
 import framework.WalkableStatus;
-import lejos.hardware.Brick;
 import lejos.hardware.Key;
-import lejos.hardware.port.Port;
-import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
-import lejos.utility.Timer;
-import lejos.utility.TimerListener;
+import lejos.utility.Delay;
 
 /**
  * ParcoursWalkable for the bridge
@@ -33,10 +29,7 @@ public class BridgeFollower implements ParcoursWalkable {
 	public WalkableStatus start_walking() {
 		Key escape = Ports.BRICK.getKey("Escape");
 		Key enter = Ports.BRICK.getKey("Enter");
-
-		Ports.LEFT_MOTOR.setSpeed(600);
-		Ports.RIGHT_MOTOR.setSpeed(600);
-
+		
 		setState(State.DRIVING_STRAIT);
 
 		while (true) {
