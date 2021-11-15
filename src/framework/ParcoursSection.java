@@ -15,7 +15,7 @@ import boxMover.WallFollower;
  *
  */
 public enum ParcoursSection {
-	LINE_FOLLOW (new BoxFinder()),
+	LINE_FOLLOW (new TestWalker()),
 	BOX_MOVE (new WallFollower()),
 	BRIDGE  (new TestWalker()),
 	COLOR_SEARCH  (new TestWalker()),
