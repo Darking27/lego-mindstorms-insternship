@@ -15,6 +15,7 @@ public class LineFollowerController implements ParcoursWalkable {
 	
 	@Override
 	public WalkableStatus start_walking() {
+	    StateName state = StateName.START;
 		while (true) {
 			try {
 				state = state.handleState();
