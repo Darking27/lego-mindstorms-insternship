@@ -27,5 +27,10 @@ public enum State {
 	/*
 	 * We are driving on a smaller circle to the left until we meet the left edge again.
 	 */
-	TURN_LEFT
+	TURN_LEFT,
+	
+	/*
+	 * At the end of the bridge, when we see infinity
+	 */
+	TURN_LEFT_SHORT
 }
