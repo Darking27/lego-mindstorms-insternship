@@ -30,11 +30,24 @@ public class Framework {
 		WalkableStatus returnStatus = WalkableStatus.STARTING;
 
 		while (returnStatus != WalkableStatus.STOP) {
-			int start_index = chooseParcoursSection();
-			if (start_index == -1)
+			// int start_index = chooseParcoursSection();
+			ParcoursSection start_section = chooseParcoursSection();
+
+			if (start_section == null)
 				return;
 
+			int start_index = parcours_section_order.indexOf(start_section);
+			if (start_index == -1) {
+				start_section.start_walking();
+				return;
+			}
+
 			sectionsIterate: for (int i = start_index; i < parcours_section_order.size(); i++) {
+				while (Ports.ENTER.isDown()) {
+					if(Ports.ESCAPE.isDown()) {
+						return;
+					}
+				}
 				returnStatus = parcours_section_order.get(i).start_walking();
 
 				switch (returnStatus) {
@@ -55,7 +68,7 @@ public class Framework {
 	 *         so if the parcours is LINE -> BOX -> BRIDGE and the user chooses BOX
 	 *         this method returns 1
 	 */
-	private static int chooseParcoursSection() {
+	private static ParcoursSection chooseParcoursSection() {
 		// displays the menu with all entries from parcours Section
 		// when the given element is part of the parcours the correct start
 		// index is returned
@@ -75,13 +88,14 @@ public class Framework {
 		int pressed_index = textMenu.select();
 
 		if (pressed_index == -1)
-			return -1;
+			return null;
 
 		ParcoursSection start_section = ParcoursSection.valueOf(menuItems[pressed_index]);
 
 		display.clear();
 
-		return parcours_section_order.indexOf(start_section);
+		return start_section;
+		// return parcours_section_order.indexOf(start_section);
 
 	}
 }
