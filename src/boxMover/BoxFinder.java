@@ -20,7 +20,7 @@ public class BoxFinder implements ParcoursWalkable {
 	@Override
 	public WalkableStatus start_walking() {
 		lookInBoxDirection();
-		while(true) {
+		while (true) {
 			if (Ports.EnterKey.isDown()) {
 				return WalkableStatus.MENU;
 			}
@@ -30,14 +30,14 @@ public class BoxFinder implements ParcoursWalkable {
 			}
 		}
 	}
-	
+
 	/**
 	 * drives Forward until it hits the box
 	 */
 	private WalkableStatus driveForwad() {
 		float[] leftTouchSample = new float[Ports.LEFT_TOUCH_SENSOR.sampleSize()];
 		float[] rightTouchSample = new float[Ports.RIGHT_TOUCH_SENSOR.sampleSize()];
-		
+
 		do {
 			if (Ports.EnterKey.isDown()) {
 				return WalkableStatus.MENU;
@@ -46,9 +46,9 @@ public class BoxFinder implements ParcoursWalkable {
 				return WalkableStatus.STOP;
 			}
 			Ports.LEFT_TOUCH_SENSOR.fetchSample(leftTouchSample, 0);
-			Ports.RIGHT_TOUCH_SENSOR.fetchSample(rightTouchSample, 0);			
-		} while(median(leftTouchSample) < 0.5 && median(rightTouchSample) < 0.5);
-		
+			Ports.RIGHT_TOUCH_SENSOR.fetchSample(rightTouchSample, 0);
+		} while (median(leftTouchSample) < 0.5 && median(rightTouchSample) < 0.5);
+
 		return WalkableStatus.FINISHED;
 	}
 
@@ -78,16 +78,19 @@ public class BoxFinder implements ParcoursWalkable {
 
 		int rotateBack = Collections.min(distances).tacho;
 
-		Ports.LEFT_MOTOR.rotate(rotateBack - search_radius);
+		while (Ports.LEFT_MOTOR.getTachoCount() >= rotateBack) {
+			Ports.LEFT_MOTOR.rotate(-100);
+		}
+		Ports.LEFT_MOTOR.stop();
 
 		System.out.println(Ports.LEFT_MOTOR.getTachoCount() + " --should be " + search_radius);
 	}
 
 	float median(float[] arr) {
 		Arrays.sort(arr);
-		return arr[arr.length/2];
+		return arr[arr.length / 2];
 	}
-	
+
 	private class DistanceTachoTuple implements Comparable<DistanceTachoTuple> {
 
 		public final double dist;
