@@ -2,16 +2,11 @@ package bridgeFollower;
 
 import display.Logger;
 import framework.ParcoursWalkable;
+import framework.Ports;
 import framework.WalkableStatus;
-import lejos.hardware.Brick;
 import lejos.hardware.Key;
-import lejos.hardware.motor.EV3LargeRegulatedMotor;
-import lejos.hardware.port.Port;
-import lejos.hardware.sensor.EV3UltrasonicSensor;
-import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
-import lejos.utility.Timer;
-import lejos.utility.TimerListener;
+import lejos.utility.Delay;
 
 /**
  * ParcoursWalkable for the bridge
@@ -20,45 +15,22 @@ import lejos.utility.TimerListener;
  *
  */
 public class BridgeFollower implements ParcoursWalkable {
-	Brick brick;
 	SampleProvider distanceMode;
 	SampleProvider onTrackMode;
-	SampleProvider reflectedLight;
-	EV3UltrasonicSensor usSensor;
 
-	RegulatedMotor leftMotor;
-	RegulatedMotor rightMotor;
 	private State state;
-	private boolean timeout;
-	private Timer timer;
 
-	public BridgeFollower(Brick brick, String usSensorPort, String leftMotorPort, String rightMotorPort) {
-		this.brick = brick;
-		Port sensorPort = brick.getPort(usSensorPort);
-		this.usSensor = new EV3UltrasonicSensor(sensorPort);
-		this.distanceMode = usSensor.getDistanceMode();
+	public BridgeFollower() {
+		this.distanceMode = Ports.ULTRASONIC_SENSOR.getDistanceMode();
 		this.onTrackMode = new SimpleUltrasonic(distanceMode);
-
-		this.rightMotor = new EV3LargeRegulatedMotor(brick.getPort(rightMotorPort));
-		this.leftMotor = new EV3LargeRegulatedMotor(brick.getPort(leftMotorPort));
 	}
 	
 	@Override
 	public WalkableStatus start_walking() {
-		Key escape = brick.getKey("Escape");
-		Key enter = brick.getKey("Enter");
-
-		rightMotor.setSpeed(600);
-		leftMotor.setSpeed(600);
-
+		Key escape = Ports.BRICK.getKey("Escape");
+		Key enter = Ports.BRICK.getKey("Enter");
+		
 		setState(State.DRIVING_STRAIT);
-		timeout = false;
-		timer = new Timer(200, new TimerListener() {
-			@Override
-			public void timedOut() {
-				timeout = true;
-			}
-		});
 
 		while (true) {
 			// Handle keys
@@ -76,21 +48,17 @@ public class BridgeFollower implements ParcoursWalkable {
 					Logger.INSTANCE.log("Seeing edge -> right");
 					setState(State.ROTATE_RIGHT);
 				}
-				if (timeout) {
-					Logger.INSTANCE.log("Timeout -> turn");
-					setState(State.TURN_LEFT);
-					timeout = false;
-					timer.stop();
+				if (Ports.RIGHT_MOTOR.getTachoCount() > 700) {
+					if (seeingEndRamp()) {
+						Logger.INSTANCE.log("left tacho, ramp -> short turn");
+						setState(State.TURN_LEFT_SHORT);
+					} else {
+						Logger.INSTANCE.log("left tacho -> long turn");
+						setState(State.TURN_LEFT);
+					}	
 				}
 				break;
 			case ROTATE_RIGHT:
-				// Disable the timeout and test with bridge detection only
-				/*if (timeout) {
-					Logger.INSTANCE.log("Timeout -> left");
-					state = State.DRIVING_LEFT;
-					timeout = false;
-					timer.stop();
-				}*/
 				if (isOnLine()) {
 					Logger.INSTANCE.log("Seeing edge -> left");
 					setState(State.DRIVING_LEFT);
@@ -107,7 +75,22 @@ public class BridgeFollower implements ParcoursWalkable {
 					Logger.INSTANCE.log("Seing edge -> right");
 					setState(State.ROTATE_RIGHT);
 				}
+				if (Ports.RIGHT_MOTOR.getTachoCount() > 800) {
+					Logger.INSTANCE.log("left tacho -> straight");
+					setState(State.DRIVING_STRAIT);
+				}
 				break;
+			case TURN_LEFT_SHORT:
+				if (!isOnLine()) {
+					Logger.INSTANCE.log("Seing edge -> right");
+					setState(State.ROTATE_RIGHT);
+				}
+				if (Ports.RIGHT_MOTOR.getTachoCount() > 450) {
+					Logger.INSTANCE.log("left tacho -> straight");
+					setState(State.DRIVING_STRAIT);
+				}
+				break;
+				
 			default:
 				throw new IllegalArgumentException("state not valid");
 			}
@@ -119,38 +102,40 @@ public class BridgeFollower implements ParcoursWalkable {
 	
 	private void setState(State state) {
 		this.state = state;
+		Ports.RIGHT_MOTOR.resetTachoCount();
+		Ports.LEFT_MOTOR.resetTachoCount();
+		
 		switch (state) {
 		case DRIVING_LEFT:
-			leftMotor.setSpeed(300);
-			rightMotor.setSpeed(150);
-			leftMotor.rotate(1000, true);
-			rightMotor.rotate(1000, true);
-			timer.setDelay(400);
-			timer.start();
+			Ports.RIGHT_MOTOR.setSpeed(300);
+			Ports.LEFT_MOTOR.setSpeed(150);
+			Ports.RIGHT_MOTOR.rotate(1000, true);
+			Ports.LEFT_MOTOR.rotate(1000, true);
+			//timer.setDelay(2000);
+			//timer.start();
 			break;
 		case ROTATE_RIGHT:
-			leftMotor.setSpeed(0);
-			rightMotor.setSpeed(300);
-			leftMotor.rotate(1000, true);
-			rightMotor.rotate(1000, true);
-			//timer.setDelay(150);
-			//timer.start();
+			Ports.RIGHT_MOTOR.setSpeed(0);
+			Ports.LEFT_MOTOR.setSpeed(200);
+			Ports.RIGHT_MOTOR.rotate(1000, true);
+			Ports.LEFT_MOTOR.rotate(1000, true);
 			break;
 		case DRIVING_STRAIT:
 			/* Drive a little bit to the left.
 			 * This is needed to ensure that we do not fall off the right edge of the ramp.
 			 */
-			leftMotor.setSpeed(300);
-			rightMotor.setSpeed(250);
-			leftMotor.rotate(3000, true);
-			rightMotor.rotate(3000, true);
+			Ports.RIGHT_MOTOR.setSpeed(300);
+			Ports.LEFT_MOTOR.setSpeed(250);
+			Ports.RIGHT_MOTOR.rotate(3000, true);
+			Ports.LEFT_MOTOR.rotate(3000, true);
 			break;
+		case TURN_LEFT_SHORT:
 		case TURN_LEFT:
-			leftMotor.setSpeed(300);
-			rightMotor.setSpeed(100);
-			leftMotor.rotate(4000, true);
-			rightMotor.rotate(4000, true);
-			break;
+			Ports.RIGHT_MOTOR.setSpeed(500);
+			Ports.LEFT_MOTOR.setSpeed(100);
+			Ports.RIGHT_MOTOR.rotate(4000, true);
+			Ports.LEFT_MOTOR.rotate(4000, true);
+			break;			
 		default:
 			throw new IllegalArgumentException("state not valid");
 		}
@@ -175,12 +160,18 @@ public class BridgeFollower implements ParcoursWalkable {
 	 * @return
 	 */
 	public boolean isOnLine() {
-		int sampleSize = 5;
+		int sampleSize = 1;
 		float[] sample = new float[sampleSize];
 		onTrackMode.fetchSample(sample, 0);
 		boolean onLine = sample[0] < 0.5f;
-		
-		// Logger.INSTANCE.log(onLine);
 		return onLine;
+	}
+	
+	public boolean seeingEndRamp() {
+		int sampleSize = 1;
+		float[] sample = new float[sampleSize];
+		onTrackMode.fetchSample(sample, 0);
+		boolean endRamp = sample[0] < -0.5f;
+		return endRamp;
 	}
 }

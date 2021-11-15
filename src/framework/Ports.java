@@ -18,4 +18,5 @@ public class Ports {
 	public static final EV3UltrasonicSensor ULTRASONIC_SENSOR = new EV3UltrasonicSensor(BRICK.getPort("S3"));
 	public static final EV3ColorSensor COLOR_SENSOR = new EV3ColorSensor(BRICK.getPort("S1"));
 	public static final Key ENTER = BRICK.getKey("Enter");
+	public static final Key ESCAPE = BRICK.getKey("Escape");	
 }

@@ -21,7 +21,7 @@ public class TestWalker implements ParcoursWalkable {
 				return WalkableStatus.STOP;
 			}
 			
-			System.out.print(".");
+			System.out.println("TestWalker");
 		}
 	}
 
