@@ -43,7 +43,11 @@ public class Framework {
 			}
 
 			sectionsIterate: for (int i = start_index; i < parcours_section_order.size(); i++) {
-				Delay.msDelay(200); // delay to stop programm from directly stopping
+				while (Ports.ENTER.isDown()) {
+					if(Ports.ESCAPE.isDown()) {
+						return;
+					}
+				}
 				returnStatus = parcours_section_order.get(i).start_walking();
 
 				switch (returnStatus) {
