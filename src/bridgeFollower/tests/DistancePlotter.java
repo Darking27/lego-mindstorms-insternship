@@ -27,7 +27,7 @@ public class DistancePlotter {
 			}
 			LinkedList<List<Float>> lists = new LinkedList<>();
 			lists.add(values);
-			plotter.plotValues(lists, 0, 80);
+			plotter.plotValues(lists, 5, 30);
 			Delay.msDelay(100);
 		}
 

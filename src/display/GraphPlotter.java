@@ -43,7 +43,11 @@ public class GraphPlotter {
 			for (int i = 31; i < SW; i++) {
 				Float f = list.get(i-31);
 				int y = Math.max(0, Math.min(SW, (int) ((f-lowerBound) * SH / upperBound)));
-				g.setPixel(i, y, 1);
+				if (f == Float.POSITIVE_INFINITY) {
+					g.drawLine(i, 1, i, SH-1);
+				} else {
+					g.setPixel(i, y, 1);
+				}
 			}
 		}
 		g.refresh();

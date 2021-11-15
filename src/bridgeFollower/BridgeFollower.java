@@ -76,21 +76,18 @@ public class BridgeFollower implements ParcoursWalkable {
 					Logger.INSTANCE.log("Seeing edge -> right");
 					setState(State.ROTATE_RIGHT);
 				}
-				if (timeout) {
+				/*if (timeout) {
 					Logger.INSTANCE.log("Timeout -> turn");
 					setState(State.TURN_LEFT);
 					timeout = false;
 					timer.stop();
+				}*/
+				if (leftMotor.getTachoCount() > 700) {
+					Logger.INSTANCE.log("left tacho -> turn");
+					setState(State.TURN_LEFT);
 				}
 				break;
 			case ROTATE_RIGHT:
-				// Disable the timeout and test with bridge detection only
-				/*if (timeout) {
-					Logger.INSTANCE.log("Timeout -> left");
-					state = State.DRIVING_LEFT;
-					timeout = false;
-					timer.stop();
-				}*/
 				if (isOnLine()) {
 					Logger.INSTANCE.log("Seeing edge -> left");
 					setState(State.DRIVING_LEFT);
@@ -107,6 +104,10 @@ public class BridgeFollower implements ParcoursWalkable {
 					Logger.INSTANCE.log("Seing edge -> right");
 					setState(State.ROTATE_RIGHT);
 				}
+				if (leftMotor.getTachoCount() > 800) {
+					Logger.INSTANCE.log("left tacho -> straight");
+					setState(State.DRIVING_STRAIT);
+				}
 				break;
 			default:
 				throw new IllegalArgumentException("state not valid");
@@ -119,22 +120,23 @@ public class BridgeFollower implements ParcoursWalkable {
 	
 	private void setState(State state) {
 		this.state = state;
+		leftMotor.resetTachoCount();
+		rightMotor.resetTachoCount();
+		
 		switch (state) {
 		case DRIVING_LEFT:
 			leftMotor.setSpeed(300);
-			rightMotor.setSpeed(150);
+			rightMotor.setSpeed(200);
 			leftMotor.rotate(1000, true);
 			rightMotor.rotate(1000, true);
-			timer.setDelay(400);
-			timer.start();
+			//timer.setDelay(2000);
+			//timer.start();
 			break;
 		case ROTATE_RIGHT:
 			leftMotor.setSpeed(0);
-			rightMotor.setSpeed(300);
+			rightMotor.setSpeed(200);
 			leftMotor.rotate(1000, true);
 			rightMotor.rotate(1000, true);
-			//timer.setDelay(150);
-			//timer.start();
 			break;
 		case DRIVING_STRAIT:
 			/* Drive a little bit to the left.
@@ -146,10 +148,12 @@ public class BridgeFollower implements ParcoursWalkable {
 			rightMotor.rotate(3000, true);
 			break;
 		case TURN_LEFT:
-			leftMotor.setSpeed(300);
+			leftMotor.setSpeed(500);
 			rightMotor.setSpeed(100);
 			leftMotor.rotate(4000, true);
 			rightMotor.rotate(4000, true);
+			//timer.setDelay(6000);
+			//timer.start();
 			break;
 		default:
 			throw new IllegalArgumentException("state not valid");
