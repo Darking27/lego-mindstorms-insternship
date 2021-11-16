@@ -5,6 +5,7 @@ import boxMover.TestWalker;
 import boxMover.WallFollower;
 import bridgeFollower.BridgeFollower;
 import lineFollower.stateMachine.LineFollowerController;
+import markerSearcher.MarkerSearcher;
 
 /**
  * Defines the different parcours Section
@@ -20,7 +21,7 @@ public enum ParcoursSection {
 	LINE_FOLLOW (new LineFollowerController()),
 	BOX_MOVE (new WallFollower()),
 	BRIDGE  (new BridgeFollower()),
-	COLOR_SEARCH  (new TestWalker()),
+	COLOR_SEARCH  (new MarkerSearcher()),
 	BOX_FINDER (new BoxFinder());
 	
 	private final ParcoursWalkable walker;
