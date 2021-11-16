@@ -34,12 +34,4 @@ public class RGBColorSensor {
         
         return sample[0] == 1;
     }
-    
-    public static void main(String[] args) {
-        RGBColorSensor s = RGBColorSensor.getInstance();
-        while(!Ports.ENTER.isDown()) {
-            s.isFinishLine();
-            Delay.msDelay(1000);
-        }
-    }
 }
