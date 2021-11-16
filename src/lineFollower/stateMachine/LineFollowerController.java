@@ -1,12 +1,12 @@
-package lineFollower.walker.stateMachine;
+package lineFollower.stateMachine;
 
+import exceptions.FinishLineException;
+import exceptions.ProcessInteruptedEnterException;
+import exceptions.RobotCollisionException;
+import exceptions.RobotErrorException;
 import framework.ParcoursWalkable;
 import framework.WalkableStatus;
 import lejos.utility.Delay;
-import lineFollower.walker.stateMachine.exceptions.FinishLineException;
-import lineFollower.walker.stateMachine.exceptions.ProcessInteruptedEnterException;
-import lineFollower.walker.stateMachine.exceptions.RobotCollisionException;
-import lineFollower.walker.stateMachine.exceptions.RobotErrorException;
 
 public class LineFollowerController implements ParcoursWalkable {
 	

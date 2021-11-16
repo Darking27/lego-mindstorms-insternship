@@ -1,17 +1,16 @@
-package lineFollower.walker.stateMachine.exceptions;
+package exceptions;
 
-public class ProcessInteruptedEnterException extends Exception {
+public class RobotCollisionException extends Exception {
 
     private static final long serialVersionUID = 1L;
     
     String message;
     
-    public ProcessInteruptedEnterException(String message) {
+    public RobotCollisionException(String message) {
         this.message = message;
     }
     
     public String getMessage() {
         return this.message;
     }
-
 }

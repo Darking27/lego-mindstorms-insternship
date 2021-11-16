@@ -1,16 +1,17 @@
-package lineFollower.walker.stateMachine.exceptions;
+package exceptions;
 
-public class FinishLineException extends Exception {
-
+public class RobotErrorException extends Exception {
+	
 	private static final long serialVersionUID = 1L;
     
     String message;
     
-    public FinishLineException(String message) {
+    public RobotErrorException(String message) {
         this.message = message;
     }
     
     public String getMessage() {
         return this.message;
     }
+
 }

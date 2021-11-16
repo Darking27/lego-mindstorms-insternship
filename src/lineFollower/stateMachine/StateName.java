@@ -1,10 +1,10 @@
-package lineFollower.walker.stateMachine;
+package lineFollower.stateMachine;
 
-import lineFollower.walker.stateMachine.exceptions.FinishLineException;
-import lineFollower.walker.stateMachine.exceptions.ProcessInteruptedEnterException;
-import lineFollower.walker.stateMachine.exceptions.RobotCollisionException;
-import lineFollower.walker.stateMachine.exceptions.RobotErrorException;
-import lineFollower.walker.stateMachine.states.*;
+import exceptions.FinishLineException;
+import exceptions.ProcessInteruptedEnterException;
+import exceptions.RobotCollisionException;
+import exceptions.RobotErrorException;
+import lineFollower.stateMachine.states.*;
 
 public enum StateName {
     START(new StartState()),

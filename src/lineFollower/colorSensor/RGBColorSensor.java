@@ -1,4 +1,4 @@
-package lineFollower.walker.colorSensor;
+package lineFollower.colorSensor;
 
 import framework.Ports;
 import lejos.robotics.SampleProvider;

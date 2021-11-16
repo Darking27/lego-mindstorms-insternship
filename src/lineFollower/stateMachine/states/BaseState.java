@@ -1,16 +1,16 @@
-package lineFollower.walker.stateMachine.states;
+package lineFollower.stateMachine.states;
 
+import exceptions.FinishLineException;
+import exceptions.ProcessInteruptedEnterException;
+import exceptions.RobotCollisionException;
+import exceptions.RobotErrorException;
 import framework.Ports;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
-import lineFollower.walker.colorSensor.AutoAdjustFilter;
-import lineFollower.walker.colorSensor.RGBColorSensor;
-import lineFollower.walker.stateMachine.StateName;
-import lineFollower.walker.stateMachine.TextRescources;
-import lineFollower.walker.stateMachine.exceptions.FinishLineException;
-import lineFollower.walker.stateMachine.exceptions.ProcessInteruptedEnterException;
-import lineFollower.walker.stateMachine.exceptions.RobotCollisionException;
-import lineFollower.walker.stateMachine.exceptions.RobotErrorException;
+import lineFollower.colorSensor.AutoAdjustFilter;
+import lineFollower.colorSensor.RGBColorSensor;
+import lineFollower.stateMachine.StateName;
+import lineFollower.stateMachine.TextRescources;
 
 public abstract class BaseState {
     

@@ -4,7 +4,7 @@ import boxMover.BoxFinder;
 import boxMover.TestWalker;
 import boxMover.WallFollower;
 import bridgeFollower.BridgeFollower;
-import lineFollower.walker.stateMachine.LineFollowerController;
+import lineFollower.stateMachine.LineFollowerController;
 
 /**
  * Defines the different parcours Section

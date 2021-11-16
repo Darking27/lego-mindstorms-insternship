@@ -1,4 +1,4 @@
-package lineFollower.walker.stateMachine;
+package lineFollower.stateMachine;
 
 public enum TextRescources {
 
