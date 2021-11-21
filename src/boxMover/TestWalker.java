@@ -21,5 +21,4 @@ public class TestWalker implements ParcoursWalkable {
 			System.out.println("Testwalker is walking");
 		}
 	}
-
 }

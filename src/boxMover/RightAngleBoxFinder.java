@@ -26,16 +26,7 @@ public class RightAngleBoxFinder implements ParcoursWalkable {
 	}
 	
 	@Override
-	public WalkableStatus start_walking() {
-		try {
-			moveBox();
-		} catch (KeyPressedException e) {
-			return e.getStatus();
-		}
-		return WalkableStatus.FINISHED;
-	}
-	
-	private void moveBox() throws KeyPressedException{
+	public WalkableStatus start_walking() throws KeyPressedException{
 		boolean boxFound = false;
 
 		while (!boxFound) {
@@ -66,5 +57,6 @@ public class RightAngleBoxFinder implements ParcoursWalkable {
 		} while (lTouchSample[0] < 0.5 && rTouchSample[0] < 0.5);
 
 		MoveUtils.driveStraight(2000); // drive box into the back corner
+		return WalkableStatus.FINISHED;
 	}
 }

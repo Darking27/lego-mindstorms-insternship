@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import exception.KeyPressedException;
 import lejos.hardware.Brick;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Key;
@@ -38,7 +39,11 @@ public class Framework {
 
 			int start_index = parcours_section_order.indexOf(start_section);
 			if (start_index == -1) {
-				start_section.start_walking();
+				try {
+					returnStatus = start_section.start_walking();
+				} catch (KeyPressedException e) {
+					return;
+				}
 				return;
 			}
 
@@ -48,7 +53,12 @@ public class Framework {
 						return;
 					}
 				}
-				returnStatus = parcours_section_order.get(i).start_walking();
+				try {
+					returnStatus = parcours_section_order.get(i).start_walking();
+				} catch (KeyPressedException e) {
+					returnStatus = e.getStatus();
+				}
+				
 
 				switch (returnStatus) {
 				case MENU:

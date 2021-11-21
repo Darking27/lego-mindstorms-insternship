@@ -3,6 +3,7 @@ package framework;
 import boxMover.RightAngleBoxFinder;
 import boxMover.WallFollower;
 import bridgeFollower.BridgeFollower;
+import exception.KeyPressedException;
 import lineFollower.stateMachine.LineFollowerController;
 import markerSearcher.MarkerSearcher;
 
@@ -30,7 +31,7 @@ public enum ParcoursSection {
 		this.walker = walker;
 	}
 	
-	public WalkableStatus start_walking() {
+	public WalkableStatus start_walking() throws KeyPressedException{
 		return this.walker.start_walking();
 	}
 }

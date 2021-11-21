@@ -1,5 +1,7 @@
 package framework;
 
+import exception.KeyPressedException;
+
 /**
  * Interface for all Parcours Walkers (LineFollower, etc)
  * 
@@ -11,5 +13,5 @@ package framework;
  *
  */
 public interface ParcoursWalkable {
-	public WalkableStatus start_walking();
+	public WalkableStatus start_walking() throws KeyPressedException;
 }
