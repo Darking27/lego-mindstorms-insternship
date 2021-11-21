@@ -3,6 +3,7 @@ package boxMover;
 import exception.KeyPressedException;
 import framework.ParcoursWalkable;
 import framework.Ports;
+import framework.RobotUtils;
 import framework.WalkableStatus;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.filter.MedianFilter;
@@ -30,23 +31,23 @@ public class RightAngleBoxFinder implements ParcoursWalkable {
 		boolean boxFound = false;
 
 		while (!boxFound) {
-			MoveUtils.turn90DegreesRight();
+			RobotUtils.turn90DegreesRight();
 
 			float maxBoxDistance = 40;
 			ultrasonicSampleProvider.fetchSample(uSample, 0);
 			boxFound = uSample[0] < maxBoxDistance;
 
-			MoveUtils.turnToNeutralTacho();
+			RobotUtils.turnToNeutralTacho();
 
-			MoveUtils.driveStraight(150);
+			RobotUtils.driveStraight(150);
 		}
 
-		MoveUtils.driveStraight(1000); // move box to the right wall
+		RobotUtils.driveStraight(1000); // move box to the right wall
 
-		MoveUtils.driveStraight(-100); // navigate around the box
-		MoveUtils.turn90DegreesRight();
-		MoveUtils.driveStraight(500);
-		MoveUtils.turn90DegreesLeft();
+		RobotUtils.driveStraight(-100); // navigate around the box
+		RobotUtils.turn90DegreesRight();
+		RobotUtils.driveStraight(500);
+		RobotUtils.turn90DegreesLeft();
 
 		do {
 			Ports.LEFT_MOTOR.rotate(100, true); // drive to the wall
@@ -56,7 +57,7 @@ public class RightAngleBoxFinder implements ParcoursWalkable {
 			rightTouchSampleProvider.fetchSample(lTouchSample, 0);
 		} while (lTouchSample[0] < 0.5 && rTouchSample[0] < 0.5);
 
-		MoveUtils.driveStraight(2000); // drive box into the back corner
+		RobotUtils.driveStraight(2000); // drive box into the back corner
 		return WalkableStatus.FINISHED;
 	}
 }

@@ -1,11 +1,10 @@
-package boxMover;
+package framework;
 
 import exception.MenuException;
 import exception.KeyPressedException;
 import exception.StopException;
-import framework.Ports;
 
-public final class MoveUtils {
+public final class RobotUtils {
 
 	public static void turn90DegreesRight() throws KeyPressedException {
 		int rotation = 300;
@@ -17,7 +16,7 @@ public final class MoveUtils {
 		Ports.LEFT_MOTOR.rotate(rotation, true);
 		Ports.RIGHT_MOTOR.rotate(-rotation, true);
 
-		checkKeyPress();
+		checkForKeyPress();
 
 		Ports.LEFT_MOTOR.stop(true);
 		Ports.RIGHT_MOTOR.stop(false);
@@ -33,7 +32,7 @@ public final class MoveUtils {
 		Ports.LEFT_MOTOR.rotate(-rotation, true);
 		Ports.RIGHT_MOTOR.rotate(rotation, true);
 
-		checkKeyPress();
+		checkForKeyPress();
 
 		Ports.LEFT_MOTOR.stop(true);
 		Ports.RIGHT_MOTOR.stop(false);
@@ -50,7 +49,7 @@ public final class MoveUtils {
 		Ports.LEFT_MOTOR.rotate(-rotationLeft, true);
 		Ports.RIGHT_MOTOR.rotate(-rotationRight, true);
 
-		checkKeyPress();
+		checkForKeyPress();
 
 		Ports.LEFT_MOTOR.stop(true);
 		Ports.RIGHT_MOTOR.stop(false);
@@ -66,13 +65,13 @@ public final class MoveUtils {
 		Ports.LEFT_MOTOR.rotate(rotation, true);
 		Ports.RIGHT_MOTOR.rotate(rotation, true);
 
-		checkKeyPress();
+		checkForKeyPress();
 
 		Ports.LEFT_MOTOR.stop(true);
 		Ports.RIGHT_MOTOR.stop(false);
 	}
 
-	private static void checkKeyPress() throws KeyPressedException {
+	public static void checkForKeyPress() throws KeyPressedException {
 		while (Ports.LEFT_MOTOR.isMoving() || Ports.RIGHT_MOTOR.isMoving()) {
 			if (Ports.ESCAPE.isDown())
 				throw new StopException();

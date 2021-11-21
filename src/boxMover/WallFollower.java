@@ -1,8 +1,10 @@
 package boxMover;
 
 
+import exception.KeyPressedException;
 import framework.ParcoursWalkable;
 import framework.Ports;
+import framework.RobotUtils;
 import framework.WalkableStatus;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.filter.MedianFilter;
@@ -22,16 +24,13 @@ public class WallFollower implements ParcoursWalkable {
 	}
 
 	@Override
-	public WalkableStatus start_walking() {
+	public WalkableStatus start_walking() throws KeyPressedException{
 		Ports.LEFT_MOTOR.setSpeed(300);
 		Ports.RIGHT_MOTOR.setSpeed(310); // different speed: slowly drift to the left wall
 
 		boolean nearTheBackWall = false;
 		while (!nearTheBackWall) {
-			if (Ports.ESCAPE.isDown())
-				return WalkableStatus.STOP;
-			if (Ports.ENTER.isDown())
-				return WalkableStatus.MENU;
+			RobotUtils.checkForKeyPress();
 
 			leftTouchSampleProvider.fetchSample(lTouchSample, 0);
 			if (lTouchSample[0] > 0.5) {  // turn a bit right when the left touch sensor is pressed
