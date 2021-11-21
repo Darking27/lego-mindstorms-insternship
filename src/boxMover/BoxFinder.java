@@ -44,10 +44,8 @@ public class BoxFinder implements ParcoursWalkable {
 		
 		double boxDistanceThreshold = 0.30;
 		
-		Ports.LEFT_MOTOR.resetTachoCount();
-		
 		do {
-			rotateBack(); //rotates left
+			
 			
 			if (Ports.ESCAPE.isDown()) {
 				return;
@@ -59,19 +57,21 @@ public class BoxFinder implements ParcoursWalkable {
 			distanceTuple = searchBox(); //rotates right
 
 			System.out.println(distanceTuple.dist);
+			
+			rotateBack(); //rotates left
 		} while (distanceTuple.dist > boxDistanceThreshold);
 		
 		Ports.LEFT_MOTOR.stop(true);
 		Ports.RIGHT_MOTOR.stop(true);
 		
-		System.out.println("Box found now rotating back to the closest position");
-		while (distanceTuple.tacho > Ports.LEFT_MOTOR.getTachoCount()) {
+		System.out.println("found--rotate back");
+		while (distanceTuple.tacho < Ports.LEFT_MOTOR.getTachoCount()) {
 
 			if (Ports.ESCAPE.isDown()) {
 				return;
 			}
 
-			Ports.LEFT_MOTOR.rotate(-100, true);
+			Ports.LEFT_MOTOR.rotate(100, true);
 		}
 		Ports.LEFT_MOTOR.stop(true);
 		Ports.RIGHT_MOTOR.stop(true);
