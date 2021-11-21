@@ -1,6 +1,7 @@
 package bridgeFollower.tests;
 
 import bridgeFollower.BridgeFollower;
+import exception.KeyPressedException;
 import lejos.hardware.Brick;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Key;
@@ -16,7 +17,12 @@ public class BrigdeFollowerTest {
         BridgeFollower lineFollower = new BridgeFollower();
         
         System.out.println("Following Line");
-        lineFollower.start_walking();
+        try {
+			lineFollower.start_walking();
+		} catch (KeyPressedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
 }

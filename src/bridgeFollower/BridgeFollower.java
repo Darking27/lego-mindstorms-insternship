@@ -1,6 +1,7 @@
 package bridgeFollower;
 
 import display.Logger;
+import exception.KeyPressedException;
 import framework.ParcoursWalkable;
 import framework.Ports;
 import framework.WalkableStatus;
@@ -17,6 +18,8 @@ import lejos.utility.Delay;
 public class BridgeFollower implements ParcoursWalkable {
 	SampleProvider distanceMode;
 	SampleProvider onTrackMode;
+	SampleProvider leftTouch = Ports.LEFT_TOUCH_SENSOR.getTouchMode();
+	SampleProvider rightTouch = Ports.RIGHT_TOUCH_SENSOR.getTouchMode();
 
 	private BridgeFollowerState state;
 
@@ -26,7 +29,7 @@ public class BridgeFollower implements ParcoursWalkable {
 	}
 	
 	@Override
-	public WalkableStatus start_walking() {
+	public WalkableStatus start_walking() throws KeyPressedException {
 		Key escape = Ports.BRICK.getKey("Escape");
 		Key enter = Ports.BRICK.getKey("Enter");
 		
@@ -39,6 +42,11 @@ public class BridgeFollower implements ParcoursWalkable {
 			}
 			if (enter.isDown()) {
 				return WalkableStatus.MENU;
+			}
+			
+			// Handle obstacle
+			if (touchLeft() || touchRight()) {
+				return new TunnelFinder().start_walking();
 			}
 			
 			// Switch states if necessary
@@ -173,5 +181,17 @@ public class BridgeFollower implements ParcoursWalkable {
 		onTrackMode.fetchSample(sample, 0);
 		boolean endRamp = sample[0] < -0.5f;
 		return endRamp;
+	}
+	
+	private boolean touchLeft() {
+		float[] sample = new float[1];
+		leftTouch.fetchSample(sample, 0);
+		return sample[0] > .5f;
+	}
+	
+	private boolean touchRight() {
+		float[] sample = new float[1];
+		rightTouch.fetchSample(sample, 0);
+		return sample[0] > .5f;
 	}
 }
