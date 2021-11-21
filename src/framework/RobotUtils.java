@@ -7,9 +7,12 @@ import exception.StopException;
 public final class RobotUtils {
 
 	public static void turn90DegreesRight() throws KeyPressedException {
-		int rotation = 300;
-		int speed = 360;
-
+		turnDegreesRight(90, 360);
+	}
+	
+	public static void turnDegreesRight(int degrees, int speed) throws KeyPressedException {
+		int rotation = 300 * degrees / 90;
+		
 		Ports.LEFT_MOTOR.setSpeed(speed);
 		Ports.RIGHT_MOTOR.setSpeed(speed);
 
@@ -23,19 +26,7 @@ public final class RobotUtils {
 	}
 
 	public static void turn90DegreesLeft() throws KeyPressedException {
-		int rotation = 300;
-		int speed = 360;
-
-		Ports.LEFT_MOTOR.setSpeed(speed);
-		Ports.RIGHT_MOTOR.setSpeed(speed);
-
-		Ports.LEFT_MOTOR.rotate(-rotation, true);
-		Ports.RIGHT_MOTOR.rotate(rotation, true);
-
-		checkForKeyPress();
-
-		Ports.LEFT_MOTOR.stop(true);
-		Ports.RIGHT_MOTOR.stop(false);
+		turnDegreesRight(-90, 360);
 	}
 
 	public static void turnToNeutralTacho() throws KeyPressedException {
