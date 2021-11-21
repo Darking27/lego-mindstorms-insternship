@@ -6,9 +6,9 @@ import framework.WalkableStatus;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.filter.MedianFilter;
 
-public class BoxFinder2 implements ParcoursWalkable {
+public class AltBoxFinder implements ParcoursWalkable {
 	
-	public BoxFinder2() {
+	public AltBoxFinder() {
 		Ports.LEFT_TOUCH_SENSOR.setCurrentMode("Touch");
 		Ports.RIGHT_TOUCH_SENSOR.setCurrentMode("Touch");
 		Ports.ULTRASONIC_SENSOR.setCurrentMode("Distance");
