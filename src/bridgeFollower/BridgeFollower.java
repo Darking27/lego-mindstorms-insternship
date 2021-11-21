@@ -18,7 +18,7 @@ public class BridgeFollower implements ParcoursWalkable {
 	SampleProvider distanceMode;
 	SampleProvider onTrackMode;
 
-	private State state;
+	private BridgeFollowerState state;
 
 	public BridgeFollower() {
 		this.distanceMode = Ports.ULTRASONIC_SENSOR.getDistanceMode();
@@ -30,7 +30,7 @@ public class BridgeFollower implements ParcoursWalkable {
 		Key escape = Ports.BRICK.getKey("Escape");
 		Key enter = Ports.BRICK.getKey("Enter");
 		
-		setState(State.DRIVING_STRAIT);
+		setState(BridgeFollowerState.DRIVING_STRAIT);
 
 		while (true) {
 			// Handle keys
@@ -46,48 +46,48 @@ public class BridgeFollower implements ParcoursWalkable {
 			case DRIVING_LEFT:
 				if (!isOnLine()) {
 					Logger.INSTANCE.log("Seeing edge -> right");
-					setState(State.ROTATE_RIGHT);
+					setState(BridgeFollowerState.ROTATE_RIGHT);
 				}
 				if (Ports.RIGHT_MOTOR.getTachoCount() > 700) {
 					if (seeingEndRamp()) {
 						Logger.INSTANCE.log("left tacho, ramp -> short turn");
-						setState(State.TURN_LEFT_SHORT);
+						setState(BridgeFollowerState.TURN_LEFT_SHORT);
 					} else {
 						Logger.INSTANCE.log("left tacho -> long turn");
-						setState(State.TURN_LEFT);
+						setState(BridgeFollowerState.TURN_LEFT);
 					}	
 				}
 				break;
 			case ROTATE_RIGHT:
 				if (isOnLine()) {
 					Logger.INSTANCE.log("Seeing edge -> left");
-					setState(State.DRIVING_LEFT);
+					setState(BridgeFollowerState.DRIVING_LEFT);
 				}
 				break;
 			case DRIVING_STRAIT:
 				if (!isOnLine()) {
 					Logger.INSTANCE.log("Seeing edge -> right");
-					setState(State.ROTATE_RIGHT);
+					setState(BridgeFollowerState.ROTATE_RIGHT);
 				}
 				break;
 			case TURN_LEFT:
 				if (!isOnLine()) {
 					Logger.INSTANCE.log("Seing edge -> right");
-					setState(State.ROTATE_RIGHT);
+					setState(BridgeFollowerState.ROTATE_RIGHT);
 				}
 				if (Ports.RIGHT_MOTOR.getTachoCount() > 800) {
 					Logger.INSTANCE.log("left tacho -> straight");
-					setState(State.DRIVING_STRAIT);
+					setState(BridgeFollowerState.DRIVING_STRAIT);
 				}
 				break;
 			case TURN_LEFT_SHORT:
 				if (!isOnLine()) {
 					Logger.INSTANCE.log("Seing edge -> right");
-					setState(State.ROTATE_RIGHT);
+					setState(BridgeFollowerState.ROTATE_RIGHT);
 				}
 				if (Ports.RIGHT_MOTOR.getTachoCount() > 450) {
 					Logger.INSTANCE.log("left tacho -> straight");
-					setState(State.DRIVING_STRAIT);
+					setState(BridgeFollowerState.DRIVING_STRAIT);
 				}
 				break;
 				
@@ -100,7 +100,7 @@ public class BridgeFollower implements ParcoursWalkable {
 		// return WalkableStatus.FINISHED;
 	}
 	
-	private void setState(State state) {
+	private void setState(BridgeFollowerState state) {
 		this.state = state;
 		Ports.RIGHT_MOTOR.resetTachoCount();
 		Ports.LEFT_MOTOR.resetTachoCount();

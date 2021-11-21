@@ -6,7 +6,7 @@ package bridgeFollower;
  * @author Niklas Arlt
  *
  */
-public enum State {
+public enum BridgeFollowerState {
 	/*
 	 * We are driving up the ramp, a bit to the left to get to the left edge.
 	 */
