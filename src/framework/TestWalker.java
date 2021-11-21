@@ -1,8 +1,5 @@
-package boxMover;
+package framework;
 
-import framework.ParcoursWalkable;
-import framework.Ports;
-import framework.WalkableStatus;
 import lejos.hardware.Brick;
 import lejos.hardware.BrickFinder;
 import lejos.utility.Delay;
