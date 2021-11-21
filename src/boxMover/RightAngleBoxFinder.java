@@ -49,15 +49,15 @@ public class RightAngleBoxFinder implements ParcoursWalkable {
 			MoveUtils.driveStraight(500);
 			MoveUtils.turn90DegreesLeft();
 
-			do {  							// drive to the wall
-				Ports.LEFT_MOTOR.rotate(100, true);
+			do {
+				Ports.LEFT_MOTOR.rotate(100, true); // drive to the wall
 				Ports.RIGHT_MOTOR.rotate(100, true);
 
 				leftTouchSampleProvider.fetchSample(lTouchSample, 0);
 				rightTouchSampleProvider.fetchSample(lTouchSample, 0);
 			} while (lTouchSample[0] < 0.5 && rTouchSample[0] < 0.5);
-			
-			MoveUtils.driveStraight(2000); // drive box to other part of the wall
+
+			MoveUtils.driveStraight(2000); // drive box into the back corner
 
 		} catch (KeyPressedException e) {
 			return e.getStatus();

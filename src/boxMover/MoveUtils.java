@@ -67,12 +67,12 @@ public final class MoveUtils {
 		Ports.RIGHT_MOTOR.rotate(rotation, true);
 
 		checkKeyPress();
-		
+
 		Ports.LEFT_MOTOR.stop(true);
 		Ports.RIGHT_MOTOR.stop(false);
 	}
-	
-	private static void checkKeyPress() throws KeyPressedException{
+
+	private static void checkKeyPress() throws KeyPressedException {
 		while (Ports.LEFT_MOTOR.isMoving() || Ports.RIGHT_MOTOR.isMoving()) {
 			if (Ports.ESCAPE.isDown())
 				throw new StopException();
