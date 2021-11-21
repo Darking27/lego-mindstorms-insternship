@@ -19,7 +19,7 @@ public class RightAngleBoxFinder implements ParcoursWalkable {
 	public RightAngleBoxFinder() {
 		uSample = new float[1];
 		rTouchSample = new float[1];
-		uSample = new float[1];
+		lTouchSample = new float[1];
 		ultrasonicSampleProvider = new MedianFilter(Ports.ULTRASONIC_SENSOR.getDistanceMode(), 5);
 		leftTouchSampleProvider = new MedianFilter(Ports.LEFT_TOUCH_SENSOR.getTouchMode(), 5);
 		rightTouchSampleProvider = new MedianFilter(Ports.RIGHT_TOUCH_SENSOR.getTouchMode(), 5);
