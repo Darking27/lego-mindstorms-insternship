@@ -1,6 +1,7 @@
 package boxMover;
 
 import framework.ParcoursWalkable;
+import framework.Ports;
 import framework.WalkableStatus;
 import lejos.hardware.Brick;
 import lejos.hardware.BrickFinder;
@@ -12,16 +13,12 @@ public class TestWalker implements ParcoursWalkable {
 	public WalkableStatus start_walking() {
 		Delay.msDelay(500);
 		while(true) {
-			Brick brick = BrickFinder.getDefault();
-			if(brick.getKey("Enter").isDown()) {
-				return WalkableStatus.MENU;
-			}
-			
-			if(brick.getKey("Escape").isDown()) {
+			if (Ports.ESCAPE.isDown())
 				return WalkableStatus.STOP;
-			}
+			if (Ports.ENTER.isDown())
+				return WalkableStatus.MENU;
 			
-			System.out.println("TestWalker");
+			System.out.println("Testwalker is walking");
 		}
 	}
 

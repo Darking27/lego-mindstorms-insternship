@@ -21,7 +21,8 @@ public enum ParcoursSection {
 	BOX_MOVE (new WallFollower()),
 	BRIDGE  (new BridgeFollower()),
 	COLOR_SEARCH  (new MarkerSearcher()),
-	BOX_FINDER (new RightAngleBoxFinder());
+	BOX_FINDER (new RightAngleBoxFinder()),
+	WALL_FOLLOWER (new WallFollower());
 	
 	private final ParcoursWalkable walker;
 	

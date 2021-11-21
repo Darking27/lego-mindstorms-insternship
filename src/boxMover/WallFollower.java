@@ -1,18 +1,9 @@
 package boxMover;
 
-import exception.KeyPressedException;
-import exception.MenuException;
-import exception.StopException;
+
 import framework.ParcoursWalkable;
-import framework.WalkableStatus;
 import framework.Ports;
-import lejos.hardware.Brick;
-import lejos.hardware.motor.EV3LargeRegulatedMotor;
-import lejos.hardware.port.Port;
-import lejos.hardware.sensor.EV3ColorSensor;
-import lejos.hardware.sensor.EV3TouchSensor;
-import lejos.hardware.sensor.EV3UltrasonicSensor;
-import lejos.robotics.RegulatedMotor;
+import framework.WalkableStatus;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.filter.MedianFilter;
 
