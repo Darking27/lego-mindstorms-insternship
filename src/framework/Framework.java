@@ -1,15 +1,12 @@
 package framework;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import exceptions.KeyPressedException;
 import lejos.hardware.Brick;
 import lejos.hardware.BrickFinder;
-import lejos.hardware.Key;
 import lejos.hardware.lcd.GraphicsLCD;
-import lejos.utility.Delay;
 import lejos.utility.TextMenu;
 
 /**

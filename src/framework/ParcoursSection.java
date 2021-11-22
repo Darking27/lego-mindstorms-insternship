@@ -19,12 +19,12 @@ import markerSearcher.MarkerSearcher;
  */
 public enum ParcoursSection {
 	BOX_FINDER (new RightAngleBoxFinder()),
-	//TEST_FOLLOW (new TestWalker()),
+	WALL_FOLLOWER (new WallFollower()),
+	TEST_WALKER (new TestWalker()),
 	LINE_FOLLOW (new LineFollowerController()),
 	BOX_MOVE (new WallFollower()),
 	BRIDGE  (new BridgeFollower()),
-	COLOR_SEARCH  (new MarkerSearcher()),
-	WALL_FOLLOWER (new WallFollower());
+	COLOR_SEARCH  (new MarkerSearcher());
 	
 	private final ParcoursWalkable walker;
 	
