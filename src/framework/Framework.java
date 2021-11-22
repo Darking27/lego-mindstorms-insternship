@@ -59,7 +59,8 @@ public class Framework {
 					returnStatus = e.getStatus();
 				}
 				
-
+				RobotUtils.stopMotors();
+				
 				switch (returnStatus) {
 				case MENU:
 					break sectionsIterate;
