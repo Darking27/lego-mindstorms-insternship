@@ -34,4 +34,19 @@ public class RGBColorSensor {
         
         return sample[0] == 1;
     }
+    
+    private void getColorId() {
+        float[] sample = new float[rgbMode.sampleSize()];
+        
+        rgbMode.fetchSample(sample, 0);
+        System.out.println(sample[0]);
+    }
+    
+    public static void main(String[] args) {
+        while (!Ports.ENTER.isDown()) {
+            RGBColorSensor cd = RGBColorSensor.getInstance();
+            cd.getColorId();
+            Delay.msDelay(500);
+        }
+    }
 }
