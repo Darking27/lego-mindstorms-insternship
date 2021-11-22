@@ -10,8 +10,13 @@ public final class RobotUtils {
 		turnDegreesRight(90, 360);
 	}
 	
+	public static void turn90DegreesLeft() throws KeyPressedException {
+		turnDegreesRight(-90, 360);
+	}
+
+	
 	public static void turnDegreesRight(int degrees, int speed) throws KeyPressedException {
-		int rotation = 300 * degrees / 90;
+		int rotation = 440 * degrees / 90;
 		
 		Ports.LEFT_MOTOR.setSpeed(speed);
 		Ports.RIGHT_MOTOR.setSpeed(speed);
@@ -25,25 +30,14 @@ public final class RobotUtils {
 		Ports.RIGHT_MOTOR.stop(false);
 	}
 
-	public static void turn90DegreesLeft() throws KeyPressedException {
-		turnDegreesRight(-90, 360);
-	}
-
 	public static void turnToNeutralTacho() throws KeyPressedException {
-		int rotationLeft = Ports.LEFT_MOTOR.getTachoCount();
-		int rotationRight = Ports.RIGHT_MOTOR.getTachoCount();
 		int speed = 360;
 
 		Ports.LEFT_MOTOR.setSpeed(speed);
 		Ports.RIGHT_MOTOR.setSpeed(speed);
 
-		Ports.LEFT_MOTOR.rotate(-rotationLeft, true);
-		Ports.RIGHT_MOTOR.rotate(-rotationRight, true);
-
-		checkForKeyPress();
-
-		Ports.LEFT_MOTOR.stop(true);
-		Ports.RIGHT_MOTOR.stop(false);
+		Ports.LEFT_MOTOR.rotateTo(0, true);
+		Ports.RIGHT_MOTOR.rotateTo(0, false);
 	}
 
 	public static void driveStraight(int distance) throws KeyPressedException {
@@ -69,5 +63,10 @@ public final class RobotUtils {
 			if (Ports.ENTER.isDown())
 				throw new MenuException();
 		}
+	}
+	
+	public static void stopMotors() {
+		Ports.LEFT_MOTOR.stop(true);
+		Ports.RIGHT_MOTOR.stop(false);
 	}
 }

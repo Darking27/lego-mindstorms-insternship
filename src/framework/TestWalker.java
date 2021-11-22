@@ -1,5 +1,6 @@
 package framework;
 
+import exceptions.KeyPressedException;
 import lejos.hardware.Brick;
 import lejos.hardware.BrickFinder;
 import lejos.utility.Delay;
@@ -7,15 +8,9 @@ import lejos.utility.Delay;
 public class TestWalker implements ParcoursWalkable {
 
 	@Override
-	public WalkableStatus start_walking() {
+	public WalkableStatus start_walking() throws KeyPressedException{
 		Delay.msDelay(500);
-		while(true) {
-			if (Ports.ESCAPE.isDown())
-				return WalkableStatus.STOP;
-			if (Ports.ENTER.isDown())
-				return WalkableStatus.MENU;
-			
-			System.out.println("Testwalker is walking");
-		}
+		RobotUtils.turn90DegreesRight();
+		return WalkableStatus.FINISHED;
 	}
 }
