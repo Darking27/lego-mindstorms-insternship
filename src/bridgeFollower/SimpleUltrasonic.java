@@ -19,7 +19,7 @@ public class SimpleUltrasonic extends AbstractFilter {
 	/*
 	 * Bridge value
 	 */
-	private static final float bridgeDist = 0.15f;
+	private static final float bridgeDist = 0.13f;
 
 	public SimpleUltrasonic(SampleProvider source) {
 		super(new MedianFilter(source, 3));

@@ -6,6 +6,7 @@ import framework.Ports;
 import framework.WalkableStatus;
 import lejos.hardware.Key;
 import lejos.robotics.SampleProvider;
+import lineFollower.colorSensor.RGBColorSensor;
 
 public class TunnelFinder implements ParcoursWalkable {
 	public static final int MOTOR_SPEED = 300;
@@ -29,9 +30,11 @@ public class TunnelFinder implements ParcoursWalkable {
 		while (true) {
 			// Handle keys
 			if (escape.isDown()) {
+				stopMotors();
 				return WalkableStatus.STOP;
 			}
 			if (enter.isDown()) {
+				stopMotors();
 				return WalkableStatus.MENU;
 			}
 			
@@ -42,14 +45,16 @@ public class TunnelFinder implements ParcoursWalkable {
 				break;
 			case DRIVING_STRAIT:
 				if (touchLeft()) {
-					Ports.LEFT_MOTOR.stop(true);
-					Ports.RIGHT_MOTOR.stop(false);
+					stopMotors();
 					setState(TunnelFinderState.DRIVING_BACK_RIGHT);
 				}
 				if (touchRight()) {
-					Ports.LEFT_MOTOR.stop(true);
-					Ports.RIGHT_MOTOR.stop(false);
+					stopMotors();
 					setState(TunnelFinderState.DRIVNG_BACK_LEFT);
+				}
+				if (RGBColorSensor.getInstance().isFinishLine()) {
+					stopMotors();
+					return WalkableStatus.FINISHED;
 				}
 				break;
 			case DRIVNG_BACK_LEFT:
@@ -91,6 +96,11 @@ public class TunnelFinder implements ParcoursWalkable {
 		}
 	}
 	
+	private void stopMotors() {
+		Ports.LEFT_MOTOR.stop(true);
+		Ports.RIGHT_MOTOR.stop(false);
+	}
+	
 	private boolean touchLeft() {
 		float[] sample = new float[1];
 		leftTouch.fetchSample(sample, 0);
@@ -104,8 +114,8 @@ public class TunnelFinder implements ParcoursWalkable {
 	}
 	
 	private void rotate(int rotation) {
-		Ports.RIGHT_MOTOR.rotate(rotation, true);
-		Ports.LEFT_MOTOR.rotate(-rotation, true);
+		Ports.RIGHT_MOTOR.rotate(-rotation, true);
+		Ports.LEFT_MOTOR.rotate(rotation, true);
 	}
 
 }
