@@ -7,11 +7,11 @@ import lejos.robotics.SampleProvider;
 
 public class MarkerSearcher implements ParcoursWalkable {
 	
-	private final int TURNING_VALUE = 200;
+	private final int TURNING_VALUE = 500;
 	private final int BACKWARD_VALUE = 200;
 
-	private final int MARKER_ONE_COLOR_ID = 0;	// white
-	private final int MARKER_TWO_COLOR_ID = 1;	// red
+	private final int MARKER_ONE_COLOR_ID = 2;	// white
+	private final int MARKER_TWO_COLOR_ID = 0;	// red
 	
 	private boolean markerOneFound;
 	private boolean markerTwoFound;
@@ -54,6 +54,9 @@ public class MarkerSearcher implements ParcoursWalkable {
 				
 				Ports.LEFT_MOTOR.rotate(TURNING_VALUE, true);
 				Ports.RIGHT_MOTOR.rotate(-TURNING_VALUE);
+				
+				Ports.LEFT_MOTOR.forward();
+		        Ports.RIGHT_MOTOR.forward();
 			}
 			if (rightButtonPressed()) {
 				Ports.LEFT_MOTOR.rotate(-BACKWARD_VALUE, true);
@@ -61,6 +64,9 @@ public class MarkerSearcher implements ParcoursWalkable {
 				
 				Ports.RIGHT_MOTOR.rotate(TURNING_VALUE, true);
 				Ports.LEFT_MOTOR.rotate(-TURNING_VALUE);
+				
+				Ports.LEFT_MOTOR.forward();
+		        Ports.RIGHT_MOTOR.forward();
 			}
 			
 			if (enterPressed()) {
