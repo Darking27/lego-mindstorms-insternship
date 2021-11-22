@@ -33,6 +33,9 @@ public class BridgeFollower implements ParcoursWalkable {
 		Key escape = Ports.BRICK.getKey("Escape");
 		Key enter = Ports.BRICK.getKey("Enter");
 		
+		Ports.ULTRASONIC_MOTOR.setSpeed(80);
+		Ports.ULTRASONIC_MOTOR.rotateTo(-80);
+		
 		setState(BridgeFollowerState.DRIVING_STRAIT);
 
 		while (true) {

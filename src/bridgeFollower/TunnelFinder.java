@@ -22,6 +22,9 @@ public class TunnelFinder implements ParcoursWalkable {
 		Key escape = Ports.BRICK.getKey("Escape");
 		Key enter = Ports.BRICK.getKey("Enter");
 		
+		Ports.ULTRASONIC_MOTOR.setSpeed(80);
+		Ports.ULTRASONIC_MOTOR.rotateTo(0);
+		
 		Ports.RIGHT_MOTOR.setSpeed(MOTOR_SPEED);
 		Ports.LEFT_MOTOR.setSpeed(MOTOR_SPEED);
 		
