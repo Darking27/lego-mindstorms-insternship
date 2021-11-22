@@ -1,7 +1,7 @@
 package bridgeFollower.tests;
 
 import bridgeFollower.BridgeFollower;
-import exception.KeyPressedException;
+import exceptions.KeyPressedException;
 import lejos.hardware.Brick;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Key;

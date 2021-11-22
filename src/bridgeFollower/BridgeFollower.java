@@ -1,7 +1,7 @@
 package bridgeFollower;
 
 import display.Logger;
-import exception.KeyPressedException;
+import exceptions.KeyPressedException;
 import framework.ParcoursWalkable;
 import framework.Ports;
 import framework.WalkableStatus;

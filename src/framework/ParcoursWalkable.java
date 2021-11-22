@@ -1,6 +1,6 @@
 package framework;
 
-import exception.KeyPressedException;
+import exceptions.KeyPressedException;
 
 /**
  * Interface for all Parcours Walkers (LineFollower, etc)

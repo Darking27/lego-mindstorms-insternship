@@ -1,8 +1,8 @@
 package framework;
 
-import exception.MenuException;
-import exception.KeyPressedException;
-import exception.StopException;
+import exceptions.KeyPressedException;
+import exceptions.MenuException;
+import exceptions.StopException;
 
 public final class RobotUtils {
 

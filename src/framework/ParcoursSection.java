@@ -3,7 +3,7 @@ package framework;
 import boxMover.RightAngleBoxFinder;
 import boxMover.WallFollower;
 import bridgeFollower.BridgeFollower;
-import exception.KeyPressedException;
+import exceptions.KeyPressedException;
 import lineFollower.stateMachine.LineFollowerController;
 import markerSearcher.MarkerSearcher;
 

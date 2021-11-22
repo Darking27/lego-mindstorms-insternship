@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import exception.KeyPressedException;
+import exceptions.KeyPressedException;
 import lejos.hardware.Brick;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Key;
