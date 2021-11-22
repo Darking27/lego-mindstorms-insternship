@@ -8,7 +8,6 @@ import framework.Ports;
 import framework.RobotUtils;
 import framework.WalkableStatus;
 import lejos.robotics.SampleProvider;
-import lejos.utility.Delay;
 
 public class RightAngleBoxFinder implements ParcoursWalkable {
 

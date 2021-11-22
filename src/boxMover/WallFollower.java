@@ -1,6 +1,5 @@
 package boxMover;
 
-
 import exceptions.KeyPressedException;
 import exceptions.MenuException;
 import exceptions.StopException;
@@ -9,59 +8,50 @@ import framework.Ports;
 import framework.RobotUtils;
 import framework.WalkableStatus;
 import lejos.robotics.SampleProvider;
-import lejos.utility.Delay;
 
 public class WallFollower implements ParcoursWalkable {
-
+	
 	private float[] uSample;
-	private float[] lTouchSample;
 	private SampleProvider ultrasonicSampleProvider;
-	private SampleProvider leftTouchSampleProvider;
-
+	
 	public WallFollower() {
 		uSample = new float[1];
-		lTouchSample = new float[1];
 		ultrasonicSampleProvider = Ports.ULTRASONIC_SENSOR.getDistanceMode();
-		leftTouchSampleProvider = Ports.LEFT_TOUCH_SENSOR.getTouchMode();
 	}
 
-	@Override
-	public WalkableStatus start_walking() throws KeyPressedException{
-		Delay.msDelay(300);  // TODO remove delay
-		
-		Ports.LEFT_MOTOR.setSpeed(300);
-		Ports.RIGHT_MOTOR.setSpeed(310); // different speed: slowly drift to the left wall
 
-		boolean nearTheBackWall = false;
+	@Override
+	public WalkableStatus start_walking() throws KeyPressedException {
 		
-		while (!nearTheBackWall) {
-			
+		Ports.RIGHT_MOTOR.rotate(700);
+		
+		ParallelDriver.drive();
+		
+		Ports.LEFT_MOTOR.rotate(400, false);
+		Ports.RIGHT_MOTOR.rotate(400, false);
+		System.out.println("driving 1800 units hardcoded");
+		RobotUtils.driveStraight(1500);
+		
+		System.out.println("dirve til wall is close");
+		boolean closeToWall = false;
+		
+		Ports.LEFT_MOTOR.forward();
+		Ports.RIGHT_MOTOR.forward();
+		while (!closeToWall) {
 			if (Ports.ESCAPE.isDown())
 				throw new StopException();
 			if (Ports.ENTER.isDown())
 				throw new MenuException();
 			
-			leftTouchSampleProvider.fetchSample(lTouchSample, 0);
-			if (lTouchSample[0] > 0.5f) {  // turn a bit right when the left touch sensor is pressed
-				System.out.println("touch pressed");
-				
-				Ports.LEFT_MOTOR.flt(true);
-				Ports.RIGHT_MOTOR.rotate(-40, false);
-			}
-			
-			Ports.LEFT_MOTOR.rotate(100, true);
-			Ports.RIGHT_MOTOR.rotate(100, true);
-			
+			float distanceThreshold = 0.7f;
 			ultrasonicSampleProvider.fetchSample(uSample, 0);
-			float backWallDistanceThreshold = 0.60f;
-			nearTheBackWall = uSample[0] < backWallDistanceThreshold;
-			
-			System.out.println("distance= " + uSample[0]);
-			//System.out.println("end= " + nearTheBackWall);
+			closeToWall = uSample[0] < distanceThreshold;
 		}
+		RobotUtils.stopMotors();
 		
-		Delay.msDelay(1000);
+		System.out.println("now close to wall");
 		
 		return WalkableStatus.FINISHED;
 	}
+
 }
