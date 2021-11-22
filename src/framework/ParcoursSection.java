@@ -1,5 +1,6 @@
 package framework;
 
+import boxMover.BoxMoverWrapper;
 import boxMover.RightAngleBoxFinder;
 import boxMover.WallFollower;
 import bridgeFollower.BridgeFollower;
@@ -20,9 +21,9 @@ import markerSearcher.MarkerSearcher;
 public enum ParcoursSection {
 	BOX_FINDER (new RightAngleBoxFinder()),
 	WALL_FOLLOWER (new WallFollower()),
-	TEST_WALKER (new TestWalker()),
+	TEST_WALKER (new BoxMoverWrapper()),
 	LINE_FOLLOW (new LineFollowerController()),
-	BOX_MOVE (new WallFollower()),
+	BOX_MOVE (new BoxMoverWrapper()),
 	BRIDGE  (new BridgeFollower()),
 	COLOR_SEARCH  (new MarkerSearcher());
 	

@@ -30,9 +30,7 @@ public class RightAngleBoxFinder implements ParcoursWalkable {
 	
 	@Override
 	public WalkableStatus start_walking() throws KeyPressedException{
-		Delay.msDelay(500);  // TODO remove delay
 		boolean boxFound = false;
-
 		while (!boxFound) {
 			RobotUtils.turn90DegreesRight();
 
@@ -49,17 +47,17 @@ public class RightAngleBoxFinder implements ParcoursWalkable {
 		}
 		
 		RobotUtils.turn90DegreesRight();  // move box to the right wall
-		RobotUtils.driveStraight(1700); 
+		RobotUtils.driveStraight(1900); 
 
 		RobotUtils.driveStraight(-200); // navigate around the box
 		RobotUtils.turn90DegreesRight();
 		RobotUtils.driveStraight(800);
 		RobotUtils.turn90DegreesLeft();
 
+		System.out.println("drive til touched");
+		Ports.LEFT_MOTOR.forward();
+		Ports.RIGHT_MOTOR.forward();
 		do {							 // drive to the wall
-			Ports.LEFT_MOTOR.rotate(100, true);
-			Ports.RIGHT_MOTOR.rotate(100, true);
-			
 			if (Ports.ESCAPE.isDown())
 				throw new StopException();
 			if (Ports.ENTER.isDown())
@@ -68,6 +66,8 @@ public class RightAngleBoxFinder implements ParcoursWalkable {
 			leftTouchSampleProvider.fetchSample(lTouchSample, 0);
 			rightTouchSampleProvider.fetchSample(rTouchSample, 0);
 		} while (lTouchSample[0] < 0.5f || rTouchSample[0] < 0.5f);
+		
+		RobotUtils.stopMotors();
 		
 		System.out.println("Wall found");
 		

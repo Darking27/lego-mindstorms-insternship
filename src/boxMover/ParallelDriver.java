@@ -49,7 +49,6 @@ public class ParallelDriver {
                 break;
             }
         }
-        Delay.msDelay(3000);
     }
     
     private static boolean leftButtonPressed() {
