@@ -33,7 +33,7 @@ public class RightAngleBoxFinder implements ParcoursWalkable {
 		while (!boxFound) {
 			RobotUtils.turn90DegreesRight();
 
-			float maxBoxDistance = 40;
+			float maxBoxDistance = 0.40f;
 			ultrasonicSampleProvider.fetchSample(uSample, 0);
 			boxFound = uSample[0] < maxBoxDistance;
 
