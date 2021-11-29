@@ -23,7 +23,7 @@ public final class RobotUtils {
 		Ports.LEFT_MOTOR.setSpeed(speed);
 		Ports.RIGHT_MOTOR.setSpeed(speed);
 
-		Ports.LEFT_MOTOR.rotate(rotation, true);
+		Ports.LEFT_MOTOR.rotate((int) (0.98*rotation), true);
 		Ports.RIGHT_MOTOR.rotate(-rotation, false);
 
 		//checkForKeyPress();
