@@ -29,9 +29,9 @@ public class ExitFinder implements ParcoursWalkable {
 		RobotUtils.stopMotors();
 		
 		Ports.RIGHT_MOTOR.setSpeed(360);
-		Ports.LEFT_MOTOR.setSpeed(175);
+		Ports.LEFT_MOTOR.setSpeed(190);
 		Ports.LEFT_MOTOR.backward();
-		Ports.RIGHT_MOTOR.rotate(-2100);
+		Ports.RIGHT_MOTOR.rotate(-1920);
 		RobotUtils.stopMotors();
 		
 		RobotUtils.turn90DegreesRight();
@@ -41,7 +41,17 @@ public class ExitFinder implements ParcoursWalkable {
 		Ports.LEFT_MOTOR.forward();
 		Ports.RIGHT_MOTOR.forward();
 		
-		while (!RGBColorSensor.getInstance().isFinishLine());
+		
+		while (!RGBColorSensor.getInstance().isFinishLine()) {
+			leftTouchSampleProvider.fetchSample(lTouchSample, 0);
+			if (lTouchSample[0]>0.5) {
+				RobotUtils.stopMotors();
+				Ports.LEFT_MOTOR.rotate(-400, false);
+				Ports.RIGHT_MOTOR.rotate(-400, false);			
+				Ports.LEFT_MOTOR.forward();
+				Ports.RIGHT_MOTOR.forward();
+			}	
+		};
 		
 		RobotUtils.stopMotors();
 		

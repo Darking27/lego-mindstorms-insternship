@@ -44,9 +44,8 @@ public class RightAngleBoxFinder implements ParcoursWalkable {
 
 			RobotUtils.driveStraight(400);
 		}
-
 		RobotUtils.turn90DegreesRight(); // move box to the right wall
-		RobotUtils.driveStraight(1900);
+		RobotUtils.driveStraight(2100);
 
 		RobotUtils.driveStraight(-200); // navigate around the box
 		RobotUtils.turn90DegreesRight();
@@ -56,7 +55,7 @@ public class RightAngleBoxFinder implements ParcoursWalkable {
 		System.out.println("drive til touched");
 		Ports.LEFT_MOTOR.forward();
 		Ports.RIGHT_MOTOR.forward();
-		do { // drive to the wall
+		do { 							// drive to the right wall
 			if (Ports.ESCAPE.isDown())
 				throw new StopException();
 			if (Ports.ENTER.isDown())
@@ -70,10 +69,10 @@ public class RightAngleBoxFinder implements ParcoursWalkable {
 
 		System.out.println("Wall found");
 
-		RobotUtils.driveStraight(-150); // drive box into the back corner
+		RobotUtils.driveStraight(-120); // drive box into the back corner
 		RobotUtils.turn90DegreesLeft();
 		System.out.println("turned left");
-		RobotUtils.driveStraight(1900);
+		RobotUtils.driveStraight(2000);
 		return WalkableStatus.FINISHED;
 	}
 }

@@ -18,7 +18,7 @@ public final class RobotUtils {
 	public static void turnDegreesRight(int degrees, int speed) throws KeyPressedException {
 		resetTachos();
 		
-		int rotation = 440 * degrees / 90;
+		int rotation = 465 * degrees / 90;
 		
 		Ports.LEFT_MOTOR.setSpeed(speed);
 		Ports.RIGHT_MOTOR.setSpeed(speed);

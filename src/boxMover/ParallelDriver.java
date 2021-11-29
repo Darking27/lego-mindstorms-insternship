@@ -28,7 +28,7 @@ public class ParallelDriver {
                 Ports.LEFT_MOTOR.stop(true);
                 Ports.RIGHT_MOTOR.stop();
                 
-                Ports.RIGHT_MOTOR.setSpeed(50);
+                Ports.RIGHT_MOTOR.setSpeed(200);
                 Ports.RIGHT_MOTOR.backward();
                 while (leftButtonPressed()) {
                     

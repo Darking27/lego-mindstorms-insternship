@@ -1,7 +1,7 @@
 package framework;
 
 import boxMover.BoxMoverWrapper;
-import boxMover.ExitFinder2;
+import boxMover.ExitFinder;
 import boxMover.RightAngleBoxFinder;
 import boxMover.WallFollower;
 import bridgeFollower.BridgeFollower;
@@ -20,10 +20,10 @@ import markerSearcher.MarkerSearcher;
  *
  */
 public enum ParcoursSection {
-	EXIT_FINDER (new ExitFinder2()),
+	EXIT_FINDER (new ExitFinder()),
 	BOX_FINDER (new RightAngleBoxFinder()),
 	WALL_FOLLOWER (new WallFollower()),
-	TEST_WALKER (new BoxMoverWrapper()),
+	TEST_WALKER (new TestWalker()),
 	LINE_FOLLOW (new LineFollowerController()),
 	BOX_MOVE (new BoxMoverWrapper()),
 	BRIDGE  (new BridgeFollower()),

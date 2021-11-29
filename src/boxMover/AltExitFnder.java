@@ -10,14 +10,14 @@ import framework.WalkableStatus;
 import lejos.robotics.SampleProvider;
 import lineFollower.colorSensor.RGBColorSensor;
 
-public class ExitFinder2 implements ParcoursWalkable {
+public class AltExitFnder implements ParcoursWalkable {
 
 	private float[] lTouchSample;
 	private float[] rTouchSample;
 	private SampleProvider leftTouchSampleProvider;
 	private SampleProvider rightTouchSampleProvider;
 
-	public ExitFinder2() {
+	public AltExitFnder() {
 		rTouchSample = new float[1];
 		lTouchSample = new float[1];
 		leftTouchSampleProvider = Ports.LEFT_TOUCH_SENSOR.getTouchMode();
