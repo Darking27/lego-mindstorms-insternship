@@ -23,7 +23,7 @@ public class WallFollower implements ParcoursWalkable {
 	@Override
 	public WalkableStatus start_walking() throws KeyPressedException {
 		
-		Ports.RIGHT_MOTOR.rotate(600);
+		Ports.RIGHT_MOTOR.rotate(100);
 		
 		ParallelDriver.drive();
 		

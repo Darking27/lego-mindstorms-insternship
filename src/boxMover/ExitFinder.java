@@ -1,8 +1,6 @@
 package boxMover;
 
 import exceptions.KeyPressedException;
-import exceptions.MenuException;
-import exceptions.StopException;
 import framework.ParcoursWalkable;
 import framework.Ports;
 import framework.RobotUtils;
@@ -13,15 +11,11 @@ import lineFollower.colorSensor.RGBColorSensor;
 public class ExitFinder implements ParcoursWalkable {
 
 	private float[] lTouchSample;
-	private float[] rTouchSample;
 	private SampleProvider leftTouchSampleProvider;
-	private SampleProvider rightTouchSampleProvider;
 
 	public ExitFinder() {
-		rTouchSample = new float[1];
 		lTouchSample = new float[1];
 		leftTouchSampleProvider = Ports.LEFT_TOUCH_SENSOR.getTouchMode();
-		rightTouchSampleProvider = Ports.RIGHT_TOUCH_SENSOR.getTouchMode();
 	}
 
 	@Override
