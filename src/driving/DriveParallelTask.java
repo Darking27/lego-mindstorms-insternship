@@ -5,12 +5,13 @@ import framework.Ports;
 public class DriveParallelTask implements Task {
 	
 	private final int defaultSpeed;
-	private boolean firstStart = true;
+	private boolean firstStart;
 	
 	float Kp = 1;
 	
 	public DriveParallelTask(int speed) {
 		this.defaultSpeed = speed;
+		firstStart = true;
 		Ports.LEFT_MOTOR.setSpeed((int) defaultSpeed);
         Ports.RIGHT_MOTOR.setSpeed((int) defaultSpeed);
 	}
