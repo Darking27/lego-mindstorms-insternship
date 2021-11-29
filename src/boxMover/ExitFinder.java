@@ -20,36 +20,27 @@ public class ExitFinder implements ParcoursWalkable {
 
 	@Override
 	public WalkableStatus start_walking() throws KeyPressedException {
-		RobotUtils.stopMotors();
-		
-		Ports.RIGHT_MOTOR.setSpeed(360);
-		Ports.LEFT_MOTOR.setSpeed(190);
+		Ports.RIGHT_MOTOR.setSpeed(700);
+		Ports.LEFT_MOTOR.setSpeed(350);
 		Ports.LEFT_MOTOR.backward();
 		Ports.RIGHT_MOTOR.rotate(-1920);
 		RobotUtils.stopMotors();
 		
 		RobotUtils.turn90DegreesRight();
 	
-		Ports.LEFT_MOTOR.setSpeed(360);
-		Ports.RIGHT_MOTOR.setSpeed(360);
-		Ports.LEFT_MOTOR.forward();
-		Ports.RIGHT_MOTOR.forward();
-		
-		
+		RobotUtils.setMaxSpeed();
+		RobotUtils.forward();
 		while (!RGBColorSensor.getInstance().isFinishLine()) {
 			leftTouchSampleProvider.fetchSample(lTouchSample, 0);
-			if (lTouchSample[0]>0.5) {
+			if (lTouchSample[0]>0.5) {	// check for hitting the wall
 				RobotUtils.stopMotors();
 				Ports.LEFT_MOTOR.rotate(-400, false);
 				Ports.RIGHT_MOTOR.rotate(-400, false);			
-				Ports.LEFT_MOTOR.forward();
-				Ports.RIGHT_MOTOR.forward();
+				RobotUtils.forward();
 			}	
 		};
 		
 		RobotUtils.stopMotors();
-		
-		
 		return WalkableStatus.FINISHED;
 	}
 

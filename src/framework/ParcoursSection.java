@@ -2,8 +2,8 @@ package framework;
 
 import boxMover.BoxMoverWrapper;
 import boxMover.ExitFinder;
-import boxMover.LineBoxTransitioner;
-import boxMover.RightAngleBoxFinder;
+import boxMover.TransitionLineBox;
+import boxMover.BoxMover;
 import boxMover.WallFollower;
 import bridgeFollower.BridgeFollower;
 import exceptions.KeyPressedException;
@@ -22,14 +22,14 @@ import markerSearcher.MarkerSearcher;
  */
 public enum ParcoursSection {
 	EXIT_FINDER (new ExitFinder()),
-	BOX_FINDER (new RightAngleBoxFinder()),
+	BOX_FINDER (new BoxMover()),
 	WALL_FOLLOWER (new WallFollower()),
 	TEST_WALKER (new TestWalker()),
 	LINE_FOLLOW (new LineFollowerController()),
 	BOX_MOVE (new BoxMoverWrapper()),
 	BRIDGE  (new BridgeFollower()),
 	COLOR_SEARCH  (new MarkerSearcher()),
-	LINE_BOX_TRANSITIONER(new LineBoxTransitioner());
+	LINE_BOX_TRANSITIONER(new TransitionLineBox());
 	
 	private final ParcoursWalkable walker;
 	
