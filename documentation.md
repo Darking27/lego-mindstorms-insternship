@@ -1,6 +1,6 @@
 # Lego Mindstorms - Gruppe 6
 
-##### 15.11.2021
+#### 15.11.2021
 An diesem Termin wurde zum ersten Mal der gesamte Parcours-Abschnitt des Linenfolgens bewältigt.
 Sowohl Lücken, rechte Winkel und Hinternisse werden nun erfolgreich befahren.
 
@@ -11,7 +11,7 @@ Außerdem wurde der Parcours-Abschnitt der Brücke teilweise bewältigt. Der Rob
 
 Zudem arbeiteten wir auch an dem Parcours-Abschnitts des Box-Bewegens. Diese Funktionalität war jedoch noch nicht einsatzbereit und erfordert weitere Ändrungen. 
 
-##### 22.11.2021
+#### 22.11.2021
 An diesem Termin waren zum ersten Mal alle Abschnitte (zumindest in einer vereinfachten Form) implementiert.
 
 Hauptsächlich haben wir uns mit dem Verschieben der Box beschäftigt. Hierzu muss der Roboter zunächst durch den langen Durchgang fahren und danach die Box suchen und in die Ecke schieben.
@@ -32,3 +32,27 @@ Die Strategie ist uns zu langsam um wir haben vor am nächsten Termin andere Str
 
 Um einschätzen zu können, wie gut unsere Lösungen für den Linienfolger und den Brückenquerer sind, haben wir bei beiden die Zeit gemessen, die der Roboter benötigt hat.
 Hierbei haben wir 3:22 Minuten für den Linienfolger und 52 Sekunden für den Brückenabschnitt gemessen.
+
+#### 29.11.2021
+An diesem Termin konzentrierten wir uns darauf, unsere Algorithmen zu verbessern.
+
+Das Finden des Ausgangs beim Bewegen der Kiste ist nun deutlich stabiler und funktioniert in (fast) allen Fällen.
+Außerdem wurde die Geschwindigkeit des Roboters in diesem Abschnitt erhöht um bessere Zeiten erzielen zu können.
+Außerdem besteht die Überlegung einen neuen Algorithmus zu implementieren, der etwas schneller ist, indem er nicht die ganze Zeit rechtwinklige Kurven fährt.
+
+Der Farbpunkfinde Algorithmus wurde auch verändert.
+Das letzte Mal hatten wir noch eine Implementierung welche auf Zufall basierte.
+Um jedoch im Durchschnitt bessere Zeiten zu erhalten haben wir uns für ein deterministischen Ansatz entschieden, der Spalte für Spalte des Suchraums durchsucht.
+Zuerst fährt der Roboter bis zur hinteren Wan und dann immer in einem solchen Schema:
+```
+<-----------<^
+-----------> |           
+<----------- |
+-----------> |
+             |
+            Start
+```
+
+Gegen Ende haben wir zudem noch einige Regler- und Geschwindigkeitswerte des Linienfolgers angepasst.
+Diese Anpassung wollen wir die nächste Stunde forführen um bessere Zeiten für das Linienfolgen zu erhalten.
+Bisher war das Optimieren der Reglerwerte wenig erfolgreich, da man alle Reglerwerte abhängig voneinander ändern muss. Zum Beispiel müssen alle Reglerwerte angepasst werden, wenn man die Geschwindigkeit steigert, damit der Roboter nicht zu häufig die Bahn verliert.
