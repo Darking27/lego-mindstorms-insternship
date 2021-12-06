@@ -7,6 +7,7 @@ import exceptions.KeyPressedException;
 import lejos.hardware.Brick;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.lcd.GraphicsLCD;
+import lejos.utility.Delay;
 import lejos.utility.TextMenu;
 
 /**
@@ -20,8 +21,9 @@ public class Framework {
 	/**
 	 * sets the order of the obstacles in the parcours
 	 */
-	private static List<ParcoursSection> parcours_section_order = Arrays.asList(ParcoursSection.LINE_FOLLOW, ParcoursSection.LINE_BOX_TRANSITIONER,
-			ParcoursSection.BOX_MOVE, ParcoursSection.BRIDGE, ParcoursSection.COLOR_SEARCH);
+	private static List<ParcoursSection> parcours_section_order = Arrays.asList(ParcoursSection.LINE_FOLLOW,
+			ParcoursSection.LINE_BOX_TRANSITIONER, ParcoursSection.BOX_MOVE, ParcoursSection.BRIDGE,
+			ParcoursSection.COLOR_SEARCH);
 	private static Brick brick = BrickFinder.getDefault();
 
 	public static void main(String[] args) {
@@ -39,14 +41,17 @@ public class Framework {
 				try {
 					returnStatus = start_section.start_walking();
 				} catch (KeyPressedException e) {
-					return;
+					if (e.getStatus() == WalkableStatus.STOP)
+						return;
+					RobotUtils.stopMotors();
+					continue;
 				}
 				return;
 			}
 
 			sectionsIterate: for (int i = start_index; i < parcours_section_order.size(); i++) {
 				while (Ports.ENTER.isDown()) {
-					if(Ports.ESCAPE.isDown()) {
+					if (Ports.ESCAPE.isDown()) {
 						return;
 					}
 				}
@@ -54,10 +59,11 @@ public class Framework {
 					returnStatus = parcours_section_order.get(i).start_walking();
 				} catch (KeyPressedException e) {
 					returnStatus = e.getStatus();
+					System.out.println(returnStatus);
 				}
-				
+
 				RobotUtils.stopMotors();
-				
+
 				switch (returnStatus) {
 				case MENU:
 					break sectionsIterate;

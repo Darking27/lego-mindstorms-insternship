@@ -23,12 +23,13 @@ public class ParallelDriver {
                 wallFound = true;
                 
                 RobotUtils.stopMotors();		//drive away from wall
+                Ports.RIGHT_MOTOR.setSpeed(300);
                 Ports.RIGHT_MOTOR.backward();
                 while (leftButtonPressed());
                 RobotUtils.stopMotors();
                 
-                Ports.LEFT_MOTOR.forward();		//resume driving towards the wall
-                Ports.RIGHT_MOTOR.forward();
+                RobotUtils.setSpeed(600);
+                RobotUtils.forward();
                 time = 0;
             }
             Delay.msDelay(1);

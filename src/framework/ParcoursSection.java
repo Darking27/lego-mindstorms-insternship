@@ -2,14 +2,13 @@ package framework;
 
 import boxMover.BoxMoverWrapper;
 import boxMover.ExitFinder;
+import boxMover.NewBoxFinder;
+import boxMover.NewWrapper;
 import boxMover.TransitionLineBox;
-import boxMover.BoxMover;
-import boxMover.WallFollower;
 import bridgeFollower.BridgeFollower;
 import exceptions.KeyPressedException;
 import lineFollower.stateMachine.LineFollowerController;
 import markerSearcher.MarkerSearcher;
-import markerSearcher.MarkerSearcherV2;
 
 /**
  * Defines the different parcours Section
@@ -23,9 +22,8 @@ import markerSearcher.MarkerSearcherV2;
  */
 public enum ParcoursSection {
 	EXIT_FINDER (new ExitFinder()),
-	BOX_FINDER (new BoxMover()),
-	WALL_FOLLOWER (new WallFollower()),
-	TEST_WALKER (new TestWalker()),
+	NEW_BOX_MOVER (new NewBoxFinder()),
+	TEST_WALKER (new NewWrapper()),
 	LINE_FOLLOW (new LineFollowerController()),
 	BOX_MOVE (new BoxMoverWrapper()),
 	BRIDGE  (new BridgeFollower()),
