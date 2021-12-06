@@ -40,15 +40,20 @@ public class BoxMover implements ParcoursWalkable {
 			RobotUtils.turnToNeutralTacho();
 			RobotUtils.driveStraight(400);
 		}
+		RobotUtils.driveStraight(180);
 		
 		RobotUtils.turn90DegreesRight(); 	// move box to the right wall
 		RobotUtils.driveStraight(2100);
 		
+		RobotUtils.setSpeed(360);
 		RobotUtils.driveStraight(-200);  	//navigate around the box
 		RobotUtils.turn90DegreesRight();
+		RobotUtils.setMaxSpeed();
 		RobotUtils.driveStraight(700);
 		RobotUtils.turn90DegreesLeft();
-
+		
+		System.out.println("around the box");
+		
 		RobotUtils.forward();				// drive to back wall
 		while(!bothTouchSensorsDown()) RobotUtils.checkForKeyPress();
 		System.out.println("wall found - orthagonal");

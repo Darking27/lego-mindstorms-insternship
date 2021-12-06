@@ -20,6 +20,9 @@ public final class RobotUtils {
 		
 		int rotation = 465 * degrees / 90;
 		
+		// set speed
+		int previousLeftSpeed = Ports.LEFT_MOTOR.getSpeed();
+		int previousRightSpeed = Ports.RIGHT_MOTOR.getSpeed();
 		setSpeed(speed);
 
 		Ports.LEFT_MOTOR.rotate((int) (0.98*rotation), true);
@@ -27,6 +30,10 @@ public final class RobotUtils {
 
 		Ports.LEFT_MOTOR.stop(true);
 		Ports.RIGHT_MOTOR.stop(false);
+		
+		// restore old speed
+		Ports.LEFT_MOTOR.setSpeed(previousLeftSpeed);
+		Ports.RIGHT_MOTOR.setSpeed(previousRightSpeed);
 	}
 
 	public static void turnToNeutralTacho() throws KeyPressedException {
