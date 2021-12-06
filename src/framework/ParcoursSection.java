@@ -29,7 +29,7 @@ public enum ParcoursSection {
 	LINE_FOLLOW (new LineFollowerController()),
 	BOX_MOVE (new BoxMoverWrapper()),
 	BRIDGE  (new BridgeFollower()),
-	COLOR_SEARCH  (new MarkerSearcher()),
+	COLOR_SEARCH  (new MarkerSearcherV2()),
 	LINE_BOX_TRANSITIONER(new TransitionLineBox());
 	
 	private final ParcoursWalkable walker;
