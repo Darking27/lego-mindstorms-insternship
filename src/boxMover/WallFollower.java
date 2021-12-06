@@ -22,19 +22,20 @@ public class WallFollower implements ParcoursWalkable {
 
 	@Override
 	public WalkableStatus start_walking() throws KeyPressedException {
+		RobotUtils.setMaxSpeed();
 		
-		Ports.RIGHT_MOTOR.rotate(100);
+		Ports.RIGHT_MOTOR.rotate(200);
 		
 		ParallelDriver.drive();
 		
-		Ports.LEFT_MOTOR.rotate(300, false);
-		Ports.RIGHT_MOTOR.rotate(310, false);
-		System.out.println("driving 1800 units hardcoded");
-		RobotUtils.driveStraight(1500);
+		RobotUtils.setSpeed(400);
+		Ports.LEFT_MOTOR.rotate(300, false);		//gain some distance to the wall
+		Ports.RIGHT_MOTOR.rotate(300, false);
 		
 		System.out.println("dirve til wall is close");
 		boolean closeToWall = false;
 		
+		RobotUtils.setMaxSpeed();
 		Ports.LEFT_MOTOR.forward();
 		Ports.RIGHT_MOTOR.forward();
 		while (!closeToWall) {
@@ -43,7 +44,7 @@ public class WallFollower implements ParcoursWalkable {
 			if (Ports.ENTER.isDown())
 				throw new MenuException();
 			
-			float distanceThreshold = 0.65f;
+			float distanceThreshold = 0.72f;
 			ultrasonicSampleProvider.fetchSample(uSample, 0);
 			closeToWall = uSample[0] < distanceThreshold;
 		}

@@ -9,7 +9,7 @@ import framework.RobotUtils;
 import framework.WalkableStatus;
 import lejos.robotics.SampleProvider;
 
-public class RightAngleBoxFinder implements ParcoursWalkable {
+public class BoxMover implements ParcoursWalkable {
 
 	private float[] uSample;
 	private float[] lTouchSample;
@@ -18,7 +18,7 @@ public class RightAngleBoxFinder implements ParcoursWalkable {
 	private SampleProvider leftTouchSampleProvider;
 	private SampleProvider rightTouchSampleProvider;
 
-	public RightAngleBoxFinder() {
+	public BoxMover() {
 		uSample = new float[1];
 		rTouchSample = new float[1];
 		lTouchSample = new float[1];
@@ -29,50 +29,47 @@ public class RightAngleBoxFinder implements ParcoursWalkable {
 
 	@Override
 	public WalkableStatus start_walking() throws KeyPressedException {
+		
 		boolean boxFound = false;
 		while (!boxFound) {
 			RobotUtils.turn90DegreesRight();
 
-			float maxBoxDistance = 0.40f;
-			ultrasonicSampleProvider.fetchSample(uSample, 0);
-			boxFound = uSample[0] < maxBoxDistance;
-
-			System.out.println("distance= " + uSample[0]);
+			boxFound = boxFound();
 			System.out.println("found= " + boxFound);
 
 			RobotUtils.turnToNeutralTacho();
-
 			RobotUtils.driveStraight(400);
 		}
-		RobotUtils.turn90DegreesRight(); // move box to the right wall
+		
+		RobotUtils.turn90DegreesRight(); 	// move box to the right wall
 		RobotUtils.driveStraight(2100);
-
-		RobotUtils.driveStraight(-200); // navigate around the box
+		
+		RobotUtils.driveStraight(-200);  	//navigate around the box
 		RobotUtils.turn90DegreesRight();
-		RobotUtils.driveStraight(800);
+		RobotUtils.driveStraight(700);
 		RobotUtils.turn90DegreesLeft();
 
-		System.out.println("drive til touched");
-		Ports.LEFT_MOTOR.forward();
-		Ports.RIGHT_MOTOR.forward();
-		do { 							// drive to the right wall
-			if (Ports.ESCAPE.isDown())
-				throw new StopException();
-			if (Ports.ENTER.isDown())
-				throw new MenuException();
-
-			leftTouchSampleProvider.fetchSample(lTouchSample, 0);
-			rightTouchSampleProvider.fetchSample(rTouchSample, 0);
-		} while (lTouchSample[0] < 0.5f || rTouchSample[0] < 0.5f);
-
+		RobotUtils.forward();				// drive to back wall
+		while(!bothTouchSensorsDown()) RobotUtils.checkForKeyPress();
+		System.out.println("wall found - orthagonal");
 		RobotUtils.stopMotors();
-
-		System.out.println("Wall found");
-
-		RobotUtils.driveStraight(-120); // drive box into the back corner
+		
+		RobotUtils.driveStraight(-120); 	// drive box into the back corner
 		RobotUtils.turn90DegreesLeft();
-		System.out.println("turned left");
 		RobotUtils.driveStraight(2000);
+		
 		return WalkableStatus.FINISHED;
+	}
+	
+	private boolean boxFound() {
+		float maxBoxDistance = 0.40f;
+		ultrasonicSampleProvider.fetchSample(uSample, 0);
+		return uSample[0] < maxBoxDistance;
+	}
+	
+	private boolean bothTouchSensorsDown() {
+		leftTouchSampleProvider.fetchSample(lTouchSample, 0);
+		rightTouchSampleProvider.fetchSample(rTouchSample, 0);
+		return lTouchSample[0] > 0.5f && rTouchSample[0] > 0.5f;
 	}
 }
