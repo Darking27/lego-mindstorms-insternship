@@ -26,11 +26,15 @@ public class ExitFinder implements ParcoursWalkable {
 		Ports.RIGHT_MOTOR.rotate(-1920);
 		RobotUtils.stopMotors();
 		
+		System.out.println("turn 90 right");
 		RobotUtils.turn90DegreesRight();
+		RobotUtils.turnDegreesRight(10, 360);
 	
+		System.out.println("drive forward");
 		RobotUtils.setMaxSpeed();
 		RobotUtils.forward();
 		while (!RGBColorSensor.getInstance().isFinishLine()) {
+			RobotUtils.checkForKeyPress();
 			leftTouchSampleProvider.fetchSample(lTouchSample, 0);
 			if (lTouchSample[0]>0.5) {	// check for hitting the wall
 				RobotUtils.stopMotors();
