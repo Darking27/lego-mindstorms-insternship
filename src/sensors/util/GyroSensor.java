@@ -35,14 +35,9 @@ public class GyroSensor {
         }
     }
     
-    public void rotate() {
-        RobotUtils.rotateTo(gyro, 90);
-    }
-    
     public static void main(String[] args) {
         GyroSensor gs = new GyroSensor();
         gs.getValue();
-        gs.rotate();
     }
 
 }
