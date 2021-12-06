@@ -73,6 +73,8 @@ public class SearchLineState extends BaseState {
             
             double gray = AutoAdjustFilter.getGrayValue(sample);
             if (lineFound(gray)) {
+                m1.stop(true);
+                m2.stop();
                 return true;
             }
             m1TachoCount = Math.abs(m1.getTachoCount());
@@ -80,7 +82,7 @@ public class SearchLineState extends BaseState {
         }
         
         m1.stop(true);
-        m2.stop(true);
+        m2.stop();
         
         return false;
     }

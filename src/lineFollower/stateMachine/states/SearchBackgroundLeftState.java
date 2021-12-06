@@ -42,10 +42,10 @@ public class SearchBackgroundLeftState extends BaseState {
         int m1TachoCount = 0;
         int m2TachoCount = 0;
         
-        Ports.LEFT_MOTOR.setSpeed(DEFAULT_SPEED);
-        Ports.RIGHT_MOTOR.setSpeed(DEFAULT_SPEED);
+        Ports.LEFT_MOTOR.setSpeed(150);
+        Ports.RIGHT_MOTOR.setSpeed(150);
         
-        //m1.forward();
+        m1.forward();
         m2.backward();
         
         while (Math.abs(m2TachoCount) <= encoderValue || Math.abs(m2TachoCount) <= encoderValue) {

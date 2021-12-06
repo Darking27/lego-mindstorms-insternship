@@ -14,7 +14,7 @@ import lineFollower.stateMachine.TextRescources;
 
 public abstract class BaseState {
     
-    protected int DEFAULT_SPEED = 300;
+    protected int DEFAULT_SPEED = 400;
     
     protected int ENCODER_GAP_DISTANCE = 600;
     protected int ENCODER_TURN_100 = 400;
@@ -102,7 +102,7 @@ public abstract class BaseState {
         }
         
         Ports.LEFT_MOTOR.stop(true);
-        Ports.RIGHT_MOTOR.stop(true);
+        Ports.RIGHT_MOTOR.stop();
         
         return false;
     }
@@ -168,7 +168,7 @@ public abstract class BaseState {
         }
         
         m1.stop(true);
-        m2.stop(true);
+        m2.stop();
         
     	return false;
     }

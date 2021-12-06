@@ -31,11 +31,11 @@ public class FollowLineState extends BaseState {
 	private void slowDownRegulator()
 			throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
 		
-		double Kp = 900;
-		double Kd = 500;
+		double Kp = 950;  //900
+		double Kd = 500;  //700
 		
 		double targetValue = 0.5;
-        double defaultSpeed = 400;
+        double defaultSpeed = 400;  //400
         
         float[] sample = new float[autoAdjustRGBFilter.sampleSize()];
         autoAdjustRGBFilter.fetchSample(sample, 0);
