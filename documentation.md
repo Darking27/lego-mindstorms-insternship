@@ -56,3 +56,12 @@ Zuerst fährt der Roboter bis zur hinteren Wan und dann immer in einem solchen S
 Gegen Ende haben wir zudem noch einige Regler- und Geschwindigkeitswerte des Linienfolgers angepasst.
 Diese Anpassung wollen wir die nächste Stunde forführen um bessere Zeiten für das Linienfolgen zu erhalten.
 Bisher war das Optimieren der Reglerwerte wenig erfolgreich, da man alle Reglerwerte abhängig voneinander ändern muss. Zum Beispiel müssen alle Reglerwerte angepasst werden, wenn man die Geschwindigkeit steigert, damit der Roboter nicht zu häufig die Bahn verliert.
+
+
+#### 6.12.2021
+Nachdem letzte Woche bereits eine Funktionierende Version des Paketzustellers funktionierte, ging es diese Woche darum einen schnellere Strategie zu implementieren.
+Hierzu schweift der Roboter nach links und rechts und sucht mittels des Ultraschallsensors nach der Kiste.
+Während dem schwenken speichern und ändern wir die ganze Zeit die kürzeste gesehen Distanz und deren Tacho Werte.
+Nach dem schwenken dreht sich der Roboter zurück zur kürzesten Distanz.
+Leider konnte der Roboter nicht verlässlich die Box erkennen wenn diese zum Beispiel schräg stand.
+Wir werden nächste Stunde probieren weiter daran zu arbeiten, gehen aber davon aus, dass wir doch bei der vorherigen Strategie bleiben.
