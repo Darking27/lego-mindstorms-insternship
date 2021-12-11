@@ -65,3 +65,7 @@ Während dem schwenken speichern und ändern wir die ganze Zeit die kürzeste ge
 Nach dem schwenken dreht sich der Roboter zurück zur kürzesten Distanz.
 Leider konnte der Roboter nicht verlässlich die Box erkennen wenn diese zum Beispiel schräg stand.
 Wir werden nächste Stunde probieren weiter daran zu arbeiten, gehen aber davon aus, dass wir doch bei der vorherigen Strategie bleiben.
+
+Beim Brückenfolger wurde heute ein Regler implementiert, der einer geraden Kante folgen kann.
+Bis zum nächsten Termin soll ein neues ParcoursWalkable erstellt werden, das sowohl diesen Regler, als auch den Farbsensor nutzt und die erste Kurve mittles Farbsensor erkennt.
+Die zweite Kurve soll auch mit dem Farbsensor erkannt werden, allerdings indem der Roboter zuerst gerade über die Kante hinausfährt und dann zurücksetzt um sich um 90 Grad zu drehen.
