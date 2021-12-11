@@ -8,6 +8,7 @@ import boxMover.WallFollower;
 import bridgeFollower.BridgeFollower;
 import bridgeFollower.BridgeFollowerV2;
 import bridgeFollower.BridgeFollowerV3;
+import bridgeFollower.BridgeFollowerV4;
 import exceptions.KeyPressedException;
 import lineFollower.stateMachine.LineFollowerController;
 import markerSearcher.MarkerSearcher;
@@ -34,7 +35,8 @@ public enum ParcoursSection {
 	COLOR_SEARCH  (new MarkerSearcherV2()),
 	LINE_BOX_TRANSITIONER(new TransitionLineBox()),
 	BRIDGE_V2(new BridgeFollowerV2()),
-	BRIDGE_V3(new BridgeFollowerV3());
+	BRIDGE_V3(new BridgeFollowerV3()),
+	BRIDGE_V4(new BridgeFollowerV4());
 	
 	private final ParcoursWalkable walker;
 	
