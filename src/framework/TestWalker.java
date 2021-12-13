@@ -7,9 +7,10 @@ public class TestWalker implements ParcoursWalkable {
 
 	@Override
 	public WalkableStatus start_walking() throws KeyPressedException{
-		RobotUtils.setSpeed(400);
-		Ports.LEFT_MOTOR.rotate(300, false);		//gain some distance to the wall
-		Ports.RIGHT_MOTOR.rotate(300, false);
+		RobotUtils.setSpeed(360);
+		
+		RobotUtils.turn90DegreesRight();
+		
 		return WalkableStatus.FINISHED;
 	}
 }

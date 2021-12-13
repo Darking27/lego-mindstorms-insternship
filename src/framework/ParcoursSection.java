@@ -12,7 +12,7 @@ import bridgeFollower.BridgeFollowerV3;
 import bridgeFollower.BridgeFollowerV4;
 import exceptions.KeyPressedException;
 import lineFollower.stateMachine.LineFollowerController;
-import markerSearcher.MarkerSearcher;
+import markerSearcher.MarkerSearcherV2;
 
 /**
  * Defines the different parcours Section
@@ -28,11 +28,11 @@ public enum ParcoursSection {
 	TURN_BOX_MOVE(new TurnBoxFinder()),
 	EXIT_FINDER (new ExitFinder()),
 	NEW_BOX_MOVER (new NewBoxFinder()),
-	TEST_WALKER (new DistanceTimePlotter()),
+	TEST_WALKER (new TestWalker()),
 	LINE_FOLLOW (new LineFollowerController()),
 	BOX_MOVE (new BoxMoverWrapper()),
 	BRIDGE  (new BridgeFollower()),
-	COLOR_SEARCH  (new MarkerSearcher()),
+	COLOR_SEARCH  (new MarkerSearcherV2()),
 	LINE_BOX_TRANSITIONER(new TransitionLineBox()),
 	BRIDGE_V2(new BridgeFollowerV2()),
 	BRIDGE_V3(new BridgeFollowerV3()),
