@@ -33,20 +33,21 @@ public class TurnBoxFinder implements ParcoursWalkable {
 
 			boxFound = boxFound();
 			System.out.println("found= " + boxFound);
-
-			RobotUtils.turnToNeutralTacho();
-			RobotUtils.driveStraight(400);
+			
+			if (!boxFound) {
+				RobotUtils.turnToNeutralTacho();
+				RobotUtils.driveStraight(400);
+			}
 		}
 		
-		RobotUtils.turn90DegreesRight();
 		RobotUtils.setMaxSpeed();
 		RobotUtils.forward();
 		
 		while(!oneTouchSensorDown()); //drive until the box is hit
 		System.out.println("box hit");
 		RobotUtils.stopMotors();
-		
-		Ports.RIGHT_MOTOR.forward();
+		RobotUtils.setSpeed(350, 700);
+		RobotUtils.forward();
 		
 		while(true) RobotUtils.checkForKeyPress();
 	}
