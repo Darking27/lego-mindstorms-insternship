@@ -28,7 +28,9 @@ public class TurnBoxFinder implements ParcoursWalkable {
 	@Override
 	public WalkableStatus start_walking() throws KeyPressedException {
 		boolean boxFound = false;
+		int searchTrys = 0;
 		while (!boxFound) {
+			searchTrys++;
 			RobotUtils.turn90DegreesRight();
 
 			boxFound = boxFound();
@@ -46,7 +48,10 @@ public class TurnBoxFinder implements ParcoursWalkable {
 		while(!oneTouchSensorDown()); //drive until the box is hit
 		System.out.println("box hit");
 		RobotUtils.stopMotors();
-		RobotUtils.setSpeed(350, 700);
+		if(searchTrys < 4) 
+			RobotUtils.setSpeed(370, 700);
+		else
+			RobotUtils.setSpeed(500, 700);
 		RobotUtils.forward();
 		
 		while(true) RobotUtils.checkForKeyPress();
