@@ -24,7 +24,7 @@ public class NewBoxFinder implements ParcoursWalkable {
 		int rightTacho = 0;
 		
 		RobotUtils.resetTachos();
-		RobotUtils.setSpeed(150);
+		RobotUtils.setSpeed(100);
 		int turn = 500;
 		Ports.LEFT_MOTOR.rotate(turn, true);
 		Ports.RIGHT_MOTOR.rotate(-turn, true);
@@ -33,19 +33,23 @@ public class NewBoxFinder implements ParcoursWalkable {
 			ultrasonicSampleProvider.fetchSample(uSample, 0);
 			if (uSample[0]<dist) {
 				dist = uSample[0];
+				System.out.println("min: " + dist);
 				leftTacho = Ports.LEFT_MOTOR.getTachoCount();
 				rightTacho = Ports.RIGHT_MOTOR.getTachoCount();
 			}
 		}
 		
-		Ports.LEFT_MOTOR.rotateTo(leftTacho-12, true);
-		Ports.RIGHT_MOTOR.rotateTo(rightTacho+12, false);
+		Ports.LEFT_MOTOR.rotateTo(leftTacho, true);
+		Ports.RIGHT_MOTOR.rotateTo(rightTacho, false);
 		
-		RobotUtils.setMaxSpeed();
-		RobotUtils.forward();
-		RobotUtils.checkForKeyPressAsLongAsMoving();
+		//RobotUtils.setMaxSpeed();
+		//RobotUtils.forward();
+		//RobotUtils.checkForKeyPressAsLongAsMoving();
 		
-		return WalkableStatus.FINISHED;
+		while(true) RobotUtils.checkForKeyPress();
+
+		
+		//return WalkableStatus.FINISHED;
 	}
 	
 	

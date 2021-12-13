@@ -37,7 +37,8 @@ public final class RobotUtils {
 	}
 
 	public static void turnToNeutralTacho() throws KeyPressedException {
-		setMaxSpeed();
+		
+		setSpeed(360);
 
 		Ports.LEFT_MOTOR.rotateTo(0, true);
 		Ports.RIGHT_MOTOR.rotateTo(0, false);
