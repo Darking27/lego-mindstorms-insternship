@@ -6,25 +6,24 @@ import framework.RobotUtils;
 import framework.WalkableStatus;
 import lejos.utility.Delay;
 
-public class FollowLeftState extends BaseState {
+public class FollowLeftStateUp extends BaseState {
 	private boolean onBridge = true;
-	private long time = System.nanoTime();
+	private long time;
 	int defaultSpeed = 200;
 	int varSpeed = 200;
 	float Kp = 0.0000000015f;
 
 	@Override
 	public State handleState() throws KeyPressedException {
+		System.out.println("Follow left");
+		
 		Ports.LEFT_MOTOR.resetTachoCount();
 		Ports.RIGHT_MOTOR.resetTachoCount();
 		
+		time = System.nanoTime();
+		
 		while (true) {
 			handleKeyPressed();
-			
-			if (touchLeft() || touchRight()) {
-				System.out.println("Start tunnelfinder");
-				return State.TUNNEL_FINDER;
-			}
 			
 			if (seeingLightBrown()) {
 				System.out.println("First turn");

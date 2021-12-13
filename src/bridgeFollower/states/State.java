@@ -4,7 +4,8 @@ import exceptions.KeyPressedException;
 
 public enum State {
 	FIND_LEFT(new FindLeftState()),
-	FOLLOW_LEFT(new FollowLeftState()),
+	FOLLOW_LEFT_UP(new FollowLeftStateUp()),
+	FOLLOW_LEFT_DOWN(new FollowLeftStateDown()),
 	TUNNEL_FINDER(new TunnelFinderState()),
 	DRIVE_STRAIT(new DriveStraitState()),
 	TURN_LEFT_1(new TurnLeft1State()),

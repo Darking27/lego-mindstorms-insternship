@@ -8,6 +8,8 @@ public class FindLeftState extends BaseState {
 
 	@Override
 	public State handleState() throws KeyPressedException {
+		System.out.println("Find left");
+		
 		Ports.RIGHT_MOTOR.setSpeed(300);
 		Ports.LEFT_MOTOR.setSpeed(250);
 		Ports.RIGHT_MOTOR.forward();
@@ -18,7 +20,7 @@ public class FindLeftState extends BaseState {
 		}
 		
 		RobotUtils.stopMotors();
-		return State.FOLLOW_LEFT;
+		return State.FOLLOW_LEFT_UP;
 	}
 
 }
