@@ -25,12 +25,22 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
 	private SampleProvider colorIdSensor;
 	private SampleProvider distanceSensor;
 	
+	private void turnLeft() {
+	    Ports.LEFT_MOTOR.rotate(-450, true);
+        Ports.RIGHT_MOTOR.rotate(450, false);
+	}
+	
+	private void turnRight() {
+        Ports.LEFT_MOTOR.rotate(450, true);
+        Ports.RIGHT_MOTOR.rotate(-450, false);
+    }
+	
 	public MarkerSearcherV2() {
 		colorIdSensor = Ports.COLOR_SENSOR.getColorIDMode();
 		distanceSensor = Ports.ULTRASONIC_SENSOR.getDistanceMode();
 	}
     
-    public void followRightWall() { 
+    public void followRightWall() throws KeyPressedException { 
     	System.out.println("follow wall");
         Ports.LEFT_MOTOR.setSpeed(400);
         Ports.RIGHT_MOTOR.setSpeed(400);
@@ -38,15 +48,14 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
         Ports.LEFT_MOTOR.forward();
         Ports.RIGHT_MOTOR.forward();
         
-        while (!Ports.ENTER.isDown()) {
+        float[] distance = new float[distanceSensor.sampleSize()];
+        distanceSensor.fetchSample(distance, 0);
+        
+        while (distance[0] > 0.5) {
+            distanceSensor.fetchSample(distance, 0);
             if (rightButtonPressed()) {
                 Delay.msDelay(100);
                 RobotUtils.stopMotors();
-       
-                if (bothButtonsPressed()) {
-                    RobotUtils.stopMotors();
-                    return;
-                }
                 
                 Ports.LEFT_MOTOR.setSpeed(200);
                 Ports.LEFT_MOTOR.backward();
@@ -59,8 +68,27 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
                 Ports.LEFT_MOTOR.forward();
                 Ports.RIGHT_MOTOR.forward();
             }
+            if (Ports.ENTER.isDown()) {
+                throw new MenuException();
+            }
+        }
+        System.out.println("Distance to wall < 0.5");
+        
+        Ports.LEFT_MOTOR.rotate(-80, true);
+        Ports.RIGHT_MOTOR.rotate(80, false);
+        
+        Ports.LEFT_MOTOR.setSpeed(400);
+        Ports.RIGHT_MOTOR.setSpeed(400);
+        
+        Ports.LEFT_MOTOR.forward();
+        Ports.RIGHT_MOTOR.forward();
+        while (!bothButtonsPressed()) {
             
         }
+        RobotUtils.stopMotors();
+        System.out.println("At Wall --> first turn");
+        //TODO remove
+        Delay.msDelay(2000);
     }
     
     public void followRightUntilFirstTouch() {    
@@ -82,16 +110,15 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     public void firstTurn() throws KeyPressedException {
     	System.out.println("first turn");
     	Ports.RIGHT_MOTOR.setSpeed(400);
-    	Ports.LEFT_MOTOR.setSpeed(150);
+    	Ports.LEFT_MOTOR.setSpeed(400);
     	
-    	Ports.RIGHT_MOTOR.rotate(-700, true);
-    	Ports.LEFT_MOTOR.rotate((int) (-700*0.95));
+    	Ports.RIGHT_MOTOR.rotate(-100, true);
+    	Ports.LEFT_MOTOR.rotate(-100, false);
     	
-    	RobotUtils.driveStraight(400);
-    	RobotUtils.stopMotors();
+    	turnLeft();
     	
-    	RobotUtils.setSpeed(360);
-    	RobotUtils.turnDegreesRight(-94);
+    	Ports.RIGHT_MOTOR.rotate(-300, true);
+        Ports.LEFT_MOTOR.rotate(-300, false);
     }
     
     public void driveLine(boolean useUltrasonic) throws KeyPressedException, FinishLineException {
@@ -133,34 +160,14 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     	System.out.println("turn 180 left");
     	
     	
-    	System.out.println("- 90");
     	RobotUtils.setSpeed(360);
-    	RobotUtils.turnDegreesRight(-94);
-    	
-    	System.out.println("- straight");
-    	RobotUtils.driveStraight(150);
-    	
-		/*
-		 * DriveParallelTask driveParallel = new DriveParallelTask(400); while
-		 * (!markerOneFound || !markerTwoFound) { if (Ports.ESCAPE.isDown()) throw new
-		 * StopException(); if (Ports.ENTER.isDown()) throw new MenuException();
-		 * 
-		 * driveParallel.run();
-		 * 
-		 * float[] colorSensorSample = new float[colorIdSensor.sampleSize()]; if
-		 * (!markerOneFound && isMarkerOne(colorSensorSample)) { markerOneFound = true;
-		 * System.out.println("Marker 1 found"); }
-		 * 
-		 * if (!markerTwoFound && isMarkerTwo(colorSensorSample)) { markerTwoFound =
-		 * true; System.out.println("Marker 2 found"); }
-		 * 
-		 * if (Ports.LEFT_MOTOR.getTachoCount() > 100 ||
-		 * Ports.RIGHT_MOTOR.getTachoCount() > 100) { driveParallel.cancel(); break; } }
-		 */
-    	
-    	System.out.println("- 90");
+    	RobotUtils.turn90DegreesLeft();
+    	RobotUtils.driveStraight(200);
     	RobotUtils.setSpeed(360);
-    	RobotUtils.turnDegreesRight(-94);
+    	RobotUtils.turn90DegreesLeft();
+    	
+    	Ports.RIGHT_MOTOR.rotate(-300, true);
+        Ports.LEFT_MOTOR.rotate(-300, false);
     	
     }
     
@@ -168,51 +175,16 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     	System.out.println("turn 180 right");
     	Ports.RIGHT_MOTOR.setSpeed(400);
     	Ports.LEFT_MOTOR.setSpeed(400);
-    	
-    	System.out.println("- back");
-    	Ports.RIGHT_MOTOR.rotate(-400, true);
-    	Ports.LEFT_MOTOR.rotate((int) (-400*0.98));
-    	
-    	Ports.LEFT_MOTOR.stop(true);
-    	Ports.RIGHT_MOTOR.stop();
-    	
-    	System.out.println("- 90");
-    	
-    	RobotUtils.setSpeed(360);
-    	RobotUtils.turnDegreesRight(94);
-    	RobotUtils.stopMotors();
-    	
-    	System.out.println("- forward");
-    	
-    	RobotUtils.driveStraight(150);
-    	RobotUtils.stopMotors();
-		/*
-		 * Ports.LEFT_MOTOR.resetTachoCount(); Ports.RIGHT_MOTOR.resetTachoCount();
-		 * DriveParallelTask driveParallel = new DriveParallelTask(400); while
-		 * ((!markerOneFound || !markerTwoFound)) { if (Ports.ESCAPE.isDown()) throw new
-		 * StopException(); if (Ports.ENTER.isDown()) throw new MenuException();
-		 * 
-		 * driveParallel.run();
-		 * 
-		 * float[] colorSensorSample = new float[colorIdSensor.sampleSize()]; if
-		 * (!markerOneFound && isMarkerOne(colorSensorSample)) { markerOneFound = true;
-		 * System.out.println("Marker 1 found"); }
-		 * 
-		 * if (!markerTwoFound && isMarkerTwo(colorSensorSample)) { markerTwoFound =
-		 * true; System.out.println("Marker 2 found"); }
-		 * 
-		 * System.out.println(Ports.LEFT_MOTOR.getTachoCount());
-		 * 
-		 * if (Ports.LEFT_MOTOR.getTachoCount() > 100 ||
-		 * Ports.RIGHT_MOTOR.getTachoCount() > 100) { RobotUtils.stopMotors(); break; }
-		 * }
-		 */
-    	
-    	System.out.println("- 90");
 
+    	
     	RobotUtils.setSpeed(360);
-    	RobotUtils.turnDegreesRight(94);
-    	RobotUtils.stopMotors();
+        RobotUtils.turn90DegreesRight();
+        RobotUtils.driveStraight(200);
+        RobotUtils.setSpeed(360);
+        RobotUtils.turn90DegreesRight();
+        
+        Ports.RIGHT_MOTOR.rotate(-300, true);
+        Ports.LEFT_MOTOR.rotate(-300, false);
     }
     
     
@@ -249,7 +221,7 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
 			float[] distance = new float[distanceSensor.sampleSize()];
 			distanceSensor.fetchSample(distance, 0);
 			
-			return distance[0] < 0.14 || bothButtonsPressed();
+			return distance[0] < 0.12 || bothButtonsPressed();
 		}
 		return bothButtonsPressed();
 	}
@@ -257,7 +229,7 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
 	public void markerFoundSignal() {
 	    RobotUtils.stopMotors();
 	    Button.LEDPattern(9);
-	    Sound.beepSequence();
+	    Sound.twoBeeps();
 	    Delay.msDelay(1000);
 	    Button.LEDPattern(0);
 	    RobotUtils.forward();
@@ -282,7 +254,7 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
 			while (true) {
 				driveLine(true);
 				turn180Left();
-				driveLine(false);
+				driveLine(true);
 				turn180Right();
 			}
 		}
