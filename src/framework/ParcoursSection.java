@@ -32,7 +32,7 @@ public enum ParcoursSection {
 	LINE_FOLLOW (new LineFollowerController()),
 	BOX_MOVE (new BoxMoverWrapper()),
 	BRIDGE  (new BridgeFollower()),
-	COLOR_SEARCH  (new MarkerSearcherV2()),
+	COLOR_SEARCH  (new MarkerSearcher()),
 	LINE_BOX_TRANSITIONER(new TransitionLineBox()),
 	BRIDGE_V2(new BridgeFollowerV2()),
 	BRIDGE_V3(new BridgeFollowerV3()),
