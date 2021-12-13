@@ -28,7 +28,6 @@ public class ExitFinder implements ParcoursWalkable {
 		
 		System.out.println("turn 90 right");
 		RobotUtils.turn90DegreesRight();
-		RobotUtils.turnDegreesRight(10, 360);
 	
 		System.out.println("drive forward");
 		RobotUtils.setMaxSpeed();

@@ -90,7 +90,8 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     	RobotUtils.driveStraight(400);
     	RobotUtils.stopMotors();
     	
-    	RobotUtils.turnDegreesRight(-94, 360);
+    	RobotUtils.setSpeed(360);
+    	RobotUtils.turnDegreesRight(-94);
     }
     
     public void driveLine(boolean useUltrasonic) throws KeyPressedException, FinishLineException {
@@ -133,7 +134,8 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     	
     	
     	System.out.println("- 90");
-    	RobotUtils.turnDegreesRight(-94, 360);
+    	RobotUtils.setSpeed(360);
+    	RobotUtils.turnDegreesRight(-94);
     	
     	System.out.println("- straight");
     	RobotUtils.driveStraight(150);
@@ -157,7 +159,8 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
 		 */
     	
     	System.out.println("- 90");
-    	RobotUtils.turnDegreesRight(-94, 360);
+    	RobotUtils.setSpeed(360);
+    	RobotUtils.turnDegreesRight(-94);
     	
     }
     
@@ -175,7 +178,8 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     	
     	System.out.println("- 90");
     	
-    	RobotUtils.turnDegreesRight(94, 360);
+    	RobotUtils.setSpeed(360);
+    	RobotUtils.turnDegreesRight(94);
     	RobotUtils.stopMotors();
     	
     	System.out.println("- forward");
@@ -206,7 +210,8 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     	
     	System.out.println("- 90");
 
-    	RobotUtils.turnDegreesRight(94, 360);
+    	RobotUtils.setSpeed(360);
+    	RobotUtils.turnDegreesRight(94);
     	RobotUtils.stopMotors();
     }
     
