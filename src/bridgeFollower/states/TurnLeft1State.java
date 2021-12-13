@@ -7,9 +7,10 @@ public class TurnLeft1State extends BaseState {
 
 	@Override
 	public State handleState() throws KeyPressedException {		
-		driveStraight(650, true, 200);
-		turn(480, false, 200);
-		driveStraight(500, true, 200);
+		driveStraight(600, true, 200);
+		turn(460, false, 200);
+		driveStraight(700, true, 200);
+		RobotUtils.stopMotors();
 		return State.FOLLOW_TOP;
 	}
 

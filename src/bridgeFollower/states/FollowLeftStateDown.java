@@ -6,33 +6,29 @@ import framework.RobotUtils;
 import framework.WalkableStatus;
 import lejos.utility.Delay;
 
-public class FollowTopState extends FindLeftState {
+public class FollowLeftStateDown extends FindLeftState {
 	private boolean onBridge = true;
 	private long time = System.nanoTime();
 	int defaultSpeed = 200;
 	int varSpeed = 200;
 	float Kp = 0.0000000015f;
-	public static final int DISTANCE = 2300;
 
 	@Override
 	public State handleState() throws KeyPressedException {
-		System.out.println("Follow top");
-		
 		Ports.LEFT_MOTOR.resetTachoCount();
 		Ports.RIGHT_MOTOR.resetTachoCount();
 		
-		// First find left side of bridge
+		// Find left first
 		super.handleState();
 		
-		System.out.println("Found line");
 		time = System.nanoTime();
 		
 		while (true) {
 			handleKeyPressed();
 			
-			if (Ports.LEFT_MOTOR.getTachoCount() > DISTANCE
-					|| Ports.RIGHT_MOTOR.getTachoCount() > DISTANCE) {
-				return State.DRIVE_STRAIT;
+			if (touchLeft() || touchRight()) {
+				System.out.println("Start tunnelfinder");
+				return State.TUNNEL_FINDER;
 			}
 			
 			if (isOverBridge() && !onBridge) {
