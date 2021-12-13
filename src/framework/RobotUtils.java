@@ -71,6 +71,11 @@ public final class RobotUtils {
 		Ports.RIGHT_MOTOR.setSpeed(speed);
 	}
 	
+	public static void setSpeed(int left, int right) {
+		Ports.LEFT_MOTOR.setSpeed(left);
+		Ports.RIGHT_MOTOR.setSpeed(right);
+	}
+	
 	public static void forward() {
 		Ports.LEFT_MOTOR.forward();
 		Ports.RIGHT_MOTOR.forward();
