@@ -9,7 +9,8 @@ public enum State {
 	DRIVE_STRAIT(new DriveStraitState()),
 	TURN_LEFT_1(new TurnLeft1State()),
 	TURN_LEFT_2(new TurnLeft2State()),
-	FOLLOW_TOP(new FollowTopState());
+	FOLLOW_TOP(new FollowTopState()),
+	PARALLEL_DRIVE_RIGHT(new ParallelDriveRightState());
 	
 	
 	private BaseState state;

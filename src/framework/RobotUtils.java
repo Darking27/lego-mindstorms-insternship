@@ -31,10 +31,25 @@ public final class RobotUtils {
 		Ports.LEFT_MOTOR.rotateTo(0, true);
 		Ports.RIGHT_MOTOR.rotateTo(0, false);
 	}
-
+	
 	public static void driveStraight(int distance) throws KeyPressedException {
-		Ports.LEFT_MOTOR.rotate(distance, true);
-		Ports.RIGHT_MOTOR.rotate(distance, false);
+		driveStraight(distance, Integer.MAX_VALUE);
+	}
+
+	public static void driveStraight(int distance, int speed) throws KeyPressedException {
+		if (speed == Integer.MAX_VALUE) {
+			setMaxSpeed();
+		} else {
+			setSpeed(speed);
+		}
+		
+		int rotation = distance;
+		Ports.LEFT_MOTOR.rotate(rotation, true);
+		Ports.RIGHT_MOTOR.rotate(rotation, true);
+
+		checkForKeyPressAsLongAsMoving();
+
+		stopMotors();
 	}
 
 	public static void checkForKeyPressAsLongAsMoving() throws KeyPressedException {

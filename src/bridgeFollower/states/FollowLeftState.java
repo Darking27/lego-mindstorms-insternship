@@ -34,12 +34,12 @@ public class FollowLeftState extends BaseState {
 			if (isOverBridge() && !onBridge) {
 				onBridge = true;
 				time = System.nanoTime();
-				System.out.println("bridge");
+				//System.out.println("bridge");
 			}
 			if (!isOverBridge() && onBridge) {
 				onBridge = false;
 				time = System.nanoTime();
-				System.out.println("no bridge");
+				//System.out.println("no bridge");
 			}
 			
 			int leftSpeed;

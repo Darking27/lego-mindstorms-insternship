@@ -21,9 +21,8 @@ public class Framework {
 	/**
 	 * sets the order of the obstacles in the parcours
 	 */
-	private static List<ParcoursSection> parcours_section_order = Arrays.asList(ParcoursSection.LINE_FOLLOW,
-			ParcoursSection.LINE_BOX_TRANSITIONER, ParcoursSection.BOX_MOVE, ParcoursSection.BRIDGE,
-			ParcoursSection.COLOR_SEARCH);
+	private static List<ParcoursSection> parcours_section_order = Arrays.asList(ParcoursSection.LINE_FOLLOW, ParcoursSection.LINE_BOX_TRANSITIONER,
+			ParcoursSection.BOX_MOVE, ParcoursSection.BRIDGE_V4, ParcoursSection.COLOR_SEARCH);
 	private static Brick brick = BrickFinder.getDefault();
 
 	public static void main(String[] args) {

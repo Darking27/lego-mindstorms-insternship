@@ -12,10 +12,13 @@ public class FollowTopState extends FindLeftState {
 	int defaultSpeed = 200;
 	int varSpeed = 200;
 	float Kp = 0.0000000015f;
-	public static final int DISTANCE = 2000;
+	public static final int DISTANCE = 1500;
 
 	@Override
 	public State handleState() throws KeyPressedException {
+		Ports.LEFT_MOTOR.resetTachoCount();
+		Ports.RIGHT_MOTOR.resetTachoCount();
+		
 		// First find left side of bridge
 		super.handleState();
 		
@@ -24,18 +27,18 @@ public class FollowTopState extends FindLeftState {
 			
 			if (Ports.LEFT_MOTOR.getTachoCount() > DISTANCE
 					|| Ports.RIGHT_MOTOR.getTachoCount() > DISTANCE) {
-				return State.DRIVE_STRAIT;
+				return State.PARALLEL_DRIVE_RIGHT;
 			}
 			
 			if (isOverBridge() && !onBridge) {
 				onBridge = true;
 				time = System.nanoTime();
-				System.out.println("bridge");
+				//System.out.println("bridge");
 			}
 			if (!isOverBridge() && onBridge) {
 				onBridge = false;
 				time = System.nanoTime();
-				System.out.println("no bridge");
+				//System.out.println("no bridge");
 			}
 			
 			int leftSpeed;
