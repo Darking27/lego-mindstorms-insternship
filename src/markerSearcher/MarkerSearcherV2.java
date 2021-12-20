@@ -115,7 +115,7 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     	Ports.RIGHT_MOTOR.rotate(-100, true);
     	Ports.LEFT_MOTOR.rotate(-100, false);
     	
-    	turnLeft();
+    	RobotUtils.turn90DegreesLeft();
     	
     	Ports.RIGHT_MOTOR.rotate(-300, true);
         Ports.LEFT_MOTOR.rotate(-300, false);
@@ -123,7 +123,7 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     
     public void driveLine(boolean useUltrasonic) throws KeyPressedException, FinishLineException {
     	System.out.println("line");
-    	DriveParallelTask driveParallel = new DriveParallelTask(400);
+    	DriveParallelTask driveParallel = new DriveParallelTask(600);
     	while (true) {
     		if (markerOneFound && markerTwoFound) {
     			throw new FinishLineException(null);
@@ -160,31 +160,31 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     	System.out.println("turn 180 left");
     	
     	
-    	RobotUtils.setSpeed(360);
+    	RobotUtils.setSpeed(450);
     	RobotUtils.turn90DegreesLeft();
-    	RobotUtils.driveStraight(200);
-    	RobotUtils.setSpeed(360);
+    	RobotUtils.driveStraight(300);
+    	RobotUtils.setSpeed(450);
     	RobotUtils.turn90DegreesLeft();
     	
-    	Ports.RIGHT_MOTOR.rotate(-300, true);
-        Ports.LEFT_MOTOR.rotate(-300, false);
+    	RobotUtils.setSpeed(600);
+    	Ports.RIGHT_MOTOR.rotate(-450, true);
+        Ports.LEFT_MOTOR.rotate(-450, false);
     	
     }
     
     private void turn180Right() throws KeyPressedException {
     	System.out.println("turn 180 right");
-    	Ports.RIGHT_MOTOR.setSpeed(400);
-    	Ports.LEFT_MOTOR.setSpeed(400);
 
     	
-    	RobotUtils.setSpeed(360);
+    	RobotUtils.setSpeed(450);
         RobotUtils.turn90DegreesRight();
-        RobotUtils.driveStraight(200);
-        RobotUtils.setSpeed(360);
+        RobotUtils.driveStraight(300);
+        RobotUtils.setSpeed(450);
         RobotUtils.turn90DegreesRight();
         
-        Ports.RIGHT_MOTOR.rotate(-300, true);
-        Ports.LEFT_MOTOR.rotate(-300, false);
+        RobotUtils.setSpeed(600);
+        Ports.RIGHT_MOTOR.rotate(-450, true);
+        Ports.LEFT_MOTOR.rotate(-450, false);
     }
     
     
@@ -230,7 +230,7 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
 	    RobotUtils.stopMotors();
 	    Button.LEDPattern(9);
 	    Sound.twoBeeps();
-	    Delay.msDelay(1000);
+	    Delay.msDelay(500);
 	    Button.LEDPattern(0);
 	    RobotUtils.forward();
 	}
