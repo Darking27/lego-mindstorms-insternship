@@ -42,8 +42,8 @@ public class SearchBackgroundLeftState extends BaseState {
         int m1TachoCount = 0;
         int m2TachoCount = 0;
         
-        Ports.LEFT_MOTOR.setSpeed(150);
-        Ports.RIGHT_MOTOR.setSpeed(150);
+        Ports.LEFT_MOTOR.setSpeed(200);
+        Ports.RIGHT_MOTOR.setSpeed(200);
         
         m1.forward();
         m2.backward();
@@ -61,7 +61,7 @@ public class SearchBackgroundLeftState extends BaseState {
             checkRobotInputs(sample, true);
             
             double gray = AutoAdjustFilter.getGrayValue(sample);
-            if (gray <= 0.4) {
+            if (gray <= 0.7) {
                 System.out.println("Found background, gray value:" + gray);
                 return true;
             }

@@ -17,6 +17,15 @@ public class SearchLineState extends BaseState {
     
     @Override
     public StateName handleState() throws ProcessInteruptedEnterException, RobotCollisionException, FinishLineException {
+        
+        float[] sample = new float[autoAdjustRGBFilter.sampleSize()];
+        double gray = AutoAdjustFilter.getGrayValue(sample);
+        autoAdjustRGBFilter.fetchSample(sample, 0);
+        
+        if (gray > 0.4) {
+            return StateName.FOLLOW_LINE;
+        }
+        
         if (driveForwardStraight(50, false, true)) {
             return StateName.FOLLOW_LINE;
         }
