@@ -48,16 +48,28 @@ public abstract class BaseState {
     protected boolean driveForwardStraight(int encoderValue, boolean searchLine, boolean checkFinishLine)
     		throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
     	
-    	return driveStraight(encoderValue, searchLine,checkFinishLine, true);
+    	return driveStraight(encoderValue, DEFAULT_SPEED, searchLine,checkFinishLine, true);
+    }
+    
+    protected boolean driveForwardStraight(int encoderValue, int speed, boolean searchLine, boolean checkFinishLine)
+            throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
+        
+        return driveStraight(encoderValue, speed, searchLine,checkFinishLine, true);
     }
     
     protected boolean driveBackwardStraight(int encoderValue, boolean searchLine, boolean checkFinishLine)
     		throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
     	
-    	return driveStraight(encoderValue, searchLine,checkFinishLine, false);
+    	return driveStraight(encoderValue, DEFAULT_SPEED, searchLine,checkFinishLine, false);
     }
     
-    private boolean driveStraight(int encoderValue, boolean searchLine, boolean checkFinishLine, boolean forward)
+    protected boolean driveBackwardStraight(int encoderValue, int speed, boolean searchLine, boolean checkFinishLine)
+            throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
+        
+        return driveStraight(encoderValue, speed, searchLine,checkFinishLine, false);
+    }
+    
+    private boolean driveStraight(int encoderValue, int speed, boolean searchLine, boolean checkFinishLine, boolean forward)
     		throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
     	
     	float[] sample = new float[autoAdjustRGBFilter.sampleSize()];
@@ -68,8 +80,8 @@ public abstract class BaseState {
         int leftTachoCount = 0;
         int rightTachoCount = 0;
         
-        Ports.LEFT_MOTOR.setSpeed(DEFAULT_SPEED);
-        Ports.RIGHT_MOTOR.setSpeed(DEFAULT_SPEED);
+        Ports.LEFT_MOTOR.setSpeed(speed);
+        Ports.RIGHT_MOTOR.setSpeed(speed);
         
         if (forward) {
 	        Ports.LEFT_MOTOR.forward();
@@ -110,16 +122,28 @@ public abstract class BaseState {
     protected boolean turnRight(int encoderValue, boolean searchLine, boolean checkFinishLine)
     		throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
     	
-    	return turn(encoderValue, searchLine,checkFinishLine, true);
+    	return turn(encoderValue, DEFAULT_SPEED, searchLine,checkFinishLine, true);
     }
     
     protected boolean turnLeft(int encoderValue, boolean searchLine, boolean checkFinishLine)
     		throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
     	
-    	return turn(encoderValue, searchLine, checkFinishLine, false);
+    	return turn(encoderValue, DEFAULT_SPEED, searchLine, checkFinishLine, false);
     }
     
-    private boolean turn(int encoderValue, boolean searchLine, boolean checkFinishLine, boolean right)
+    protected boolean turnRight(int encoderValue, int speed, boolean searchLine, boolean checkFinishLine)
+            throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
+        
+        return turn(encoderValue, speed, searchLine,checkFinishLine, true);
+    }
+    
+    protected boolean turnLeft(int encoderValue, int speed, boolean searchLine, boolean checkFinishLine)
+            throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
+        
+        return turn(encoderValue, speed, searchLine, checkFinishLine, false);
+    }
+    
+    private boolean turn(int encoderValue, int speed, boolean searchLine, boolean checkFinishLine, boolean right)
     		throws RobotCollisionException, ProcessInteruptedEnterException, FinishLineException {
     	
     	float[] sample = new float[autoAdjustRGBFilter.sampleSize()];
@@ -141,8 +165,8 @@ public abstract class BaseState {
         int m1TachoCount = 0;
         int m2TachoCount = 0;
         
-        Ports.LEFT_MOTOR.setSpeed(DEFAULT_SPEED);
-        Ports.RIGHT_MOTOR.setSpeed(DEFAULT_SPEED);
+        Ports.LEFT_MOTOR.setSpeed(speed);
+        Ports.RIGHT_MOTOR.setSpeed(speed);
         
         m1.forward();
         m2.backward();
