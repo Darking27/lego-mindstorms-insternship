@@ -1,11 +1,10 @@
 package framework;
 
+import boxMover.BoxMover;
 import boxMover.BoxMoverWrapper;
+import boxMover.CurveBoxMover;
 import boxMover.ExitFinder;
-import boxMover.NewBoxFinder;
 import boxMover.TransitionLineBox;
-import boxMover.TurnBoxFinder;
-import boxMover.tests.DistanceTimePlotter;
 import bridgeFollower.BridgeFollower;
 import bridgeFollower.BridgeFollowerV2;
 import bridgeFollower.BridgeFollowerV3;
@@ -25,9 +24,9 @@ import markerSearcher.MarkerSearcherV2;
  *
  */
 public enum ParcoursSection {
-	TURN_BOX_MOVE(new TurnBoxFinder()),
+	TURN_BOX_MOVE(new CurveBoxMover()),
 	EXIT_FINDER (new ExitFinder()),
-	NEW_BOX_MOVER (new NewBoxFinder()),
+	NEW_BOX_MOVER (new BoxMoverWrapper()),
 	TEST_WALKER (new TestWalker()),
 	LINE_FOLLOW (new LineFollowerController()),
 	BOX_MOVE (new BoxMoverWrapper()),

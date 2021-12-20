@@ -31,25 +31,29 @@ public class BoxMover implements ParcoursWalkable {
 	public WalkableStatus start_walking() throws KeyPressedException {
 		
 		boolean boxFound = false;
+		
+		RobotUtils.setMaxSpeed();
+		
 		while (!boxFound) {
+			RobotUtils.resetTachos();
 			RobotUtils.turn90DegreesRight();
 
 			boxFound = boxFound();
 			System.out.println("found= " + boxFound);
 
 			RobotUtils.turnToNeutralTacho();
-			RobotUtils.driveStraight(400);
+			RobotUtils.straight(400);
 		}
-		RobotUtils.driveStraight(180);
+		
 		
 		RobotUtils.turn90DegreesRight(); 	// move box to the right wall
-		RobotUtils.driveStraight(2100);
+		RobotUtils.straight(2100);
 		
 		RobotUtils.setSpeed(360);
-		RobotUtils.driveStraight(-200);  	//navigate around the box
+		RobotUtils.straight(-200);  	//navigate around the box
 		RobotUtils.turn90DegreesRight();
 		RobotUtils.setMaxSpeed();
-		RobotUtils.driveStraight(700);
+		RobotUtils.straight(700);
 		RobotUtils.turn90DegreesLeft();
 		
 		System.out.println("around the box");
@@ -59,9 +63,9 @@ public class BoxMover implements ParcoursWalkable {
 		System.out.println("wall found - orthagonal");
 		RobotUtils.stopMotors();
 		
-		RobotUtils.driveStraight(-120); 	// drive box into the back corner
+		RobotUtils.straight(-120); 	// drive box into the back corner
 		RobotUtils.turn90DegreesLeft();
-		RobotUtils.driveStraight(2000);
+		RobotUtils.straight(2000);
 		
 		return WalkableStatus.FINISHED;
 	}

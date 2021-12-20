@@ -58,6 +58,11 @@ public final class RobotUtils {
 		Ports.RIGHT_MOTOR.stop(false);
 	}
 
+	public static void floatMotors() {
+		Ports.RIGHT_MOTOR.flt(true);
+		Ports.LEFT_MOTOR.flt(true);
+	}
+	
 	public static void resetTachos() {
 		Ports.LEFT_MOTOR.resetTachoCount();
 		Ports.RIGHT_MOTOR.resetTachoCount();
@@ -81,6 +86,12 @@ public final class RobotUtils {
 		Ports.LEFT_MOTOR.forward();
 		Ports.RIGHT_MOTOR.forward();
 	}
+	
+	public static void backward() {
+		Ports.LEFT_MOTOR.backward();
+		Ports.RIGHT_MOTOR.backward();
+	}
+
 
 	public static void driveStraight(int encoderValue, boolean forward) throws KeyPressedException {
 		resetTachos();
@@ -150,5 +161,10 @@ public final class RobotUtils {
 
 		m1.stop(true);
 		m2.stop();
+	}
+	
+	public static void straight(int distance) {
+		Ports.LEFT_MOTOR.rotate((int) (0.98*distance), true);
+		Ports.RIGHT_MOTOR.rotate(distance, false);
 	}
 }

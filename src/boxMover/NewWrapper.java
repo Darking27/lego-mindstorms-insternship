@@ -6,12 +6,12 @@ import framework.WalkableStatus;
 
 public class NewWrapper implements ParcoursWalkable {
 	
-	private NewBoxFinder boxFinder;
+	private CurveBoxMover boxFinder;
 	private WallFollower wallFollower;
 	
 	public NewWrapper() {
-		boxFinder = new NewBoxFinder();
 		wallFollower = new WallFollower();
+		boxFinder = new CurveBoxMover();
 	}
 
 	@Override

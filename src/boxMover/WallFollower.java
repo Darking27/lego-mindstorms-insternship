@@ -29,8 +29,8 @@ public class WallFollower implements ParcoursWalkable {
 		ParallelDriver.drive();
 		
 		RobotUtils.setSpeed(400);
-		Ports.LEFT_MOTOR.rotate(400, false);		//gain some distance to the wall
-		Ports.RIGHT_MOTOR.rotate(400, false);
+		Ports.LEFT_MOTOR.rotate(250, false);		//gain some distance to the wall
+		Ports.RIGHT_MOTOR.rotate(250, false);
 		
 		System.out.println("dirve til wall is close");
 		boolean closeToWall = false;

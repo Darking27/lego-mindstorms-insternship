@@ -20,15 +20,17 @@ public class DistancePlotter {
 		Key escape = Ports.BRICK.getKey("Escape");
 		
 		while (!escape.isDown()) {
-			List<Float> values = new ArrayList<Float>(500);
-			for (int i = 0; i < 200; i++) {
-				s.fetchSample(sample, 0);
-				values.add(sample[0] * 100);
-			}
-			LinkedList<List<Float>> lists = new LinkedList<>();
-			lists.add(values);
-			plotter.plotValues(lists, 5, 60);
-			Delay.msDelay(100);
+//			List<Float> values = new ArrayList<Float>(500);
+//			for (int i = 0; i < 200; i++) {
+//				s.fetchSample(sample, 0);
+//				values.add(sample[0] * 100);
+//			}
+//			LinkedList<List<Float>> lists = new LinkedList<>();
+//			lists.add(values);
+//			plotter.plotValues(lists, 5, 60);
+			s.fetchSample(sample, 0);
+			System.out.println(sample[0]);
+			Delay.msDelay(1000);
 		}
 
 	}
