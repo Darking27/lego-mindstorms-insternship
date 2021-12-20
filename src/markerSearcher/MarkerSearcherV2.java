@@ -87,8 +87,6 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
         }
         RobotUtils.stopMotors();
         System.out.println("At Wall --> first turn");
-        //TODO remove
-        Delay.msDelay(2000);
     }
     
     public void followRightUntilFirstTouch() {    
