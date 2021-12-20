@@ -4,7 +4,7 @@ import driving.DriveParallelTask;
 import exceptions.KeyPressedException;
 import framework.RobotUtils;
 
-public class DriveStraitState extends BaseState {
+public class DriveStraitTopState extends BaseState {
 
 	@Override
 	public State handleState() throws KeyPressedException {

@@ -24,7 +24,7 @@ public class ParallelDriveRightState extends BaseState {
 		while (Ports.RIGHT_MOTOR.getTachoCount() < 400);
 		Ports.RIGHT_MOTOR.stop();
 		
-		return State.DRIVE_STRAIT;
+		return State.DRIVE_STRAIT_TOP;
 	}
 
 }
