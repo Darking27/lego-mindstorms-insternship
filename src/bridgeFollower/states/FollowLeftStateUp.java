@@ -9,9 +9,9 @@ import lejos.utility.Delay;
 public class FollowLeftStateUp extends BaseState {
 	private boolean onBridge = true;
 	private long time;
-	int defaultSpeed = 200;
-	int varSpeed = 200;
-	float Kp = 0.0000000015f;
+	int defaultSpeed = 300;
+	int varSpeed = 250;
+	float Kp = 0.0000000010f;
 
 	@Override
 	public State handleState() throws KeyPressedException {

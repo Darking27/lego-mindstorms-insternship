@@ -12,8 +12,6 @@ public class DriveParallelTask implements Task {
 	public DriveParallelTask(int speed) {
 		this.defaultSpeed = speed;
 		firstStart = true;
-		Ports.LEFT_MOTOR.setSpeed((int) defaultSpeed);
-        Ports.RIGHT_MOTOR.setSpeed((int) defaultSpeed);
 	}
 
 	@Override
@@ -22,6 +20,8 @@ public class DriveParallelTask implements Task {
 			firstStart = false;
 	        Ports.LEFT_MOTOR.resetTachoCount();
 	        Ports.RIGHT_MOTOR.resetTachoCount();
+	        Ports.LEFT_MOTOR.setSpeed((int) defaultSpeed);
+	        Ports.RIGHT_MOTOR.setSpeed((int) defaultSpeed);
 	        Ports.LEFT_MOTOR.forward();
 	        Ports.RIGHT_MOTOR.forward();
 		}
@@ -32,6 +32,10 @@ public class DriveParallelTask implements Task {
     	float diff = tachoDiff();
     	leftSpeed = (int) (defaultSpeed - diff * Kp);
         rightSpeed = (int) (defaultSpeed + diff * Kp);
+        
+        if (Math.abs(diff) >= defaultSpeed) {
+        	System.out.println("diff: " + diff);
+        }
         
         Ports.LEFT_MOTOR.setSpeed(Math.abs(leftSpeed));
         Ports.RIGHT_MOTOR.setSpeed(Math.abs(rightSpeed));

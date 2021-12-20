@@ -12,7 +12,9 @@ public enum State {
 	TURN_LEFT_1(new TurnLeft1State()),
 	TURN_LEFT_2(new TurnLeft2State()),
 	FOLLOW_TOP(new FollowTopState()),
-	PARALLEL_DRIVE_RIGHT(new ParallelDriveRightState());
+	PARALLEL_DRIVE_RIGHT(new ParallelDriveRightState()),
+	START(new StartState()),
+	FINISH(null);
 	
 	
 	private BaseState state;

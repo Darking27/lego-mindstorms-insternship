@@ -27,9 +27,10 @@ public class BridgeFollowerV2 implements ParcoursWalkable {
 	
 	private boolean onBridge = true;
 	private long time = System.nanoTime();
-	int defaultSpeed = 200;
-	int varSpeed = 200;
-	float Kp = 0.0000000015f;	// ..0002f
+	int defaultSpeed = 300;
+	int varSpeed = 250;
+	float Kp = 0.0000000010f;	// ..0002f
+	long c = 100000000;
 	// float angle;
 
 	private BridgeFollowerState state;
@@ -77,14 +78,16 @@ public class BridgeFollowerV2 implements ParcoursWalkable {
 			
 			if (isOnLine() && !onBridge) {
 				onBridge = true;
+				c = System.nanoTime() - time;
 				time = System.nanoTime();
-				System.out.println("bridge");
+				System.out.println("c: " + c);
 				// angle = getAngle();
 			}
 			if (!isOnLine() && onBridge) {
 				onBridge = false;
+				c = System.nanoTime() - time;
 				time = System.nanoTime();
-				System.out.println("no bridge");
+				System.out.println("c: " + c);
 				// angle = getAngle();
 			}
 			

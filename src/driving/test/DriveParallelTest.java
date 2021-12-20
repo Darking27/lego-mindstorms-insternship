@@ -11,7 +11,7 @@ public class DriveParallelTest {
 		Key escape = Ports.BRICK.getKey("Escape");
 		Key enter = Ports.BRICK.getKey("Enter");
 		
-		DriveParallelTask task = new DriveParallelTask(300);
+		DriveParallelTask task = new DriveParallelTask(700);
 		
 		while(escape.isUp() && enter.isUp()) {
 			task.run();
@@ -19,6 +19,6 @@ public class DriveParallelTest {
 		}
 		
 		task.cancel();
-		Delay.msDelay(5000);
+		Delay.msDelay(2000);
 	}
 }

@@ -13,8 +13,11 @@ public class BridgeFollowerV4 implements ParcoursWalkable {
 		Ports.ULTRASONIC_MOTOR.setSpeed(80);
 		Ports.ULTRASONIC_MOTOR.rotateTo(-85);
 		
-		State active = State.FIND_LEFT;
+		State active = State.START;
 		while (active != State.TUNNEL_FINDER) {
+			if (active == State.FINISH) {
+				return WalkableStatus.FINISHED;
+			}
 			active = active.handleState();
 		}
 		

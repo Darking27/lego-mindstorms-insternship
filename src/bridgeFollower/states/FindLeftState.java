@@ -10,8 +10,10 @@ public class FindLeftState extends BaseState {
 	public State handleState() throws KeyPressedException {
 		System.out.println("Find left");
 		
-		Ports.RIGHT_MOTOR.setSpeed(300);
-		Ports.LEFT_MOTOR.setSpeed(250);
+		RobotUtils.stopMotors();
+		
+		Ports.RIGHT_MOTOR.setSpeed(400);
+		Ports.LEFT_MOTOR.setSpeed(330);
 		Ports.RIGHT_MOTOR.forward();
 		Ports.LEFT_MOTOR.forward();
 		
