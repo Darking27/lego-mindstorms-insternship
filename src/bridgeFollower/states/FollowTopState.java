@@ -32,7 +32,9 @@ public class FollowTopState extends FindLeftState {
 			
 			if (Ports.LEFT_MOTOR.getTachoCount() > DISTANCE
 					|| Ports.RIGHT_MOTOR.getTachoCount() > DISTANCE) {
-				return State.DRIVE_STRAIT;
+				RobotUtils.stopMotors();
+				System.out.println("Geradeaus");
+				return State.DRIVE_STRAIT_TOP;
 			}
 			
 			if (isOverBridge() && !onBridge) {
