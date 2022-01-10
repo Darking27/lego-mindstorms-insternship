@@ -20,9 +20,8 @@ public class TestWalker implements ParcoursWalkable {
 	
 	public static void main(String[] args) throws KeyPressedException {
 		System.out.println("TEST WALKER");
-		RobotUtils.setSpeed(400, 500);
-		Ports.RIGHT_MOTOR.rotate(-1500, true);
+		RobotUtils.setSpeed(500,600);
+		Ports.RIGHT_MOTOR.rotate(-1400, true);
 		Ports.LEFT_MOTOR.rotate(-1500);
-		RobotUtils.turn90DegreesRight();
 	}
 }
