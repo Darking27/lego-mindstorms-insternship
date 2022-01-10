@@ -51,7 +51,7 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
         float[] distance = new float[distanceSensor.sampleSize()];
         distanceSensor.fetchSample(distance, 0);
         
-        while (distance[0] > 0.5) {
+        while (distance[0] > 0.4) {
             distanceSensor.fetchSample(distance, 0);
             if (rightButtonPressed()) {
                 Delay.msDelay(100);
@@ -72,7 +72,7 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
                 throw new MenuException();
             }
         }
-        System.out.println("Distance to wall < 0.5");
+        System.out.println("Distance to wall < 0.4");
         
         Ports.LEFT_MOTOR.rotate(-80, true);
         Ports.RIGHT_MOTOR.rotate(80, false);
@@ -115,8 +115,9 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     	
     	RobotUtils.turn90DegreesLeft();
     	
-    	Ports.RIGHT_MOTOR.rotate(-300, true);
-        Ports.LEFT_MOTOR.rotate(-300, false);
+    	// adjust with back on wall
+    	Ports.RIGHT_MOTOR.rotate(-400, true);
+        Ports.LEFT_MOTOR.rotate(-400, false);
     }
     
     public void driveLine(boolean useUltrasonic) throws KeyPressedException, FinishLineException {
@@ -165,8 +166,10 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     	RobotUtils.turn90DegreesLeft();
     	
     	RobotUtils.setSpeed(600);
-    	Ports.RIGHT_MOTOR.rotate(-450, true);
-        Ports.LEFT_MOTOR.rotate(-450, false);
+    	
+    	// adjust with back on wall
+    	Ports.RIGHT_MOTOR.rotate(-550, true);
+        Ports.LEFT_MOTOR.rotate(-550, false);
     	
     }
     
@@ -181,8 +184,10 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
         RobotUtils.turn90DegreesRight();
         
         RobotUtils.setSpeed(600);
-        Ports.RIGHT_MOTOR.rotate(-450, true);
-        Ports.LEFT_MOTOR.rotate(-450, false);
+        
+        // adjust with back on wall
+        Ports.RIGHT_MOTOR.rotate(-550, true);
+        Ports.LEFT_MOTOR.rotate(-550, false);
     }
     
     
