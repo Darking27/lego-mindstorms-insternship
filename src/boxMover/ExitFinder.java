@@ -28,13 +28,14 @@ public class ExitFinder implements ParcoursWalkable {
 
 	@Override
 	public WalkableStatus start_walking() throws KeyPressedException {
-		RobotUtils.setSpeed(400);
-		Ports.RIGHT_MOTOR.rotate(-400);
+		RobotUtils.setSpeed(200,600);
+		Ports.RIGHT_MOTOR.rotate(-400, true);
 		Ports.LEFT_MOTOR.rotate(-400);
 		
 		RobotUtils.setMaxSpeed();
 		Ports.LEFT_MOTOR.rotate(-1000, true);
 		Ports.RIGHT_MOTOR.rotate(-1000);
+		
 		// 0.34
 		Ports.LEFT_MOTOR.rotate((int) (0.98 * 455), true);
 		Ports.RIGHT_MOTOR.rotate(-455, false);
@@ -109,6 +110,6 @@ public class ExitFinder implements ParcoursWalkable {
 	private boolean correctDistanceToWall() {
 		float correct_distance = 0.34f;
 		ultrasonicSampleProvider.fetchSample(uSample, 0);
-		return uSample[0] < correct_distance;
+		return uSample[0] >= correct_distance;
 	}
 }
