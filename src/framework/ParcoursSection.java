@@ -24,18 +24,13 @@ import markerSearcher.MarkerSearcherV2;
  *
  */
 public enum ParcoursSection {
-	TURN_BOX_MOVE(new CurveBoxMover()),
 	EXIT_FINDER (new ExitFinder()),
-	NEW_BOX_MOVER (new BoxMoverWrapper()),
 	TEST_WALKER (new TestWalker()),
 	LINE_FOLLOW (new LineFollowerController()),
 	BOX_MOVE (new BoxMoverWrapper()),
-	BRIDGE  (new BridgeFollower()),
-	COLOR_SEARCH  (new MarkerSearcherV2()),
+	MARKER_SEARCHER  (new MarkerSearcherV2()),
 	LINE_BOX_TRANSITIONER(new TransitionLineBox()),
-	BRIDGE_V2(new BridgeFollowerV2()),
-	BRIDGE_V3(new BridgeFollowerV3()),
-	BRIDGE_V4(new BridgeFollowerV4());
+	BRIDGE(new BridgeFollowerV4());
 	
 	private final ParcoursWalkable walker;
 	
