@@ -3,10 +3,10 @@ package framework;
 import boxMover.BoxMoverWrapper;
 import boxMover.ExitFinder;
 import boxMover.TransitionLineBox;
-import bridgeFollower.BridgeFollowerV4;
 import exceptions.KeyPressedException;
 import lineFollower.stateMachine.LineFollowerController;
 import markerSearcher.MarkerSearcherV2;
+import new_bridge.BridgeFollower;
 
 /**
  * Defines the different parcours Section
@@ -25,7 +25,7 @@ public enum ParcoursSection {
 	BOX_MOVE (new BoxMoverWrapper()),
 	MARKER_SEARCHER  (new MarkerSearcherV2()),
 	LINE_BOX_TRANSITIONER(new TransitionLineBox()),
-	BRIDGE(new BridgeFollowerV4());
+	BRIDGE(new BridgeFollower());
 	
 	private final ParcoursWalkable walker;
 	

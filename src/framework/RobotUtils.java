@@ -92,6 +92,11 @@ public final class RobotUtils {
 		Ports.RIGHT_MOTOR.backward();
 	}
 
+	public static void rotate(int distance) {
+		Ports.LEFT_MOTOR.rotate(distance, true);
+		Ports.RIGHT_MOTOR.rotate(distance);
+	}
+	
 
 	public static void driveStraight(int encoderValue, boolean forward) throws KeyPressedException {
 		resetTachos();
