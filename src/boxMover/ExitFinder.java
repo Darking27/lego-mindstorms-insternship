@@ -29,29 +29,29 @@ public class ExitFinder implements ParcoursWalkable {
 	@Override
 	public WalkableStatus start_walking() throws KeyPressedException {
 		
-		RobotUtils.setSpeed(500);
-		Ports.LEFT_MOTOR.rotate(-600,true);
-		Ports.RIGHT_MOTOR.rotate(-600);
-		
-
-		Ports.RIGHT_MOTOR.rotate(200);
-		Ports.LEFT_MOTOR.rotate(500,true);
-		Ports.RIGHT_MOTOR.rotate(500);
-		
-		Ports.RIGHT_MOTOR.rotate(-400);
-
 		RobotUtils.setMaxSpeed();
-		Ports.LEFT_MOTOR.rotate(-1000, true);
+		Ports.LEFT_MOTOR.rotate(-600,true);  // drive back
+		Ports.RIGHT_MOTOR.rotate(-600); 
+		
+
+		Ports.RIGHT_MOTOR.rotate(200); //turn a bit left
+		
+		Ports.LEFT_MOTOR.rotate(400,true); //drive straight to gain distance to the wall
+		Ports.RIGHT_MOTOR.rotate(400);
+		
+		Ports.RIGHT_MOTOR.rotate(-400); // turn right to 
+
+		Ports.LEFT_MOTOR.rotate(-1000, true); //drive back
 		Ports.RIGHT_MOTOR.rotate(-1000);
 
-		Ports.LEFT_MOTOR.rotate((int) (0.98 * 400), true);
+		Ports.LEFT_MOTOR.rotate((int) (0.98 * 400), true); //look at wall again
 		Ports.RIGHT_MOTOR.rotate(-400, false);	
 		
 		// 0.34
 //		Ports.LEFT_MOTOR.rotate((int) (0.98 * 455), true);
 //		Ports.RIGHT_MOTOR.rotate(-455, false);
 
-		RobotUtils.forward();
+		RobotUtils.forward();			//richte an der wand aus
 		while (!bothTouchSensorsDown())
 			RobotUtils.checkForKeyPress();
 		RobotUtils.stopMotors();

@@ -42,7 +42,7 @@ public class BoxMover implements ParcoursWalkable {
 			System.out.println("found= " + boxFound);
 
 			RobotUtils.turnToNeutralTacho();
-			RobotUtils.straight(400);
+			RobotUtils.straight(360); //400 was working unreliablity
 		}
 		
 		
@@ -53,7 +53,7 @@ public class BoxMover implements ParcoursWalkable {
 		RobotUtils.straight(-200);  	//navigate around the box
 		RobotUtils.turn90DegreesRight();
 		RobotUtils.setMaxSpeed();
-		RobotUtils.straight(700);
+		RobotUtils.straight(850);
 		RobotUtils.turn90DegreesLeft();
 		
 		System.out.println("around the box");
