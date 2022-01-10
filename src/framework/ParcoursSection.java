@@ -1,13 +1,8 @@
 package framework;
 
-import boxMover.BoxMover;
 import boxMover.BoxMoverWrapper;
-import boxMover.CurveBoxMover;
 import boxMover.ExitFinder;
 import boxMover.TransitionLineBox;
-import bridgeFollower.BridgeFollower;
-import bridgeFollower.BridgeFollowerV2;
-import bridgeFollower.BridgeFollowerV3;
 import bridgeFollower.BridgeFollowerV4;
 import exceptions.KeyPressedException;
 import lineFollower.stateMachine.LineFollowerController;
