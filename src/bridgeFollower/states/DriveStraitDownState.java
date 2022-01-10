@@ -11,7 +11,6 @@ public class DriveStraitDownState extends BaseState {
 
 	@Override
 	public State handleState() throws KeyPressedException {
-		RobotUtils.stopMotors();
 		DriveParallelTask driveTask = new DriveParallelTask(300);
 		while(true) {
 			driveTask.run();

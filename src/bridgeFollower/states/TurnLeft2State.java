@@ -9,9 +9,9 @@ public class TurnLeft2State extends BaseState {
 	public State handleState() throws KeyPressedException {
 		driveStraight(200, false, 400);
 		turn(450, false, 400);
-		driveStraight(700, true, 250);
+		driveStraight(700, true, 250, true);
 		//return State.FOLLOW_LEFT_DOWN;
-		RobotUtils.stopMotors();
+		//RobotUtils.stopMotors();
 		System.out.println("gerade runter");
 		return State.DRIVE_STRAIT_DOWN;
 	}

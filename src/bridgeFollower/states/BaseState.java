@@ -32,6 +32,11 @@ public abstract class BaseState {
 	public abstract State handleState() throws KeyPressedException;
 	
 	protected void driveStraight(int encoderValue, boolean forward, int speed)
+    		throws KeyPressedException {
+		driveStraight(encoderValue, forward, speed, false);
+	}
+	
+	protected void driveStraight(int encoderValue, boolean forward, int speed, boolean dontStop)
     		throws KeyPressedException {    	
     	Ports.LEFT_MOTOR.resetTachoCount();
         Ports.RIGHT_MOTOR.resetTachoCount();
@@ -64,8 +69,13 @@ public abstract class BaseState {
             rightTachoCount = Ports.RIGHT_MOTOR.getTachoCount();
         }
         
-        Ports.LEFT_MOTOR.stop(true);
-        Ports.RIGHT_MOTOR.stop();
+        if (dontStop) {
+        	Ports.LEFT_MOTOR.flt(true);
+        	Ports.RIGHT_MOTOR.flt();
+        } else {
+	        Ports.LEFT_MOTOR.stop(true);
+	        Ports.RIGHT_MOTOR.stop();
+        }
     }
 	
     protected void turn(int encoderValue, boolean right, int speed)
