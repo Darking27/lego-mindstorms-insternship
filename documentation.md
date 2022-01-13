@@ -69,3 +69,9 @@ Wir werden nächste Stunde probieren weiter daran zu arbeiten, gehen aber davon 
 Beim Brückenfolger wurde heute ein Regler implementiert, der einer geraden Kante folgen kann.
 Bis zum nächsten Termin soll ein neues ParcoursWalkable erstellt werden, das sowohl diesen Regler, als auch den Farbsensor nutzt und die erste Kurve mittles Farbsensor erkennt.
 Die zweite Kurve soll auch mit dem Farbsensor erkannt werden, allerdings indem der Roboter zuerst gerade über die Kante hinausfährt und dann zurücksetzt um sich um 90 Grad zu drehen.
+
+#### 10.1.2022
+
+Das Boxmoven wurde durch einen neuen Exit Finder stabiler gemacht. Dieser setzt zurück und fährt dann nach vorne um genügend Abstand zur Wand zu erhalten.
+
+Nach langem, erfolglosem bugfixen, haben wir damit begonnen einen neue implementierung des Bridge Followers zu implementieren, die deutlich simpler sein soll. Diese funktioniert noch nicht. Nächste Stunde sehen wir weiter welche Strategie wir nun nutzen.
