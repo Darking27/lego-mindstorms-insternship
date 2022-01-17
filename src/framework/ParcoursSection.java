@@ -7,6 +7,7 @@ import exceptions.KeyPressedException;
 import lineFollower.stateMachine.LineFollowerController;
 import markerSearcher.MarkerSearcherV2;
 import new_bridge.BridgeFollower;
+import new_bridge.FullBridgeController;
 
 /**
  * Defines the different parcours Section
@@ -25,7 +26,7 @@ public enum ParcoursSection {
 	BOX_MOVE (new BoxMoverWrapper()),
 	MARKER_SEARCHER  (new MarkerSearcherV2()),
 	LINE_BOX_TRANSITIONER(new TransitionLineBox()),
-	BRIDGE(new BridgeFollower());
+	BRIDGE(new FullBridgeController());
 	
 	private final ParcoursWalkable walker;
 	
