@@ -14,7 +14,7 @@ public class TransitionLineBox implements ParcoursWalkable {
 		 * The Line Follower is a bit tilted when exiting the parcours
 		 */
 		RobotUtils.setSpeed(500);
-		Ports.RIGHT_MOTOR.rotate(300);
+		Ports.RIGHT_MOTOR.rotate(500);
 		return WalkableStatus.FINISHED;
 	}
 
