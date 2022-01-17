@@ -36,6 +36,9 @@ public class FullBridgeController implements ParcoursWalkable {
 
 	@Override
 	public WalkableStatus start_walking() throws KeyPressedException {
+		
+		RobotUtils.setMaxSpeed();
+		RobotUtils.rotate(400);
 
 		Ports.ULTRASONIC_MOTOR.rotateTo(-90);
 		while (!onBridge())
