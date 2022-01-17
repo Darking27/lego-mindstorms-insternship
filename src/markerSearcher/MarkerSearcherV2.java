@@ -230,12 +230,8 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
 	}
 	
 	public void markerFoundSignal() {
-	    RobotUtils.stopMotors();
-	    Button.LEDPattern(9);
-	    Sound.twoBeeps();
-	    Delay.msDelay(500);
-	    Button.LEDPattern(0);
-	    RobotUtils.forward();
+	    Thread signalThread = new SignalThread();
+	    signalThread.start();
 	}
 	
 	public void reset() {
@@ -264,6 +260,17 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
 		catch (FinishLineException e) {
 			return WalkableStatus.FINISHED;
 		}
+	}
+	
+	private class SignalThread extends Thread {
+	    
+	    @Override
+	    public void run() {
+	        Button.LEDPattern(9);
+	        Sound.twoBeeps();
+	        Delay.msDelay(1000);
+	        Button.LEDPattern(0);
+	    }
 	}
 
 }
