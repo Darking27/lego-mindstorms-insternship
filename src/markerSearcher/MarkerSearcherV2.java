@@ -159,11 +159,20 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     	System.out.println("turn 180 left");
     	
     	
-    	RobotUtils.setSpeed(450);
-    	RobotUtils.turn90DegreesLeft();
+    	RobotUtils.setMaxSpeed();
+
+    	int rotation = 500;
+    	
+    	// turn 90 left
+    	Ports.LEFT_MOTOR.rotate((int) (0.98*-rotation), true);
+		Ports.RIGHT_MOTOR.rotate(rotation, false);
+    	
     	RobotUtils.driveStraight(300);
-    	RobotUtils.setSpeed(450);
-    	RobotUtils.turn90DegreesLeft();
+    	RobotUtils.setMaxSpeed();
+
+    	// turn 90 left
+    	Ports.LEFT_MOTOR.rotate((int) (0.98*-rotation), true);
+		Ports.RIGHT_MOTOR.rotate(rotation, false);
     	
     	RobotUtils.setSpeed(600);
     	
@@ -176,12 +185,21 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     private void turn180Right() throws KeyPressedException {
     	System.out.println("turn 180 right");
 
+    	int rotation = 510;
     	
-    	RobotUtils.setSpeed(450);
-        RobotUtils.turn90DegreesRight();
+    	//RobotUtils.setSpeed(450);
+    	RobotUtils.setMaxSpeed();
+
+    	Ports.LEFT_MOTOR.rotate((int) (0.98*rotation), true);
+		Ports.RIGHT_MOTOR.rotate(-rotation, false);
+    	
         RobotUtils.driveStraight(300);
-        RobotUtils.setSpeed(450);
-        RobotUtils.turn90DegreesRight();
+        
+        //RobotUtils.setSpeed(450);
+        RobotUtils.setMaxSpeed();
+
+        Ports.LEFT_MOTOR.rotate((int) (0.98*rotation), true);
+		Ports.RIGHT_MOTOR.rotate(-rotation, false);
         
         RobotUtils.setSpeed(600);
         
