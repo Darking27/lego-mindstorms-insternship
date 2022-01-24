@@ -6,7 +6,6 @@ import boxMover.TransitionLineBox;
 import exceptions.KeyPressedException;
 import lineFollower.stateMachine.LineFollowerController;
 import markerSearcher.MarkerSearcherV2;
-import new_bridge.BridgeFollower;
 import new_bridge.FullBridgeController;
 
 /**

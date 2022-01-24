@@ -10,7 +10,7 @@ import lineFollower.colorSensor.RGBColorSensor;
 
 public class TunnelFinder implements ParcoursWalkable {
 	public static final int MOTOR_SPEED = 300;
-	public static final int ROTATION = 40;
+	public static final int ROTATION = 27;
 	public static final int SET_BACK_DISTANCE = 300;
 	
 	SampleProvider leftTouch = Ports.LEFT_TOUCH_SENSOR.getTouchMode();

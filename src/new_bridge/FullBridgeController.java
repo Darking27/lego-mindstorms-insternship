@@ -1,7 +1,5 @@
 package new_bridge;
 
-import java.util.Iterator;
-
 import bridgeFollower.TunnelFinder;
 import exceptions.KeyPressedException;
 import framework.ParcoursWalkable;
@@ -41,13 +39,22 @@ public class FullBridgeController implements ParcoursWalkable {
 		RobotUtils.rotate(400);
 
 		Ports.ULTRASONIC_MOTOR.rotateTo(-90);
+		RobotUtils.resetTachos();
 		while (!onBridge())
 			RobotUtils.checkForKeyPress();
 		RobotUtils.setSpeed(350, 400);
 		RobotUtils.forward();
 		while (onBridge())
 			RobotUtils.checkForKeyPress();
-		System.out.println("found edge");
+		RobotUtils.stopMotors();
+		System.out.println("edge found: " + RobotUtils.getAverageTacho());
+		
+		if(RobotUtils.getAverageTacho()<1000) {
+			Ports.LEFT_MOTOR.rotate(50);
+		}else {
+			Ports.LEFT_MOTOR.rotate(100);
+		}
+		
 
 		RobotUtils.forward();
 		int numOnBridge = 0;
@@ -63,56 +70,41 @@ public class FullBridgeController implements ParcoursWalkable {
 			}
 			RobotUtils.forward();
 		}
+
 		System.out.println("on top of bridge");
+		RobotUtils.setSpeed(350);
+		RobotUtils.rotate(400);
 
-		RobotUtils.setSpeed(400);
-		Ports.LEFT_MOTOR.rotate((int) (0.98 * -420), true);
-		Ports.RIGHT_MOTOR.rotate(440, false);
-
-		RobotUtils.setSpeed(400);
-		RobotUtils.rotate(600);
-
-		RobotUtils.setSpeed(330, 400);
+		RobotUtils.setSpeed(450);
+		Ports.LEFT_MOTOR.rotate((int) (0.98 * -500), true);
+		Ports.RIGHT_MOTOR.rotate(660, false);
+		System.out.println("turned left");
+		
+		RobotUtils.setSpeed(300);
 		RobotUtils.forward();
-		while (onBridge())
-			RobotUtils.checkForKeyPress();
-		System.out.println("Bridge End Found");
-
-		RobotUtils.resetTachos();
-		numOnBridge = 0;
-		// while (Ports.LEFT_MOTOR.getTachoCount() < 2500) {
-		while (numOnBridge < 125) {
-			int lowSpeed = 300;
-			int highSpeed = 400;
-			RobotUtils.checkForKeyPress();
-			Delay.msDelay(10);
-			if (onBridge()) {
-				RobotUtils.setSpeed(lowSpeed, highSpeed);
-				numOnBridge++;
-			} else {
-				RobotUtils.setSpeed(highSpeed, lowSpeed);
-				numOnBridge = 0;
-			}
-			RobotUtils.forward();
-		}
-		System.out.println("end of second bridge");
-
-		RobotUtils.setSpeed(400);
-		RobotUtils.rotate(450);
-
-		Ports.LEFT_MOTOR.rotate((int) (0.98 * -455), true);
-		Ports.RIGHT_MOTOR.rotate(490, false);
-
-		RobotUtils.setSpeed((int) (0.99f * 400), 400);
-		RobotUtils.forward();
-
-		while (!oneTouchDown()) {
-			if (RGBColorSensor.getInstance().isFinishLine()) {
-				Ports.ULTRASONIC_MOTOR.rotateTo(0);
-				return WalkableStatus.FINISHED;
-			}
+		while(onBridge()) {
 			RobotUtils.checkForKeyPress();
 		}
+		RobotUtils.stopMotors();
+		System.out.println("parrallel to top bridge");
+		RobotUtils.setSpeed(300);
+		Ports.LEFT_MOTOR.rotate(200);
+		
+		RobotUtils.setSpeed(600);
+		Ports.LEFT_MOTOR.rotate(350);
+		Ports.RIGHT_MOTOR.rotate(350);
+		RobotUtils.forward();
+		while(onBridgeColor()) {
+			RobotUtils.checkForKeyPress();
+		}
+		
+		RobotUtils.setSpeed(300);
+		RobotUtils.rotate(-200);
+		RobotUtils.turn90DegreesLeft();
+		RobotUtils.forward();
+		while(!oneTouchDown()) 
+			RobotUtils.checkForKeyPress();
+	
 
 		return new TunnelFinder().start_walking();
 	}
@@ -123,13 +115,13 @@ public class FullBridgeController implements ParcoursWalkable {
 		return lTouchSample[0] > 0.5f || rTouchSample[0] > 0.5f;
 	}
 
-	private boolean endBridge() {
-		colorSampleProvider.fetchSample(colorSample, 0);
-		return colorSample[0] == -1;
-	}
-
 	private boolean onBridge() {
 		ultrasonicSampleProvider.fetchSample(uSample, 0);
 		return uSample[0] < 0.13f;
+	}
+	
+	private boolean onBridgeColor() {
+		colorSampleProvider.fetchSample(colorSample, 0);
+		return colorSample[0] != -1f;
 	}
 }
