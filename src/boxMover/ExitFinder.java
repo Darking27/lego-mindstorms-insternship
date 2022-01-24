@@ -87,7 +87,7 @@ public class ExitFinder implements ParcoursWalkable {
 	}
 
 	private boolean correctDistanceToWall() {
-		float correct_distance = 0.31f;
+		float correct_distance = 0.317f;
 		ultrasonicSampleProvider.fetchSample(uSample, 0);
 		return uSample[0] >= correct_distance;
 	}

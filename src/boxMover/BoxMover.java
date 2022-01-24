@@ -29,53 +29,60 @@ public class BoxMover implements ParcoursWalkable {
 
 	@Override
 	public WalkableStatus start_walking() throws KeyPressedException {
-		
+
 		boolean boxFound = false;
-		
+
 		RobotUtils.setSpeed(500);
+		int num_til_found = 0;
 		while (!boxFound) {
 			RobotUtils.resetTachos();
 			RobotUtils.turn90DegreesRight();
 
 			boxFound = boxFound();
+			num_til_found++;
 			System.out.println("found= " + boxFound);
 
 			RobotUtils.turnToNeutralTacho();
-			RobotUtils.straight(360); //400 was working unreliablity
+			RobotUtils.straight(360); // 400 was working unreliablity
 		}
-		
-		
-		RobotUtils.turn90DegreesRight(); 	// move box to the right wall
+
+		RobotUtils.turn90DegreesRight(); // move box to the right wall
 		RobotUtils.setMaxSpeed();
 		RobotUtils.straight(2100);
-		
+
 		RobotUtils.setSpeed(360);
-		RobotUtils.straight(-200);  	//navigate around the box
+		RobotUtils.straight(-200); // navigate around the box
 		RobotUtils.turn90DegreesRight();
 		RobotUtils.setMaxSpeed();
-		RobotUtils.straight(850);
+		if (num_til_found == 1) {
+			RobotUtils.straight(600);
+		} else {
+			RobotUtils.straight(850);
+		}
+
 		RobotUtils.turn90DegreesLeft();
-		
+
 		System.out.println("around the box");
-		
-		RobotUtils.forward();				// drive to back wall
-		while(!bothTouchSensorsDown()) RobotUtils.checkForKeyPress();
+
+		RobotUtils.forward(); // drive to back wall
+		while (!bothTouchSensorsDown())
+			RobotUtils.checkForKeyPress();
 		System.out.println("wall found - orthagonal");
 		RobotUtils.stopMotors();
-		
-		RobotUtils.straight(-120); 	// drive box into the back corner
+
+		RobotUtils.straight(-120); // drive box into the back corner
 		RobotUtils.turn90DegreesLeft();
 		RobotUtils.straight(2000);
-		
+
 		return WalkableStatus.FINISHED;
 	}
-	
+
 	private boolean boxFound() {
 		float maxBoxDistance = 0.40f;
 		ultrasonicSampleProvider.fetchSample(uSample, 0);
 		return uSample[0] < maxBoxDistance;
 	}
-	
+
 	private boolean bothTouchSensorsDown() {
 		leftTouchSampleProvider.fetchSample(lTouchSample, 0);
 		rightTouchSampleProvider.fetchSample(rTouchSample, 0);
