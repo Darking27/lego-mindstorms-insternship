@@ -98,7 +98,7 @@ public class FullBridgeController implements ParcoursWalkable {
 		System.out.println("end of second bridge");
 
 		RobotUtils.setSpeed(400);
-		RobotUtils.rotate(400);
+		RobotUtils.rotate(450);
 
 		Ports.LEFT_MOTOR.rotate((int) (0.98 * -455), true);
 		Ports.RIGHT_MOTOR.rotate(490, false);
