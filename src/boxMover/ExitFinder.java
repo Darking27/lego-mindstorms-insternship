@@ -39,17 +39,14 @@ public class ExitFinder implements ParcoursWalkable {
 		Ports.LEFT_MOTOR.rotate(400,true); //drive straight to gain distance to the wall
 		Ports.RIGHT_MOTOR.rotate(400);
 		
-		Ports.RIGHT_MOTOR.rotate(-400); // turn right to 
+		Ports.RIGHT_MOTOR.rotate(-300); // turn right to 
 
 		Ports.LEFT_MOTOR.rotate(-1000, true); //drive back
 		Ports.RIGHT_MOTOR.rotate(-1000);
 
-		Ports.LEFT_MOTOR.rotate((int) (0.98 * 400), true); //look at wall again
-		Ports.RIGHT_MOTOR.rotate(-400, false);	
+		Ports.LEFT_MOTOR.rotate((int) (0.98 * 410), true); //look at wall again
+		Ports.RIGHT_MOTOR.rotate(-410, false);	
 		
-		// 0.34
-//		Ports.LEFT_MOTOR.rotate((int) (0.98 * 455), true);
-//		Ports.RIGHT_MOTOR.rotate(-455, false);
 
 		RobotUtils.forward();			//richte an der wand aus
 		while (!bothTouchSensorsDown())
@@ -61,8 +58,8 @@ public class ExitFinder implements ParcoursWalkable {
 			RobotUtils.checkForKeyPress();
 		RobotUtils.stopMotors();
 
-		Ports.LEFT_MOTOR.rotate((int) (0.98*480), true);
-		Ports.RIGHT_MOTOR.rotate(-480, false);
+		Ports.LEFT_MOTOR.rotate((int) (0.98*490), true);
+		Ports.RIGHT_MOTOR.rotate(-490, false);
 		
 		RobotUtils.forward();
 		while (!RGBColorSensor.getInstance().isFinishLine()) {
@@ -76,39 +73,8 @@ public class ExitFinder implements ParcoursWalkable {
 				RobotUtils.forward();
 			}
 		}
-		;
 
-//		Ports.RIGHT_MOTOR.setSpeed(700);
-//		Ports.LEFT_MOTOR.setSpeed(350);
-//		Ports.LEFT_MOTOR.backward();
-//		Ports.RIGHT_MOTOR.rotate(-1920);
-//		RobotUtils.stopMotors();
-//		
-//		RobotUtils.setSpeed(500);
-//		System.out.println("turn 90 right");
-//		RobotUtils.turn90DegreesRight();
-//		
-//		RobotUtils.setMaxSpeed();
-//		System.out.println("drive forward");
-//		
-//		RobotUtils.setSpeed(400);
-//		RobotUtils.forward();
-//		
-//		while (!RGBColorSensor.getInstance().isFinishLine()) {
-//			RobotUtils.checkForKeyPress();
-//			leftTouchSampleProvider.fetchSample(lTouchSample, 0);
-//			if (lTouchSample[0]>0.5) {	// check for hitting the wall
-//				RobotUtils.stopMotors();
-//				Ports.LEFT_MOTOR.rotate(-400, false);
-//				Ports.RIGHT_MOTOR.rotate(-400, false);			
-//				RobotUtils.forward();
-////				RobotUtils.stopMotors();
-////				RobotUtils.setSpeed(400);
-////				RobotUtils.straight(-200);
-////				Ports.LEFT_MOTOR.rotate(150);
-////				RobotUtils.forward();
-//			}	
-//		};
+
 
 		RobotUtils.stopMotors();
 		return WalkableStatus.FINISHED;

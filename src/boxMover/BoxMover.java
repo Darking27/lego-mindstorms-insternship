@@ -32,8 +32,7 @@ public class BoxMover implements ParcoursWalkable {
 		
 		boolean boxFound = false;
 		
-		RobotUtils.setMaxSpeed();
-		
+		RobotUtils.setSpeed(500);
 		while (!boxFound) {
 			RobotUtils.resetTachos();
 			RobotUtils.turn90DegreesRight();
@@ -47,6 +46,7 @@ public class BoxMover implements ParcoursWalkable {
 		
 		
 		RobotUtils.turn90DegreesRight(); 	// move box to the right wall
+		RobotUtils.setMaxSpeed();
 		RobotUtils.straight(2100);
 		
 		RobotUtils.setSpeed(360);
