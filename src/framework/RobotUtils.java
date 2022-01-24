@@ -8,13 +8,19 @@ import lejos.robotics.RegulatedMotor;
 public final class RobotUtils {
 
 	public static void turn90DegreesRight() throws KeyPressedException {
-		Ports.LEFT_MOTOR.rotate((int) (0.98*455), true);
-		Ports.RIGHT_MOTOR.rotate(-455, false);
+//		Ports.LEFT_MOTOR.rotate((int) (0.98*455), true);
+//		Ports.RIGHT_MOTOR.rotate(-455, false);
+		
+		Ports.LEFT_MOTOR.rotate(500, true);
+		Ports.RIGHT_MOTOR.rotate(-500, false);
 	}
 
 	public static void turn90DegreesLeft() throws KeyPressedException {
-		Ports.LEFT_MOTOR.rotate((int) (0.98*-455), true);
-		Ports.RIGHT_MOTOR.rotate(465, false);
+//		Ports.LEFT_MOTOR.rotate((int) (0.98*-455), true);
+//		Ports.RIGHT_MOTOR.rotate(465, false);
+		
+		Ports.LEFT_MOTOR.rotate(-510, true);
+		Ports.RIGHT_MOTOR.rotate(510, false);
 	}
 
 	public static void turnDegreesRight(int degrees) throws KeyPressedException {
