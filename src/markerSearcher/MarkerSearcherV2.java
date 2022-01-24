@@ -167,7 +167,7 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     	Ports.LEFT_MOTOR.rotate((int) (0.98*-rotation), true);
 		Ports.RIGHT_MOTOR.rotate(rotation, false);
     	
-    	RobotUtils.driveStraight(260);
+    	RobotUtils.driveStraight(250);
     	RobotUtils.setMaxSpeed();
 
     	// turn 90 left
@@ -193,7 +193,7 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     	Ports.LEFT_MOTOR.rotate((int) (0.98*rotation), true);
 		Ports.RIGHT_MOTOR.rotate(-rotation, false);
     	
-        RobotUtils.driveStraight(260);
+        RobotUtils.driveStraight(250);
         
         //RobotUtils.setSpeed(450);
         RobotUtils.setMaxSpeed();
