@@ -124,7 +124,7 @@ public class FollowLineState extends BaseState {
             double factor = 3;
             if (speed > factor + oldSpeed) {
                 speed = factor + oldSpeed;
-                System.out.println("slow increase: " + (int) oldSpeed + " --> " + (int) speed);
+                // System.out.println("slow increase: " + (int) oldSpeed + " --> " + (int) speed);
             }
             oldSpeed = speed;
             
