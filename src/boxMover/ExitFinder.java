@@ -61,7 +61,9 @@ public class ExitFinder implements ParcoursWalkable {
 			RobotUtils.checkForKeyPress();
 		RobotUtils.stopMotors();
 
-		RobotUtils.turn90DegreesRight();
+		Ports.LEFT_MOTOR.rotate((int) (0.98*480), true);
+		Ports.RIGHT_MOTOR.rotate(-480, false);
+		
 		RobotUtils.forward();
 		while (!RGBColorSensor.getInstance().isFinishLine()) {
 			RobotUtils.checkForKeyPress();
@@ -119,7 +121,7 @@ public class ExitFinder implements ParcoursWalkable {
 	}
 
 	private boolean correctDistanceToWall() {
-		float correct_distance = 0.36f;
+		float correct_distance = 0.31f;
 		ultrasonicSampleProvider.fetchSample(uSample, 0);
 		return uSample[0] >= correct_distance;
 	}
