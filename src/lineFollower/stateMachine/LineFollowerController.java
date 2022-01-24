@@ -25,13 +25,11 @@ public class LineFollowerController implements ParcoursWalkable {
 				System.exit(1);
 			} catch (ProcessInteruptedEnterException e) {
 			    System.out.println("Menu");
-                Delay.msDelay(2000);
 				return WalkableStatus.MENU;
 			} catch (RobotCollisionException e) {
 				state = StateName.OBSTACLE;
 			} catch (FinishLineException e) {
 			    System.out.println("Finished");
-			    Delay.msDelay(2000);
 				return WalkableStatus.FINISHED;
 			}
 		}
