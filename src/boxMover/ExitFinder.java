@@ -64,15 +64,18 @@ public class ExitFinder implements ParcoursWalkable {
 		RobotUtils.forward();
 		while (!RGBColorSensor.getInstance().isFinishLine()) {
 			RobotUtils.checkForKeyPress();
-			leftTouchSampleProvider.fetchSample(lTouchSample, 0);
-			if (lTouchSample[0] > 0.5) { // check for hitting the wall
-				RobotUtils.stopMotors();
-				RobotUtils.setSpeed(500);
-				Ports.LEFT_MOTOR.rotate(-400, false);
-				Ports.RIGHT_MOTOR.rotate(-400, false);
-				RobotUtils.forward();
-			}
 		}
+//		while (!RGBColorSensor.getInstance().isFinishLine()) {
+//			RobotUtils.checkForKeyPress();
+//			leftTouchSampleProvider.fetchSample(lTouchSample, 0);
+//			if (lTouchSample[0] > 0.5) { // check for hitting the wall
+//				RobotUtils.stopMotors();
+//				RobotUtils.setSpeed(500);
+//				Ports.LEFT_MOTOR.rotate(-400, false);
+//				Ports.RIGHT_MOTOR.rotate(-400, false);
+//				RobotUtils.forward();
+//			}
+//		}
 
 
 
@@ -87,7 +90,7 @@ public class ExitFinder implements ParcoursWalkable {
 	}
 
 	private boolean correctDistanceToWall() {
-		float correct_distance = 0.317f;
+		float correct_distance = 0.322f;
 		ultrasonicSampleProvider.fetchSample(uSample, 0);
 		return uSample[0] >= correct_distance;
 	}
