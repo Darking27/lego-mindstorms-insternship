@@ -73,6 +73,10 @@ public final class RobotUtils {
 		Ports.LEFT_MOTOR.resetTachoCount();
 		Ports.RIGHT_MOTOR.resetTachoCount();
 	}
+	
+	public static int getAverageTacho() {
+		return (Ports.LEFT_MOTOR.getTachoCount()+Ports.LEFT_MOTOR.getTachoCount())/2;
+	}
 
 	public static void setMaxSpeed() {
 		setSpeed((int) Ports.LEFT_MOTOR.getMaxSpeed());
