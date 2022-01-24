@@ -73,7 +73,7 @@ public class FullBridgeController implements ParcoursWalkable {
 
 		System.out.println("on top of bridge");
 		RobotUtils.setSpeed(350);
-		RobotUtils.rotate(400);
+		RobotUtils.rotate(350);
 
 		RobotUtils.setSpeed(450);
 		Ports.LEFT_MOTOR.rotate((int) (0.98 * -500), true);
@@ -103,6 +103,8 @@ public class FullBridgeController implements ParcoursWalkable {
 		RobotUtils.turn90DegreesLeft();
 		RobotUtils.forward();
 		while(!oneTouchDown()) 
+			if(RGBColorSensor.getInstance().isFinishLine())
+				return WalkableStatus.FINISHED;
 			RobotUtils.checkForKeyPress();
 	
 
