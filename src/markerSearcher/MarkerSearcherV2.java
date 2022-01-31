@@ -21,7 +21,6 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
 	
 	private boolean markerOneFound;
 	private boolean markerTwoFound;
-	
 	private SampleProvider colorIdSensor;
 	private SampleProvider distanceSensor;
 	
@@ -285,9 +284,11 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
 	    @Override
 	    public void run() {
 	        Button.LEDPattern(9);
+	        Sound.setVolume(Sound.VOL_MAX);
 	        Sound.twoBeeps();
 	        Delay.msDelay(1000);
 	        Button.LEDPattern(0);
+	        Sound.setVolume(0);
 	    }
 	}
 
