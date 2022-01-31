@@ -40,7 +40,7 @@ public class WallFollower implements ParcoursWalkable {
 		Ports.LEFT_MOTOR.forward();
 		Ports.RIGHT_MOTOR.forward();
 
-		while (RobotUtils.getAverageTacho() < 3300)
+		while (RobotUtils.getAverageTacho() < 3500)
 			RobotUtils.checkForKeyPress();
 		System.out.println("Skipped kante");
 

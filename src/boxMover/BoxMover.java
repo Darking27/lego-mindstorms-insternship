@@ -45,7 +45,7 @@ public class BoxMover implements ParcoursWalkable {
 			RobotUtils.turnToNeutralTacho();
 			RobotUtils.straight(360); // 400 was working unreliablity
 		}
-
+		RobotUtils.straight(175);
 		RobotUtils.turn90DegreesRight(); // move box to the right wall
 		RobotUtils.setMaxSpeed();
 		RobotUtils.straight(2100);
@@ -55,9 +55,9 @@ public class BoxMover implements ParcoursWalkable {
 		RobotUtils.turn90DegreesRight();
 		RobotUtils.setMaxSpeed();
 		if (num_til_found == 1) {
-			RobotUtils.straight(600);
+			RobotUtils.straight(700);
 		} else {
-			RobotUtils.straight(850);
+			RobotUtils.straight(920);
 		}
 
 		RobotUtils.turn90DegreesLeft();

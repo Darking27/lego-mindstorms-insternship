@@ -6,6 +6,7 @@ import framework.Ports;
 import framework.RobotUtils;
 import framework.WalkableStatus;
 import lejos.robotics.SampleProvider;
+import lejos.utility.Delay;
 import lineFollower.colorSensor.RGBColorSensor;
 
 public class ExitFinder implements ParcoursWalkable {
@@ -53,6 +54,7 @@ public class ExitFinder implements ParcoursWalkable {
 			RobotUtils.checkForKeyPress();
 		RobotUtils.stopMotors();
 
+		RobotUtils.setSpeed(400);
 		RobotUtils.backward();
 		while (!correctDistanceToWall())
 			RobotUtils.checkForKeyPress();
@@ -65,19 +67,6 @@ public class ExitFinder implements ParcoursWalkable {
 		while (!RGBColorSensor.getInstance().isFinishLine()) {
 			RobotUtils.checkForKeyPress();
 		}
-//		while (!RGBColorSensor.getInstance().isFinishLine()) {
-//			RobotUtils.checkForKeyPress();
-//			leftTouchSampleProvider.fetchSample(lTouchSample, 0);
-//			if (lTouchSample[0] > 0.5) { // check for hitting the wall
-//				RobotUtils.stopMotors();
-//				RobotUtils.setSpeed(500);
-//				Ports.LEFT_MOTOR.rotate(-400, false);
-//				Ports.RIGHT_MOTOR.rotate(-400, false);
-//				RobotUtils.forward();
-//			}
-//		}
-
-
 
 		RobotUtils.stopMotors();
 		return WalkableStatus.FINISHED;
@@ -86,11 +75,19 @@ public class ExitFinder implements ParcoursWalkable {
 	private boolean bothTouchSensorsDown() {
 		leftTouchSampleProvider.fetchSample(lTouchSample, 0);
 		rightTouchSampleProvider.fetchSample(rTouchSample, 0);
-		return lTouchSample[0] > 0.5f && rTouchSample[0] > 0.5f;
+		boolean a =  lTouchSample[0] > 0.5f && rTouchSample[0] > 0.5f;
+		
+		Delay.msDelay(70);
+		
+		leftTouchSampleProvider.fetchSample(lTouchSample, 0);
+		rightTouchSampleProvider.fetchSample(rTouchSample, 0);
+		boolean b =  lTouchSample[0] > 0.5f && rTouchSample[0] > 0.5f;
+		
+		return a && b;
 	}
 
 	private boolean correctDistanceToWall() {
-		float correct_distance = 0.322f;
+		float correct_distance = 0.363f;
 		ultrasonicSampleProvider.fetchSample(uSample, 0);
 		return uSample[0] >= correct_distance;
 	}
