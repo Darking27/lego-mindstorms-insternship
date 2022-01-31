@@ -98,7 +98,7 @@ public class FullBridgeController implements ParcoursWalkable {
 			RobotUtils.checkForKeyPress();
 		}
 		
-		RobotUtils.setSpeed((int) (0.98*300), 300);
+		RobotUtils.setSpeed(300);
 		RobotUtils.rotate(-200);
 		RobotUtils.turn90DegreesLeft();
 		RobotUtils.forward();
