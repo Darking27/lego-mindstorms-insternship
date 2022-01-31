@@ -184,7 +184,7 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     private void turn180Right() throws KeyPressedException {
     	System.out.println("turn 180 right");
 
-    	int rotation = 510;
+    	int rotation = 520;
     	
     	//RobotUtils.setSpeed(450);
     	RobotUtils.setMaxSpeed();
