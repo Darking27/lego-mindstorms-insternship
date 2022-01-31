@@ -51,7 +51,7 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
         float[] distance = new float[distanceSensor.sampleSize()];
         distanceSensor.fetchSample(distance, 0);
         
-        while (distance[0] > 0.4) {
+        while (distance[0] > 0.27) {
             distanceSensor.fetchSample(distance, 0);
             if (rightButtonPressed()) {
                 Delay.msDelay(100);
@@ -110,8 +110,8 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     	Ports.RIGHT_MOTOR.setSpeed(400);
     	Ports.LEFT_MOTOR.setSpeed(400);
     	
-    	Ports.RIGHT_MOTOR.rotate(-100, true);
-    	Ports.LEFT_MOTOR.rotate(-100, false);
+    	Ports.RIGHT_MOTOR.rotate(-70, true);
+    	Ports.LEFT_MOTOR.rotate(-70, false);
     	
     	RobotUtils.turn90DegreesLeft();
     	
@@ -167,7 +167,7 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     	Ports.LEFT_MOTOR.rotate((int) (0.98*-rotation), true);
 		Ports.RIGHT_MOTOR.rotate(rotation, false);
     	
-    	RobotUtils.driveStraight(250);
+    	RobotUtils.driveStraight(175);
     	RobotUtils.setMaxSpeed();
 
     	// turn 90 left
@@ -193,7 +193,7 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
     	Ports.LEFT_MOTOR.rotate((int) (0.98*rotation), true);
 		Ports.RIGHT_MOTOR.rotate(-rotation, false);
     	
-        RobotUtils.driveStraight(250);
+        RobotUtils.driveStraight(175);
         
         //RobotUtils.setSpeed(450);
         RobotUtils.setMaxSpeed();
