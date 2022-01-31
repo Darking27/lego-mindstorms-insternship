@@ -19,13 +19,12 @@ import new_bridge.FullBridgeController;
  *
  */
 public enum ParcoursSection {
-	EXIT_FINDER (new ExitFinder()),
-	TEST_WALKER (new TestWalker()),
 	LINE_FOLLOW (new LineFollowerController()),
 	BOX_MOVE (new BoxMoverWrapper()),
+	BRIDGE(new FullBridgeController()),
 	MARKER_SEARCHER  (new MarkerSearcherV2()),
-	LINE_BOX_TRANSITIONER(new TransitionLineBox()),
-	BRIDGE(new FullBridgeController());
+	LINE_BOX_TRANSITIONER(new TransitionLineBox());
+	
 	
 	private final ParcoursWalkable walker;
 	
