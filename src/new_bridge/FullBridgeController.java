@@ -89,11 +89,11 @@ public class FullBridgeController implements ParcoursWalkable {
 		RobotUtils.stopMotors();
 		System.out.println("found top bridge edge");
 		RobotUtils.setSpeed(300);
-		Ports.LEFT_MOTOR.rotate(180);
+		Ports.LEFT_MOTOR.rotate(170);
 
-		RobotUtils.setSpeed(600);
+		RobotUtils.setSpeed(500);
 		Ports.LEFT_MOTOR.rotate(350);
-		Ports.RIGHT_MOTOR.rotate(358);
+		Ports.RIGHT_MOTOR.rotate(350);
 		System.out.println("parallel");
 
 		RobotUtils.setSpeed(595, 600);
@@ -105,7 +105,7 @@ public class FullBridgeController implements ParcoursWalkable {
 		RobotUtils.setSpeed(300);
 		RobotUtils.rotate(-200);
 
-		int distance = 518;
+		int distance = 508;
 		Ports.LEFT_MOTOR.rotate(-distance, true);
 		Ports.RIGHT_MOTOR.rotate(distance, false);
 		RobotUtils.forward();
