@@ -2,6 +2,7 @@ package boxMover;
 
 import exceptions.KeyPressedException;
 import framework.ParcoursWalkable;
+import framework.RobotUtils;
 import framework.WalkableStatus;
 
 public class BoxMoverWrapper implements ParcoursWalkable {
@@ -18,6 +19,7 @@ public class BoxMoverWrapper implements ParcoursWalkable {
 
 	@Override
 	public WalkableStatus start_walking() throws KeyPressedException {
+		
 		
 		wallFollower.start_walking();
 		

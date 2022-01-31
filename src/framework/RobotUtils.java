@@ -3,7 +3,10 @@ package framework;
 import exceptions.KeyPressedException;
 import exceptions.MenuException;
 import exceptions.StopException;
+import lejos.hardware.Button;
+import lejos.hardware.Sound;
 import lejos.robotics.RegulatedMotor;
+import lejos.utility.Delay;
 
 public final class RobotUtils {
 
@@ -180,5 +183,18 @@ public final class RobotUtils {
 	public static void straight(int distance) {
 		Ports.LEFT_MOTOR.rotate((int) (0.98*distance), true);
 		Ports.RIGHT_MOTOR.rotate(distance, false);
+	}
+	
+	public static void soundSignal() {
+		new Thread() {
+			@Override
+		    public void run() {
+		        Button.LEDPattern(9);
+		        Sound.setVolume(Sound.VOL_MAX);
+		        Sound.twoBeeps();
+		        Delay.msDelay(1000);
+		        Button.LEDPattern(0);
+		    }
+		}.start();
 	}
 }

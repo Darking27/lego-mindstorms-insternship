@@ -34,7 +34,8 @@ public class FullBridgeController implements ParcoursWalkable {
 
 	@Override
 	public WalkableStatus start_walking() throws KeyPressedException {
-
+		RobotUtils.soundSignal();
+		
 		RobotUtils.setMaxSpeed();
 		RobotUtils.rotate(400);
 

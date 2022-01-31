@@ -10,6 +10,7 @@ public class TransitionLineBox implements ParcoursWalkable {
 
 	@Override
 	public WalkableStatus start_walking() throws KeyPressedException {
+		RobotUtils.soundSignal();
 		/*
 		 * The Line Follower is a bit tilted when exiting the parcours
 		 */

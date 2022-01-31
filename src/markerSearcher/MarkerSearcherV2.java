@@ -260,6 +260,7 @@ public class MarkerSearcherV2 implements ParcoursWalkable {
 
 	@Override
 	public WalkableStatus start_walking() throws KeyPressedException {
+		RobotUtils.soundSignal();
 		reset();
 		
 		try {
