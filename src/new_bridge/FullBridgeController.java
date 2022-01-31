@@ -98,13 +98,15 @@ public class FullBridgeController implements ParcoursWalkable {
 			RobotUtils.checkForKeyPress();
 		}
 		
-		RobotUtils.setSpeed(300);
+		RobotUtils.setSpeed((int) (0.98*300), 300);
 		RobotUtils.rotate(-200);
 		RobotUtils.turn90DegreesLeft();
 		RobotUtils.forward();
 		while(!oneTouchDown()) 
-			if(RGBColorSensor.getInstance().isFinishLine())
+			if(RGBColorSensor.getInstance().isFinishLine()) {
+				Ports.ULTRASONIC_MOTOR.rotateTo(0);
 				return WalkableStatus.FINISHED;
+			}
 			RobotUtils.checkForKeyPress();
 	
 
